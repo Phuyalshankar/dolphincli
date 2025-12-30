@@ -1,0 +1,359 @@
+ <div class="container">
+        <h1 class="text-2xl md:text-3xl font-bold text-center mb-4 color-primary">Complete User Management</h1>
+        <p class="text-center color-text-muted mb-6">Sort, Filter, Search & Select All Features</p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+            <div class="flex items-center gap-4">
+                <button class="filled primary md">
+                    <span class="button-icon-left">
+                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add User 
+                    </span>
+                </button>
+                <button class="outlined success md">
+                    <span class="button-icon-left">
+                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Export CSV
+                    </span>
+                </button>
+                <button class="outlined danger md">
+                    <span class="button-icon-left">
+                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Delete Selected
+                    </span>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-sm color-text-muted">Selected:</span>
+                <span class="table-badge badge-primary">0</span>
+            </div>
+        </div>
+
+        <!-- Main Filter & Search Container -->
+        <div class="table-filter-container mb-4">
+            <div class="table-filter-header">
+                <!-- Search Box -->
+                <div class="table-search">
+                    <div class="input-icon-left">
+                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" placeholder="Search by name, email or role..." class="glow" disabled>
+                    </div>
+                </div>
+
+                <!-- Filter Actions -->
+                <div class="filter-actions">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Active</button>
+                    <button class="filter-btn">Pending</button>
+                    <button class="filter-btn">Inactive</button>
+                </div>
+            </div>
+
+            <!-- Advanced Filters -->
+            <div class="p-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Role Filter -->
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium color-text-muted mb-2">Filter by Role:</label>
+                        <select class="select w-full" disabled>
+                            <option value="all">All Roles</option>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="developer">Developer</option>
+                            <option value="designer">Designer</option>
+                            <option value="tester">Tester</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium color-text-muted mb-2">Joined Date:</label>
+                        <select class="select w-full" disabled>
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+
+                    <!-- Sort By -->
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium color-text-muted mb-2">Sort By:</label>
+                        <select class="select w-full" disabled>
+                            <option value="name_asc">Name (A-Z)</option>
+                            <option value="name_desc">Name (Z-A)</option>
+                            <option value="date_asc">Date (Oldest)</option>
+                            <option value="date_desc">Date (Newest)</option>
+                            <option value="status">Status</option>
+                            <option value="role">Role</option>
+                        </select>
+                    </div>
+
+                    <!-- Clear Filters -->
+                    <div class="flex items-end">
+                        <button class="outlined danger" disabled>
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Select All Checkbox -->
+        <div class="flex items-center mb-4">
+            <input type="checkbox" id="selectAll" class="primary" disabled>
+            <label for="selectAll" class="ml-2 font-medium">Select All Users</label>
+        </div>
+
+        <!-- Desktop Table -->
+        <div class="desktop-only table-responsive">
+            <table class="table primary bordered motion-smooth">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID</th>
+                        <th>User Details</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Joined Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User 1 -->
+                    <tr>
+                        <td><input type="checkbox" class="primary" disabled></td>
+                        <td>#001</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="circle active filled sm">AJ</div>
+                                <div>
+                                    <div class="font-semibold">Alex Johnson</div>
+                                    <div class="text-xs color-text-muted">+1-234-5678</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>alex@example.com</td>
+                        <td><span class="table-badge badge-primary">admin</span></td>
+                        <td><span class="table-badge badge-success">active</span></td>
+                        <td>2024-01-15</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="filled primary sm" disabled>Edit</button>
+                                <button class="outlined danger sm" disabled>Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- User 2 -->
+                    <tr>
+                        <td><input type="checkbox" class="primary" disabled></td>
+                        <td>#002</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="circle active filled sm">SM</div>
+                                <div>
+                                    <div class="font-semibold">Sarah Miller</div>
+                                    <div class="text-xs color-text-muted">+1-234-5679</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>sarah@example.com</td>
+                        <td><span class="table-badge badge-info">manager</span></td>
+                        <td><span class="table-badge badge-success">active</span></td>
+                        <td>2024-02-20</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="filled primary sm" disabled>Edit</button>
+                                <button class="outlined danger sm" disabled>Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- User 3 -->
+                    <tr>
+                        <td><input type="checkbox" class="primary" disabled></td>
+                        <td>#003</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="circle pending filled sm">RW</div>
+                                <div>
+                                    <div class="font-semibold">Robert Wilson</div>
+                                    <div class="text-xs color-text-muted">+1-234-5680</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>robert@example.com</td>
+                        <td><span class="table-badge badge-warning">designer</span></td>
+                        <td><span class="table-badge badge-warning">pending</span></td>
+                        <td>2024-03-10</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="filled primary sm" disabled>Edit</button>
+                                <button class="outlined danger sm" disabled>Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- User 4 -->
+                    <tr>
+                        <td><input type="checkbox" class="primary" disabled></td>
+                        <td>#004</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="circle inactive filled sm">ED</div>
+                                <div>
+                                    <div class="font-semibold">Emily Davis</div>
+                                    <div class="text-xs color-text-muted">+1-234-5681</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>emily@example.com</td>
+                        <td><span class="table-badge badge-danger">tester</span></td>
+                        <td><span class="table-badge badge-danger">inactive</span></td>
+                        <td>2024-01-05</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="filled primary sm" disabled>Edit</button>
+                                <button class="outlined danger sm" disabled>Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- User 5 -->
+                    <tr>
+                        <td><input type="checkbox" class="primary" disabled></td>
+                        <td>#005</td>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="circle active filled sm">TB</div>
+                                <div>
+                                    <div class="font-semibold">Thomas Brown</div>
+                                    <div class="text-xs color-text-muted">+1-234-5682</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>thomas@example.com</td>
+                        <td><span class="table-badge badge-success">developer</span></td>
+                        <td><span class="table-badge badge-success">active</span></td>
+                        <td>2024-02-28</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="filled primary sm" disabled>Edit</button>
+                                <button class="outlined danger sm" disabled>Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="mobile-only">
+            <!-- Card 1 -->
+            <div class="card mb-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="primary" disabled>
+                        <div class="circle active filled">AJ</div>
+                        <div>
+                            <div class="font-semibold">Alex Johnson</div>
+                            <div class="text-xs color-text-muted">#001</div>
+                        </div>
+                    </div>
+                    <span class="table-badge badge-primary">admin</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Email:</span>
+                        <span class="text-sm">alex@example.com</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Phone:</span>
+                        <span class="text-sm">+1-234-5678</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Status:</span>
+                        <span class="table-badge badge-success">active</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Joined:</span>
+                        <span class="text-sm">2024-01-15</span>
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                    <button class="filled primary flex-1" disabled>Edit</button>
+                    <button class="outlined danger flex-1" disabled>Delete</button>
+                </div>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="card mb-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" class="primary" disabled>
+                        <div class="circle active filled">SM</div>
+                        <div>
+                            <div class="font-semibold">Sarah Miller</div>
+                            <div class="text-xs color-text-muted">#002</div>
+                        </div>
+                    </div>
+                    <span class="table-badge badge-info">manager</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Email:</span>
+                        <span class="text-sm">sarah@example.com</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Phone:</span>
+                        <span class="text-sm">+1-234-5679</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Status:</span>
+                        <span class="table-badge badge-success">active</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm color-text-muted">Joined:</span>
+                        <span class="text-sm">2024-02-20</span>
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                    <button class="filled primary flex-1" disabled>Edit</button>
+                    <button class="outlined danger flex-1" disabled>Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="table-footer mt-4">
+            <div class="footer-info">
+                <span>Showing 1-5 of 10 users</span>
+            </div>
+            <div class="table-pagination">
+                <button class="pagination-btn" disabled>← Previous</button>
+                <div class="flex gap-1">
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn" disabled>2</button>
+                </div>
+                <button class="pagination-btn">Next →</button>
+            </div>
+            <div class="rows-per-page">
+                <span>Show:</span>
+                <select class="select xs" disabled>
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+    </div>

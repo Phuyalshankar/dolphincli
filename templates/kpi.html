@@ -1,0 +1,230 @@
+  <div class="container">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-text mb-2">Admin Dashboard</h1>
+            <p class="text-text-muted">Modern KPI cards with Dolphin CSS</p>
+        </header>
+
+        <!-- Modern KPI Grid -->
+        <div class="row gap-4">
+            <!-- Card 1: Primary Gradient with Icon -->
+            <div class="col-3 hover-scale-105 motion">
+                <div class="card gradient primary glass-wave p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-1">Total Revenue</h3>
+                            <p class="text-sm text-white/80">Monthly income</p>
+                        </div>
+                        <div class="circle md primary filled p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-md text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-between items-end">
+                        <div>
+                            <p class="text-3xl font-bold text-white">$45,231</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm text-white/90">↑ 12.5%</span>
+                                <span class="text-xs text-white/70">from last month</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="badge sm success filled">On Track</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Glass with Chart -->
+            <div class="col-3 hover-translate-y-4 motion">
+                <div class="card crystal-glass p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-text mb-1">New Users</h3>
+                            <p class="text-sm text-text-muted">Active subscriptions</p>
+                        </div>
+                        <div class="circle md outlined primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-md text-primary" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-between items-end">
+                        <div>
+                            <p class="text-3xl font-bold text-text">2,350</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm text-success">↑ 18.2%</span>
+                                <span class="text-xs text-text-muted">+342 this week</span>
+                            </div>
+                        </div>
+                        <!-- Mini chart -->
+                        <div class="h-12 w-20 relative">
+                            <div class="absolute bottom-0 left-0 w-3 bg-primary rounded-t h-8"></div>
+                            <div class="absolute bottom-0 left-4 w-3 bg-primary rounded-t h-10"></div>
+                            <div class="absolute bottom-0 left-8 w-3 bg-primary rounded-t h-6"></div>
+                            <div class="absolute bottom-0 left-12 w-3 bg-primary rounded-t h-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Neon Flow with Stats -->
+            <div class="col-3">
+                <div class="card neon-flow p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-text mb-1">Conversion Rate</h3>
+                            <p class="text-sm text-text-muted">Goal completion</p>
+                        </div>
+                        <div class="circle md info filled p-3 glow">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-md text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-between items-end">
+                        <div>
+                            <p class="text-3xl font-bold text-text">86.4%</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm text-warning">↑ 2.3%</span>
+                                <span class="text-xs text-text-muted">+0.5% target</span>
+                            </div>
+                        </div>
+                        <div class="w-20">
+                            <div class="h-2 bg-surface-alt rounded-full overflow-hidden">
+                                <div class="h-full bg-info rounded-full" style="width: 86.4%"></div>
+                            </div>
+                            <p class="text-xs text-text-muted text-right mt-1">86.4% of 100%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Quantum Float with Alert -->
+            <div class="col-3">
+                <div class="card quantum-float p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-text mb-1">Avg. Response Time</h3>
+                            <p class="text-sm text-text-muted">Customer support</p>
+                        </div>
+                        <div class="relative">
+                            <div class="circle md warning filled p-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-md text-white" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                                </svg>
+                            </div>
+                            <div class="badge-corner sm danger filled">!</div>
+                        </div>
+                    </div>
+                    <div class="flex-between items-end">
+                        <div>
+                            <p class="text-3xl font-bold text-text">2.4m</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span class="text-sm text-danger">↑ 15%</span>
+                                <span class="text-xs text-text-muted">Need improvement</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button class="btn-sm primary outlined">Optimize</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row: Different Style Variations -->
+        <div class="row gap-4 mt-8">
+            <!-- Card 5: Solar Flare Theme -->
+            <div class="col-3">
+                <div class="kpi-card solar-flare p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-1">Active Projects</h3>
+                            <p class="text-sm text-white/80">In progress</p>
+                        </div>
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-white">18</p>
+                        <div class="flex items-center gap-2 mt-3">
+                            <div class="flex-1 h-2 bg-white/30 rounded-full overflow-hidden">
+                                <div class="h-full bg-white rounded-full" style="width: 75%"></div>
+                            </div>
+                            <span class="text-sm text-white">75%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Cyber Neon Theme -->
+            <div class="col-3">
+                <div class="kpi-card cyber-neon p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-1">Server Uptime</h3>
+                            <p class="text-sm text-white/80">This month</p>
+                        </div>
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-white">99.9%</p>
+                        <div class="flex items-center gap-2 mt-3">
+                            <div class="badge sm success filled">Stable</div>
+                            <span class="text-sm text-white/80">45 days</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7: Holo Matrix Theme -->
+            <div class="col-3 motion float">
+                <div class="kpi-card holo-matrix p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-text mb-1">Data Processed</h3>
+                            <p class="text-sm text-text-muted">Monthly volume</p>
+                        </div>
+                        <span class="text-2xl">💾</span>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-text">4.2TB</p>
+                        <div class="flex items-center gap-2 mt-3">
+                            <span class="text-sm text-info">+1.2TB</span>
+                            <span class="text-xs text-text-muted">from last month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8: Liquid Mercury Theme -->
+            <div class="col-3">
+                <div class="kpi-card liquid-mercury p-6">
+                    <div class="flex-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-text mb-1">Customer Satisfaction</h3>
+                            <p class="text-sm text-text-muted">CSAT Score</p>
+                        </div>
+                        <span class="text-2xl">⭐</span>
+                    </div>
+                    <div class="flex-between items-end">
+                        <div>
+                            <p class="text-3xl font-bold text-text">4.8/5</p>
+                            <div class="flex items-center gap-1 mt-2">
+                                <span class="text-yellow-500">★</span>
+                                <span class="text-yellow-500">★</span>
+                                <span class="text-yellow-500">★</span>
+                                <span class="text-yellow-500">★</span>
+                                <span class="text-yellow-500">★</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="badge sm success filled">Excellent</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Responsive Note -->
+    </div>

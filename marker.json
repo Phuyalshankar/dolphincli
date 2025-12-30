@@ -1,0 +1,42 @@
+{
+  "d-login": {
+    "templateFile": "login.html",
+    "addClasses": "flex flex-col gap-4 w-full max-w-md mx-auto p-6 card"
+  },
+  "d-table": {
+    "templateFile": "table.html",
+    "addClasses": "table-responsive"
+  },
+  "d-side-nav": {
+    "templateFile": "side-nav.html",
+    "addClasses": "w-64 bg-surface shadow-lg h-screen fixed"
+  },
+  "d-topnav": {
+    "templateFile": "topnav.html",
+    "addClasses": "nav-container"
+  },
+  "d-kpi": {
+    "templateFile": "kpi-card.html",
+    "addClasses": "kpi-card"
+  },
+  "d-chart-card": {
+    "templateFile": "chart-card.html",
+    "addClasses": "card p-6"
+  },
+  "d-input-float": {
+    "templateFile": "input-float.html",
+    "addClasses": "relative"
+  },
+  "d-input-standard": {
+    "templateFile": "input-standard.html",
+    "addClasses": ""
+  },
+  "d-button": {
+    "templateFile": "button.html",
+    "addClasses": "filled primary"
+  },
+  "d-card": {
+    "templateFile": "card.html",
+    "addClasses": "card"
+  }
+}
