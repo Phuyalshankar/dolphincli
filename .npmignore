@@ -1,0 +1,18 @@
+# Ignore testing environments and apps
+react-test/
+
+# Ignore test and temporary HTML files
+new.html
+test-register.html
+
+# Ignore local configuration files
+dolphin.config.json
+marker.json
+
+# Ignore temporary/scratch folders if they exist
+scratch/
+temp/
+
+# Ignore source control
+.git/
+.gitignore

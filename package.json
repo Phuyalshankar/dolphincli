@@ -1,18 +1,38 @@
 {
-  "name": "dolphin-cli",
-  "version": "1.0.0",
-  "description": "Auto component generator for Dolphin CSS",
+  "name": "dolphin-css-cli",
+  "version": "2.0.0",
+  "description": "Smart CLI for DolphinCSS. Auto-injects and converts premium UI templates into HTML or React (JSX) instantly.",
   "main": "bin/dolphin.js",
   "bin": {
+    "dolphin-css-cli": "./bin/dolphin.js",
     "dolphin": "./bin/dolphin.js"
   },
   "scripts": {
-    "start": "node bin/dolphin.js"
+    "start": "node bin/dolphin.js",
+    "dev": "node bin/dolphin.js"
   },
   "dependencies": {
     "chokidar": "^3.5.3"
   },
-  "keywords": ["dolphin", "css", "components", "auto-generate"],
-  "author": "Your Name",
-  "license": "MIT"
+  "keywords": [
+    "dolphin",
+    "dolphincss",
+    "css",
+    "components",
+    "auto-generate",
+    "react",
+    "jsx",
+    "ui-framework",
+    "cli"
+  ],
+  "author": "Shankar Phuyal (Phuyalshankar)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Phuyalshankar/dolphincli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Phuyalshankar/dolphincli/issues"
+  },
+  "homepage": "https://www.npmjs.com/package/dolphin-css-cli"
 }
