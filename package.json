@@ -1,6 +1,6 @@
 {
   "name": "dolphin-css-cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Smart CLI for DolphinCSS. Auto-injects and converts premium UI templates into HTML or React (JSX) instantly.",
   "main": "bin/dolphin.js",
   "bin": {
