@@ -1,29 +1,43 @@
-# dolphincli
+<div align="center">
+  <h1>🐬 Dolphin CSS CLI </h1>
+  <p><strong>Smart CLI for DolphinCSS. Auto-injects and converts premium UI templates into HTML or React (JSX) instantly.</strong></p>
+  <br>
+</div>
 
-Dolphin CLI is a tool that watches your code files and expands special markers into full UI components using predefined templates.
+## ✨ What's New in v2.0!
 
-## Features
+- 🧠 **Depth-Aware Tag Parsing:** Advanced parser handles complex nested JSX/HTML tags flawlessly. No more `)` expected errors or broken DOM structures!
+- 🎨 **Smart VS Code IntelliSense:** Automatically generates VS Code Custom HTML Data to suggest `d-login`, `d-table`, etc., as class names without intrusive code snippets.
+- ⚛️ **Automated React Conversion:** Converts native HTML templates to pure JSX instantly (`class` → `className`, `onclick` → `onClick`, inline styles to objects).
+- 🧩 **Inner Content Injection:** Safely preserves your custom content using the `{/* INNER */}` placeholder inside templates.
+- ☁️ **Cloud Sync & Local Mode:** Fetch templates remotely or run entirely local with zero config.
 
-- Local and remote template support
-- Real-time file watching
-- Automatic component expansion in JS/TS/JSX/TSX/HTML files
-- Cloud sync for templates
+## 🚀 Installation
 
-## Installation
+Install globally to use it anywhere:
 
 ```bash
-npm install -g dolphincli
+npm install -g dolphin-css-cli
 ```
 
-## Usage
+*Or use it directly with npx:*
+```bash
+npx dolphin-css-cli
+```
 
-1. Navigate to your project directory
-2. Run `dolphin` to start the watcher
-3. In your code, use markers like `<div class="button">` which will be expanded to full button components
+## 🛠️ Usage
 
-## Configuration
+1. Navigate to your project directory.
+2. Run `dolphin` to start the watcher:
+   ```bash
+   dolphin
+   ```
+3. In your code, type any marker class (e.g., `<div className="d-login"></div>`) and hit save!
+4. The CLI will instantly inject the premium UI component right into your file.
 
-Create a `dolphin.config.json` file in your project root:
+## ⚙️ Configuration
+
+Create a `dolphin.config.json` file in your project root to fetch templates from the cloud:
 
 ```json
 {
@@ -31,20 +45,26 @@ Create a `dolphin.config.json` file in your project root:
 }
 ```
 
-If no remoteUrl is provided, it uses local templates.
+*If no `remoteUrl` is provided, the CLI automatically runs in lightning-fast Local Mode!*
 
-## Available Markers
+## 📚 Available Markers
 
-| Marker       | Description                  |
+| Marker       | Component Description        |
 |--------------|------------------------------|
-| d-login      | Login form with email/password |
-| d-table      | Responsive data table        |
-| d-side-nav   | Side navigation menu         |
-| d-topnav     | Top navigation bar           |
-| d-kpi        | KPI metric card              |
-| d-chart-card | Chart container card         |
-| d-input-float| Floating label input field   |
-| d-input-standard | Standard input field      |
-| d-button     | Styled button component      |
-| d-card       | Basic card component         |</content>
-<parameter name="filePath">dolphincli/README.md
+| `d-login`      | Premium Login Form           |
+| `d-table`      | Responsive Data Table        |
+| `d-side-nav`   | Modern Side Navigation       |
+| `d-topnav`     | Interactive Top Navbar       |
+| `d-kpi`        | KPI Metric Dash Card         |
+| `d-chart-card` | Data Visualization Container |
+| `d-button`     | Dynamic Animated Buttons     |
+| `d-card`       | Glassmorphism/Flat Cards     |
+| `d-theme-toggle`| Dark/Light Mode Switcher    |
+| ...and more! |                              |
+
+## 🤝 Contributing
+Want to add more premium templates? Fork the repo and submit a PR! Let's build the ultimate UI generation CLI together.
+
+---
+**Author:** Shankar Phuyal (Phuyalshankar)  
+**License:** MIT

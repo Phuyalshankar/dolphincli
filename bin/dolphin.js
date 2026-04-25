@@ -25,6 +25,70 @@ function fetchRemote(url) {
   });
 }
 
+function setupVSCodeIntelliSense(markers) {
+  try {
+    const vscodeDir = path.join(projectRoot, '.vscode');
+    if (!fs.existsSync(vscodeDir)) {
+      fs.mkdirSync(vscodeDir);
+    }
+
+    // 1. Clean up old Snippets if they exist (user no longer wants code snippets)
+    const snippetsPath = path.join(vscodeDir, 'dolphin.code-snippets');
+    if (fs.existsSync(snippetsPath)) {
+      fs.unlinkSync(snippetsPath);
+    }
+
+    // 2. Generate Custom HTML Data (This provides the CSS class name suggestions)
+    const customData = {
+      version: 1.1,
+      tags: Object.keys(markers).map(marker => ({
+        name: marker,
+        description: `Dolphin CLI Component`
+      })),
+      globalAttributes: [
+        { name: "class", valueSet: "dolphin-classes" },
+        { name: "className", valueSet: "dolphin-classes" }
+      ],
+      valueSets: [
+        {
+          name: "dolphin-classes",
+          values: Object.keys(markers).map(marker => {
+            const data = markers[marker];
+            const templateFile = typeof data === 'string' ? data : data.templateFile;
+            return {
+              name: marker,
+              description: `Dolphin CLI Component (${templateFile})`
+            };
+          })
+        }
+      ]
+    };
+    fs.writeFileSync(path.join(vscodeDir, 'dolphin-tags.json'), JSON.stringify(customData, null, 2));
+
+    // 3. Update settings.json
+    const settingsPath = path.join(vscodeDir, 'settings.json');
+    let settings = {};
+    if (fs.existsSync(settingsPath)) {
+      try {
+        settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      } catch (e) {}
+    }
+    
+    if (!settings['html.customData']) {
+      settings['html.customData'] = [];
+    }
+    
+    if (!settings['html.customData'].includes("./.vscode/dolphin-tags.json")) {
+      settings['html.customData'].push("./.vscode/dolphin-tags.json");
+      fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+    }
+    
+    console.log('✨ VS Code IntelliSense (Auto-Suggest) configured!');
+  } catch (error) {
+    console.log(`⚠️ Could not setup VS Code IntelliSense: ${error.message}`);
+  }
+}
+
 async function init() {
   try {
     let remoteUrl = '';
@@ -35,10 +99,13 @@ async function init() {
       remoteUrl = userConfig.remoteUrl;
     }
 
+    let allMarkers = {};
+
     if (!remoteUrl) {
       console.log('📄 Using local mode (No remoteUrl in dolphin.config.json)');
       // Fallback to local markers if remote is missing
       const localMarkers = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/markers.json'), 'utf8'));
+      allMarkers = localMarkers;
       console.log(`📂 Loading ${Object.keys(localMarkers).length} local markers...`);
       for (const [marker, data] of Object.entries(localMarkers)) {
         const templateFile = typeof data === 'string' ? data : data.templateFile;
@@ -58,6 +125,7 @@ async function init() {
       // Fetch the main markers list from server
       const markersJson = await fetchRemote(remoteUrl);
       const markers = JSON.parse(markersJson);
+      allMarkers = markers;
 
       // Get base URL for templates (assuming they are in the same server)
       const baseUrl = remoteUrl.substring(0, remoteUrl.lastIndexOf('/'));
@@ -75,6 +143,7 @@ async function init() {
       console.log('✅ All remote templates synced and cached in memory.');
     }
 
+    setupVSCodeIntelliSense(allMarkers);
     startWatcher();
   } catch (error) {
     console.error(`❌ Sync Error: ${error.message}`);
@@ -93,63 +162,124 @@ function processFile(filePath) {
     let content = fs.readFileSync(filePath, 'utf8');
     let modified = false;
 
-    for (const [marker, templateData] of Object.entries(templateRegistry)) {
-      const pattern = new RegExp(`(<([a-z0-9-]+)[^>]+(?:class|className)=["'][^"']*)${marker}([^"']*["']\\s*>)(?:\\s*</\\2>)?`, 'gi');
+    const classAttrName = isReact ? 'className' : 'class';
 
-      if (pattern.test(content)) {
-        modified = true;
-        console.log(`✨ Expanding component: ${marker} in ${path.basename(filePath)}`);
+    // We use a dynamic regex approach to capture opening tag, content, and closing tag
+    // This prevents duplicate closing tags and allows '{/* INNER */}' replacement
+    const markerKeys = Object.keys(templateRegistry);
+    if (markerKeys.length === 0) return;
 
-        content = content.replace(pattern, (match, before, tagName, after) => {
-          const classMatch = match.match(/(?:class|className)=["']([^"']*)["']/);
-          let currentClasses = classMatch ? classMatch[1] : '';
+    // Improved regex: flexible for attribute order, quotes, spaces, and captures opening tag
+    const regex = new RegExp(
+      `(<([a-z0-9-]+)\\s+[^>]*${classAttrName}=\\s*["']([^"']*?\\s)?(d-[a-zA-Z0-9-]+)(\\s[^"']*?)?["'][^>]*>)`,
+      'gi'
+    );
 
-          let cleanClasses = currentClasses.replace(new RegExp(`\\s*${marker}\\s*`, 'gi'), ' ').trim();
+    let found = true;
+    while (found) {
+      found = false;
+      regex.lastIndex = 0;
+      let match;
+
+      while ((match = regex.exec(content)) !== null) {
+        const fullOpeningTag = match[1];
+        const tagName = match[2];
+        const beforeClasses = match[3];
+        const markerClass = match[4];
+        const afterClasses = match[5];
+
+        if (!templateRegistry[markerClass]) {
+          continue;
+        }
+
+        // Find matching closing tag
+        let depth = 1;
+        const startIndex = match.index + fullOpeningTag.length;
+        const tagPattern = new RegExp(`</?${tagName}(?:\\s|>|/)`, 'gi');
+        tagPattern.lastIndex = startIndex;
+        
+        let closingTagIndex = -1;
+        let tagMatch;
+        while ((tagMatch = tagPattern.exec(content)) !== null) {
+          const isClosing = tagMatch[0].startsWith('</');
+          if (!isClosing) {
+            const tagEnd = content.indexOf('>', tagMatch.index);
+            if (tagEnd !== -1 && content[tagEnd - 1] === '/') {
+              continue;
+            }
+            depth++;
+          } else {
+            depth--;
+          }
+          if (depth === 0) {
+            closingTagIndex = tagMatch.index;
+            break;
+          }
+        }
+
+        if (closingTagIndex !== -1) {
+          const innerContent = content.substring(startIndex, closingTagIndex);
+          const closingTagMatch = content.substring(closingTagIndex).match(new RegExp(`^</${tagName}\\s*>`, 'i'));
+          const closingTag = closingTagMatch ? closingTagMatch[0] : `</${tagName}>`;
+          
+          modified = true;
+          console.log(`✨ Expanding component: ${markerClass} in ${path.basename(filePath)}`);
+          const templateData = templateRegistry[markerClass];
+
+          const classParts = (beforeClasses || '') + (afterClasses || '');
+          let allClasses = classParts.trim().split(/\s+/).filter(Boolean);
+          allClasses = allClasses.filter(c => c !== markerClass && c !== '');
+
           if (templateData.addClasses) {
-            cleanClasses = (templateData.addClasses + ' ' + cleanClasses).trim();
+            const addCls = templateData.addClasses.trim().split(/\s+/).filter(Boolean);
+            allClasses = [...new Set([...allClasses, ...addCls])];
           }
 
-          const attrName = isReact ? 'className' : 'class';
-          const classAttr = cleanClasses ? `${attrName}="${cleanClasses}"` : '';
+          const newClassAttr = allClasses.length > 0 ? ` ${classAttrName}="${allClasses.join(' ')}"` : '';
           
-          let newHeader = (before + after).replace(new RegExp(`\\s*${marker}\\s*`, 'gi'), ' ');
-          newHeader = newHeader.replace(/(?:class|className)=["'][^"']*["']/, classAttr).replace(/\s+/g, ' ').replace(' >', '>');
-          newHeader = newHeader.replace(/\s+>/, '>');
+          let newOpeningTag = fullOpeningTag.replace(new RegExp(`\\s*${classAttrName}=["'][^"']*["']`, 'i'), newClassAttr ? `${newClassAttr}` : '');
+          newOpeningTag = newOpeningTag.replace(/\s+(?:class|className)=["']\s*["']/i, '');
 
           let finalTemplate = templateData.content;
+          
           if (isReact) {
             finalTemplate = finalTemplate
               .replace(/class=/g, 'className=')
               .replace(/for=/g, 'htmlFor=')
               .replace(/tabindex=/g, 'tabIndex=')
               .replace(/onclick=/g, 'onClick=')
-              // SVG camelCase attributes
               .replace(/stroke-linecap=/g, 'strokeLinecap=')
               .replace(/stroke-linejoin=/g, 'strokeLinejoin=')
               .replace(/stroke-width=/g, 'strokeWidth=')
               .replace(/fill-rule=/g, 'fillRule=')
               .replace(/clip-rule=/g, 'clipRule=')
               .replace(/stop-color=/g, 'stopColor=')
-              // style string to object: style="width: 40px;" => style={{width: '40px'}}
               .replace(/style="([^"]*)"/g, (_, s) => {
                 const obj = s.split(';').filter(Boolean).map(p => {
                   const [k, v] = p.split(':').map(x => x.trim());
+                  if (!k) return '';
                   const camel = k.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
                   return `${camel}: '${v}'`;
-                }).join(', ');
+                }).filter(Boolean).join(', ');
                 return `style={{${obj}}}`;
               })
-              // Self-closing void tags
-              // Self-closing void tags - safe single-line match only
-              // First normalize multi-line void tag attributes to single line, then self-close
-              .replace(/<(input|img|br|hr)(\s[^>]*)?\n([^>]*?)>/gi, '<$1$2 $3>')
-              .replace(/<(input|img|br|hr)(\s[^>]*)?\n([^>]*?)>/gi, '<$1$2 $3>')
-              .replace(/<(input|img|br|hr)(\s[^>]*)?\n([^>]*?)>/gi, '<$1$2 $3>')
-              .replace(/<(input|img|br|hr)([^>]*)(?<!\/)>/gi, '<$1$2 />');
+              .replace(/<(input|img|br|hr|meta|link)\b([^>]*?)>/gi, (m, t, a) => {
+                  if (a.trim().endsWith('/')) return m;
+                  return `<${t}${a} />`;
+              });
+          } else {
+              finalTemplate = finalTemplate.replace(/className=/g, 'class=');
           }
 
-          return `${newHeader}\n${finalTemplate}\n</${tagName}>`;
-        });
+          if (finalTemplate.includes('{/* INNER */}')) {
+            finalTemplate = finalTemplate.replace('{/* INNER */}', innerContent.trim());
+          }
+
+          const expanded = `${newOpeningTag}\n${finalTemplate}\n${closingTag}`;
+          content = content.substring(0, match.index) + expanded + content.substring(closingTagIndex + closingTag.length);
+          found = true;
+          break;
+        }
       }
     }
 

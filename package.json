@@ -5,7 +5,8 @@
   "main": "bin/dolphin.js",
   "bin": {
     "dolphin-css-cli": "./bin/dolphin.js",
-    "dolphin": "./bin/dolphin.js"
+    "dolphin": "./bin/dolphin.js",
+    "dolphin-exit": "./bin/dolphin-exit.js"
   },
   "scripts": {
     "start": "node bin/dolphin.js",

@@ -1,0 +1,134 @@
+{
+  "version": 1.1,
+  "tags": [
+    {
+      "name": "d-login",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-table",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-side-nav",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-topnav",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-kpi",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-chart-card",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-input-float",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-input-standard",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-button",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-card",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-register",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-footer",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-scarch",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "d-theme-toggle",
+      "description": "Dolphin CLI Component"
+    }
+  ],
+  "globalAttributes": [
+    {
+      "name": "class",
+      "valueSet": "dolphin-classes"
+    },
+    {
+      "name": "className",
+      "valueSet": "dolphin-classes"
+    }
+  ],
+  "valueSets": [
+    {
+      "name": "dolphin-classes",
+      "values": [
+        {
+          "name": "d-login",
+          "description": "Dolphin CLI Component (login.html)"
+        },
+        {
+          "name": "d-table",
+          "description": "Dolphin CLI Component (table.html)"
+        },
+        {
+          "name": "d-side-nav",
+          "description": "Dolphin CLI Component (side-nav.html)"
+        },
+        {
+          "name": "d-topnav",
+          "description": "Dolphin CLI Component (topnav.html)"
+        },
+        {
+          "name": "d-kpi",
+          "description": "Dolphin CLI Component (kpi.html)"
+        },
+        {
+          "name": "d-chart-card",
+          "description": "Dolphin CLI Component (chart-card.html)"
+        },
+        {
+          "name": "d-input-float",
+          "description": "Dolphin CLI Component (input-float.html)"
+        },
+        {
+          "name": "d-input-standard",
+          "description": "Dolphin CLI Component (input-standard.html)"
+        },
+        {
+          "name": "d-button",
+          "description": "Dolphin CLI Component (button.html)"
+        },
+        {
+          "name": "d-card",
+          "description": "Dolphin CLI Component (card.html)"
+        },
+        {
+          "name": "d-register",
+          "description": "Dolphin CLI Component (register.html)"
+        },
+        {
+          "name": "d-footer",
+          "description": "Dolphin CLI Component (footer.html)"
+        },
+        {
+          "name": "d-scarch",
+          "description": "Dolphin CLI Component (scarch.html)"
+        },
+        {
+          "name": "d-theme-toggle",
+          "description": "Dolphin CLI Component (theme-toggle.html)"
+        }
+      ]
+    }
+  ]
+}
