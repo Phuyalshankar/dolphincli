@@ -1,5 +1,4 @@
 {
-  "remoteUrl": "",
-  "cacheTemplates": true,
-  "framework": "react"
+  "remoteUrl": "https://github.com/Phuyalshankar/dolphincss-template/blob/main/config/markers.json",
+  "theme": "dolphin"
 }

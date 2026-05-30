@@ -1,8 +1,12 @@
 #!/usr/bin/env node
-const fs = require('fs');
-const path = require('path');
-const chokidar = require('chokidar');
-const https = require('https');
+import fs from 'fs';
+import path from 'path';
+import chokidar from 'chokidar';
+import axios from 'axios';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 console.log('🐬 Dolphin CLI [Full-Cloud] Started');
 console.log('====================================');
@@ -11,18 +15,52 @@ const projectRoot = process.cwd();
 const dolphinConfigPath = path.join(projectRoot, 'dolphin.config.json');
 const templatesDir = path.join(__dirname, '../templates');
 
+// Global variables to hold remote data
+let remoteMarkerMap = {}; 
+let remoteBaseUrl = '';
+const fetchingMarkers = new Set(); // Fetch हुँदै गरेका मार्करहरू ट्र्याक गर्न
+
 let templateRegistry = {};
 
+function loadLocalMarkers() {
+  const localMarkersPath = path.join(__dirname, '../config/markers.json');
+  if (fs.existsSync(localMarkersPath)) {
+    const localMarkers = JSON.parse(fs.readFileSync(localMarkersPath, 'utf8'));
+    let loadedCount = 0;
+    
+    for (const [marker, data] of Object.entries(localMarkers)) {
+      const templateFile = typeof data === 'string' ? data : data.templateFile;
+      const fullTemplatePath = path.join(templatesDir, templateFile);
+      if (fs.existsSync(fullTemplatePath)) {
+        templateRegistry[marker] = {
+          content: fs.readFileSync(fullTemplatePath, 'utf8'),
+          addClasses: data.addClasses || '',
+          isJsxTemplate: templateFile.endsWith('.jsx') || templateFile.endsWith('.tsx')
+        };
+        loadedCount++;
+      }
+    }
+    
+    console.log(`📂 Successfully loaded ${loadedCount} local markers.`);
+    return localMarkers;
+  }
+  return {};
+}
+
 // Helper to fetch content from URL
-function fetchRemote(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      if (res.statusCode !== 200) return reject(new Error(`Server error: ${res.statusCode}`));
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => resolve(data));
-    }).on('error', (err) => reject(err));
-  });
+async function fetchRemote(url) {
+  try {
+    const response = await axios.get(url);
+    if (response.status === 404) {
+       throw new Error(`File not found (404) at: ${url}`);
+    }
+    return typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+  } catch (err) {
+    if (err.response && err.response.status === 404) {
+      throw new Error(`Server returned 404 for: ${url}. Please check if the file exists in your GitHub repo.`);
+    }
+    throw new Error(`Failed to fetch ${url}: ${err.message}`);
+  }
 }
 
 function setupVSCodeIntelliSense(markers) {
@@ -90,69 +128,76 @@ function setupVSCodeIntelliSense(markers) {
 }
 
 async function init() {
-  try {
-    let remoteUrl = '';
-    
-    // 1. Load config
-    if (fs.existsSync(dolphinConfigPath)) {
+  let remoteUrl = '';
+  
+  // 1. Load config
+  if (fs.existsSync(dolphinConfigPath)) {
+    try {
       const userConfig = JSON.parse(fs.readFileSync(dolphinConfigPath, 'utf8'));
-      remoteUrl = userConfig.remoteUrl;
-    }
+      let rawUrl = userConfig.remoteUrl;
 
-    let allMarkers = {};
-
-    if (!remoteUrl) {
-      console.log('📄 Using local mode (No remoteUrl in dolphin.config.json)');
-      // Fallback to local markers if remote is missing
-      const localMarkers = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/markers.json'), 'utf8'));
-      allMarkers = localMarkers;
-      console.log(`📂 Loading ${Object.keys(localMarkers).length} local markers...`);
-      for (const [marker, data] of Object.entries(localMarkers)) {
-        const templateFile = typeof data === 'string' ? data : data.templateFile;
-        const fullTemplatePath = path.join(templatesDir, templateFile);
-        if (fs.existsSync(fullTemplatePath)) {
-          templateRegistry[marker] = {
-            content: fs.readFileSync(fullTemplatePath, 'utf8'),
-            addClasses: data.addClasses || ''
-          };
-          console.log(`   ✅ Marker registered: ${marker} (${templateFile})`);
-        } else {
-          console.log(`   ❌ Template NOT FOUND for ${marker}: ${templateFile}`);
-        }
+      // GitHub URL Normalization: ब्राउजरको लिङ्कलाई RAW लिङ्कमा बदल्ने
+      if (rawUrl && rawUrl.includes('github.com') && rawUrl.includes('/blob/')) {
+        rawUrl = rawUrl.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
       }
-    } else {
-      console.log(`🌐 Syncing with Dolphin UI Server: ${remoteUrl}`);
-      // Fetch the main markers list from server
-      const markersJson = await fetchRemote(remoteUrl);
-      const markers = JSON.parse(markersJson);
-      allMarkers = markers;
 
-      // Get base URL for templates (assuming they are in the same server)
-      const baseUrl = remoteUrl.substring(0, remoteUrl.lastIndexOf('/'));
-
-      console.log(`📥 Downloading ${Object.keys(markers).length} remote templates...`);
-      
-      for (const [marker, data] of Object.entries(markers)) {
-        console.log(`   - Fetching ${marker}...`);
-        const templateContent = await fetchRemote(`${baseUrl}/templates/${data.templateFile}`);
-        templateRegistry[marker] = {
-          content: templateContent,
-          addClasses: data.addClasses || ''
-        };
-      }
-      console.log('✅ All remote templates synced and cached in memory.');
+      remoteUrl = rawUrl;
+    } catch (e) {
+      console.error('❌ Error parsing dolphin.config.json');
     }
+  }
 
+  if (!remoteUrl) {
+    console.log('📄 Using local mode (No remoteUrl in dolphin.config.json)');
+    const allMarkers = loadLocalMarkers();
     setupVSCodeIntelliSense(allMarkers);
     startWatcher();
-  } catch (error) {
-    console.error(`❌ Sync Error: ${error.message}`);
-    console.log('💡 Running in fallback local mode...');
-    // Add local fallback logic here if needed
+    return;
   }
+
+  // Remote Sync with Retry
+  const maxRetries = 5;
+  let retryCount = 0;
+
+  async function sync() {
+    try {
+      const cacheBustUrl = `${remoteUrl}?t=${Date.now()}`;
+      console.log(`🌐 Syncing markers from: ${cacheBustUrl}`);
+      const markersData = await fetchRemote(cacheBustUrl);
+      remoteMarkerMap = JSON.parse(markersData);
+      
+      // remoteUrl is .../config/markers.json, so we need to go up two levels to get the base URL
+      const configDirUrl = remoteUrl.substring(0, remoteUrl.lastIndexOf('/')); // .../config
+      remoteBaseUrl = configDirUrl.substring(0, configDirUrl.lastIndexOf('/')); // .../main
+
+      console.log(`✅ Remote markers metadata loaded (${Object.keys(remoteMarkerMap).length} items).`);
+      console.log(`🚀 On-demand fetching active. (Markers will be downloaded when used)`);
+
+      setupVSCodeIntelliSense(remoteMarkerMap);
+      processFile(path.join(projectRoot, 'src/App.jsx'));
+      startWatcher();
+    } catch (error) {
+      console.error(`❌ Sync Error: ${error.message}`);
+      
+      if (retryCount >= maxRetries) {
+        console.log('⚠️ Falling back to local mode after maximum retries...');
+        const localMarkers = loadLocalMarkers();
+        setupVSCodeIntelliSense(localMarkers);
+        startWatcher();
+        return;
+      }
+
+      retryCount++;
+      console.log(`🔄 Retrying in 5 seconds... (Attempt ${retryCount})`);
+      setTimeout(sync, 5000);
+    }
+  }
+
+  sync();
 }
 
-function processFile(filePath) {
+async function processFile(filePath) {
+  console.log(`🔍 processFile triggered for: ${filePath}`);
   if (filePath.includes('templates' + path.sep) || filePath.includes('bin' + path.sep) || filePath.includes('node_modules')) return;
 
   const ext = path.extname(filePath).toLowerCase();
@@ -164,14 +209,48 @@ function processFile(filePath) {
 
     const classAttrName = isReact ? 'className' : 'class';
 
-    // We use a dynamic regex approach to capture opening tag, content, and closing tag
-    // This prevents duplicate closing tags and allows '{/* INNER */}' replacement
+    // On-demand fetching: यदि कोडमा 'd-' मार्कर भेटियो भने मात्र डाउनलोड गर्ने
+    const possibleMarkers = content.match(/dolphin-[a-zA-Z0-9-]+/g);
+    if (possibleMarkers) {
+      for (const markerClass of possibleMarkers) {
+        // सेफ्टी चेक: रिमोट लिस्ट लोड नभएको अवस्थामा
+        if (!remoteMarkerMap || Object.keys(remoteMarkerMap).length === 0) {
+          continue;
+        }
+
+        // Check if the marker is already in the registry or currently being fetched
+        if (!templateRegistry[markerClass] && remoteMarkerMap[markerClass] && !fetchingMarkers.has(markerClass)) {
+          fetchingMarkers.add(markerClass); // Mark as fetching
+
+          try {
+            const data = remoteMarkerMap[markerClass];
+            const templateFile = typeof data === 'string' ? data : data.templateFile;
+            const templateUrl = `${remoteBaseUrl}/templates/${templateFile}?t=${Date.now()}`;
+            
+            console.log(`🌐 Fetching template for: ${markerClass} from ${templateUrl}...`);
+            const templateContent = await fetchRemote(templateUrl);
+            templateRegistry[markerClass] = {
+              content: templateContent,
+              addClasses: data.addClasses || '',
+              isJsxTemplate: templateFile.endsWith('.jsx') || templateFile.endsWith('.tsx')
+            };
+            console.log(`✅ Fetched and registered ${markerClass}`);
+          } catch (error) {
+            console.error(`   ❌ Failed to fetch template for ${markerClass}: ${error.message}`);
+          } finally {
+            fetchingMarkers.delete(markerClass); // Always remove from fetching set
+          }
+        } else {
+            console.log(`Skipping fetch for ${markerClass}: InRegistry=${!!templateRegistry[markerClass]} InRemote=${!!remoteMarkerMap[markerClass]} Fetching=${fetchingMarkers.has(markerClass)}`);
+        }
+      }
+    }
+
     const markerKeys = Object.keys(templateRegistry);
     if (markerKeys.length === 0) return;
-
     // Improved regex: flexible for attribute order, quotes, spaces, and captures opening tag
     const regex = new RegExp(
-      `(<([a-z0-9-]+)\\s+[^>]*${classAttrName}=\\s*["']([^"']*?\\s)?(d-[a-zA-Z0-9-]+)(\\s[^"']*?)?["'][^>]*>)`,
+      `(<([a-z0-9-]+)\\s+[^>]*${classAttrName}=\\s*["']([^"']*?\\s)?(dolphin-[a-zA-Z0-9-]+)(\\s[^"']*?)?["'][^>]*>)`,
       'gi'
     );
 
@@ -243,36 +322,48 @@ function processFile(filePath) {
           let finalTemplate = templateData.content;
           
           if (isReact) {
-            finalTemplate = finalTemplate
-              .replace(/class=/g, 'className=')
-              .replace(/for=/g, 'htmlFor=')
-              .replace(/tabindex=/g, 'tabIndex=')
-              .replace(/onclick=/g, 'onClick=')
-              .replace(/stroke-linecap=/g, 'strokeLinecap=')
-              .replace(/stroke-linejoin=/g, 'strokeLinejoin=')
-              .replace(/stroke-width=/g, 'strokeWidth=')
-              .replace(/fill-rule=/g, 'fillRule=')
-              .replace(/clip-rule=/g, 'clipRule=')
-              .replace(/stop-color=/g, 'stopColor=')
-              .replace(/style="([^"]*)"/g, (_, s) => {
-                const obj = s.split(';').filter(Boolean).map(p => {
-                  const [k, v] = p.split(':').map(x => x.trim());
-                  if (!k) return '';
-                  const camel = k.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-                  return `${camel}: '${v}'`;
-                }).filter(Boolean).join(', ');
-                return `style={{${obj}}}`;
-              })
-              .replace(/<(input|img|br|hr|meta|link)\b([^>]*?)>/gi, (m, t, a) => {
-                  if (a.trim().endsWith('/')) return m;
-                  return `<${t}${a} />`;
-              });
+            if (!templateData.isJsxTemplate) {
+              finalTemplate = finalTemplate
+                .replace(/class=/g, 'className=')
+                .replace(/for=/g, 'htmlFor=')
+                .replace(/tabindex=/g, 'tabIndex=')
+                .replace(/onclick=/g, 'onClick=')
+                .replace(/stroke-linecap=/g, 'strokeLinecap=')
+                .replace(/stroke-linejoin=/g, 'strokeLinejoin=')
+                .replace(/stroke-width=/g, 'strokeWidth=')
+                .replace(/fill-rule=/g, 'fillRule=')
+                .replace(/clip-rule=/g, 'clipRule=')
+                .replace(/<!--([\s\S]*?)-->/g, '{/*$1*/}')
+                .replace(/stop-color=/g, 'stopColor=')
+                .replace(/style="([^"]*)"/g, (_, s) => {
+                  const obj = s.split(';').filter(Boolean).map(p => {
+                    const [k, v] = p.split(':').map(x => x.trim());
+                    if (!k) return '';
+                    const camel = k.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+                    return `${camel}: '${v}'`;
+                  }).filter(Boolean).join(', ');
+                  return `style={{${obj}}}`;
+                })
+                .replace(/<(input|img|br|hr|meta|link)\b([^>]*?)>/gi, (m, t, a) => {
+                    if (a.trim().endsWith('/')) return m;
+                    return `<${t}${a} />`;
+                });
+            }
           } else {
               finalTemplate = finalTemplate.replace(/className=/g, 'class=');
           }
 
           if (finalTemplate.includes('{/* INNER */}')) {
             finalTemplate = finalTemplate.replace('{/* INNER */}', innerContent.trim());
+          }
+
+          const fullMatchString = content.substring(match.index, closingTagIndex + closingTag.length);
+          if (templateData.isJsxTemplate && finalTemplate.includes('export default') && content.trim() === fullMatchString.trim()) {
+             content = finalTemplate;
+             console.log(`✨ Generated FULL file component: ${markerClass} in ${path.basename(filePath)}`);
+             found = false;
+             modified = true;
+             break;
           }
 
           const expanded = `${newOpeningTag}\n${finalTemplate}\n${closingTag}`;
@@ -293,7 +384,7 @@ function processFile(filePath) {
 }
 
 function startWatcher() {
-  const watcher = chokidar.watch(['**/*.{js,jsx,ts,tsx,html}'], {
+  const watcher = chokidar.watch(['./src/**/*.{js,jsx,ts,tsx,html}', './*.html'], {
     ignored: /(node_modules|\.git|templates|bin)/,
     persistent: true,
     ignoreInitial: false,

@@ -1,39 +1,66 @@
 {
-  "name": "dolphin-css-cli",
-  "version": "2.0.1",
-  "description": "Smart CLI for DolphinCSS. Auto-injects and converts premium UI templates into HTML or React (JSX) instantly.",
-  "main": "bin/dolphin.js",
+  "name": "dolphincss",
+  "version": "1.3.1",
+  "type": "module",
+  "description": "DolphinCSS - World-class TailwindCSS + React component library",
+  "main": "dolphin-css.css",
   "bin": {
-    "dolphin-css-cli": "./bin/dolphin.js",
-    "dolphin": "./bin/dolphin.js",
-    "dolphin-exit": "./bin/dolphin-exit.js"
+    "dolphin": "./bin/dolphin.js"
   },
+  "exports": {
+    ".": "./dolphin-css.css",
+    "./dolphin-css.css": "./dolphin-css.css",
+    "./vite-plugin": "./vite-plugin.js"
+  },
+  "files": [
+    "dist/",
+    "dolphin-css.css",
+    "README.md",
+    "LICENSE",
+    "snippets/",
+    "bin/",
+    "config/",
+    "templates/"
+  ],
   "scripts": {
-    "start": "node bin/dolphin.js",
-    "dev": "node bin/dolphin.js"
-  },
-  "dependencies": {
-    "chokidar": "^3.5.3"
+    "dev": "concurrently \"vite\" \"npm run watch:dolphin\"",
+    "watch:dolphin": "node bin/dolphin.js",
+    "build:css": "npx @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --watch",
+    "build": "vite build && npm run build:css",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "postinstall": "node scripts/setup-snippets.cjs"
   },
   "keywords": [
-    "dolphin",
-    "dolphincss",
     "css",
-    "components",
-    "auto-generate",
+    "tailwind",
     "react",
-    "jsx",
-    "ui-framework",
-    "cli"
+    "components",
+    "dolphin-theme"
   ],
-  "author": "Shankar Phuyal (Phuyalshankar)",
+  "author": "Shankar Phunyal",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Phuyalshankar/dolphincli.git"
+  "peerDependencies": {
+    "lucide-react": "^1.17.0",
+    "react": ">=18",
+    "react-dom": ">=18"
   },
-  "bugs": {
-    "url": "https://github.com/Phuyalshankar/dolphincli/issues"
-  },
-  "homepage": "https://www.npmjs.com/package/dolphin-css-cli"
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@tailwindcss/vite": "^4.1.16",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "axios": "^1.6.0",
+    "chokidar": "^5.0.0",
+    "concurrently": "^10.0.0",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.4.0",
+    "tailwindcss": "^4.1.16",
+    "vite": "^7.1.7"
+  }
 }

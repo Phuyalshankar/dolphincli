@@ -2,59 +2,115 @@
   "version": 1.1,
   "tags": [
     {
-      "name": "d-login",
+      "name": "dolphin-accordion",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-table",
+      "name": "dolphin-avatar",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-side-nav",
+      "name": "dolphin-checkbox",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-topnav",
+      "name": "dolphin-tabs",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-kpi",
+      "name": "dolphin-login",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-chart-card",
+      "name": "dolphin-register",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-input-float",
+      "name": "dolphin-form-floating",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-input-standard",
+      "name": "dolphin-form-standard",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-button",
+      "name": "dolphin-table",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-card",
+      "name": "dolphin-toast",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-register",
+      "name": "dolphin-modal",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-footer",
+      "name": "dolphin-button",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-scarch",
+      "name": "dolphin-card",
       "description": "Dolphin CLI Component"
     },
     {
-      "name": "d-theme-toggle",
+      "name": "dolphin-navbar",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-alert",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-badge",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-header",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-footer",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-grid",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-dashboard",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-switch",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-tooltip",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-slider",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-dropdown",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-popover",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-skeleton",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-progress",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-theme-bar",
       "description": "Dolphin CLI Component"
     }
   ],
@@ -73,60 +129,116 @@
       "name": "dolphin-classes",
       "values": [
         {
-          "name": "d-login",
-          "description": "Dolphin CLI Component (login.html)"
+          "name": "dolphin-accordion",
+          "description": "Dolphin CLI Component (dolphin-accordion.html)"
         },
         {
-          "name": "d-table",
-          "description": "Dolphin CLI Component (table.html)"
+          "name": "dolphin-avatar",
+          "description": "Dolphin CLI Component (dolphin-avatar.html)"
         },
         {
-          "name": "d-side-nav",
-          "description": "Dolphin CLI Component (side-nav.html)"
+          "name": "dolphin-checkbox",
+          "description": "Dolphin CLI Component (dolphin-checkbox.html)"
         },
         {
-          "name": "d-topnav",
-          "description": "Dolphin CLI Component (topnav.html)"
+          "name": "dolphin-tabs",
+          "description": "Dolphin CLI Component (dolphin-tabs.html)"
         },
         {
-          "name": "d-kpi",
-          "description": "Dolphin CLI Component (kpi.html)"
+          "name": "dolphin-login",
+          "description": "Dolphin CLI Component (dolphin-login.html)"
         },
         {
-          "name": "d-chart-card",
-          "description": "Dolphin CLI Component (chart-card.html)"
+          "name": "dolphin-register",
+          "description": "Dolphin CLI Component (dolphin-register.html)"
         },
         {
-          "name": "d-input-float",
-          "description": "Dolphin CLI Component (input-float.html)"
+          "name": "dolphin-form-floating",
+          "description": "Dolphin CLI Component (dolphin-form-floating.html)"
         },
         {
-          "name": "d-input-standard",
-          "description": "Dolphin CLI Component (input-standard.html)"
+          "name": "dolphin-form-standard",
+          "description": "Dolphin CLI Component (dolphin-form-standard.html)"
         },
         {
-          "name": "d-button",
-          "description": "Dolphin CLI Component (button.html)"
+          "name": "dolphin-table",
+          "description": "Dolphin CLI Component (dolphin-table.html)"
         },
         {
-          "name": "d-card",
-          "description": "Dolphin CLI Component (card.html)"
+          "name": "dolphin-toast",
+          "description": "Dolphin CLI Component (dolphin-toast.html)"
         },
         {
-          "name": "d-register",
-          "description": "Dolphin CLI Component (register.html)"
+          "name": "dolphin-modal",
+          "description": "Dolphin CLI Component (dolphin-modal.html)"
         },
         {
-          "name": "d-footer",
-          "description": "Dolphin CLI Component (footer.html)"
+          "name": "dolphin-button",
+          "description": "Dolphin CLI Component (dolphin-button.html)"
         },
         {
-          "name": "d-scarch",
-          "description": "Dolphin CLI Component (scarch.html)"
+          "name": "dolphin-card",
+          "description": "Dolphin CLI Component (dolphin-card.html)"
         },
         {
-          "name": "d-theme-toggle",
-          "description": "Dolphin CLI Component (theme-toggle.html)"
+          "name": "dolphin-navbar",
+          "description": "Dolphin CLI Component (dolphin-navbar.html)"
+        },
+        {
+          "name": "dolphin-alert",
+          "description": "Dolphin CLI Component (dolphin-alert.html)"
+        },
+        {
+          "name": "dolphin-badge",
+          "description": "Dolphin CLI Component (dolphin-badge.html)"
+        },
+        {
+          "name": "dolphin-header",
+          "description": "Dolphin CLI Component (dolphin-header.html)"
+        },
+        {
+          "name": "dolphin-footer",
+          "description": "Dolphin CLI Component (dolphin-footer.html)"
+        },
+        {
+          "name": "dolphin-grid",
+          "description": "Dolphin CLI Component (dolphin-grid.html)"
+        },
+        {
+          "name": "dolphin-dashboard",
+          "description": "Dolphin CLI Component (dolphin-dashboard.html)"
+        },
+        {
+          "name": "dolphin-switch",
+          "description": "Dolphin CLI Component (dolphin-switch.html)"
+        },
+        {
+          "name": "dolphin-tooltip",
+          "description": "Dolphin CLI Component (dolphin-tooltip.html)"
+        },
+        {
+          "name": "dolphin-slider",
+          "description": "Dolphin CLI Component (dolphin-slider.html)"
+        },
+        {
+          "name": "dolphin-dropdown",
+          "description": "Dolphin CLI Component (dolphin-dropdown.html)"
+        },
+        {
+          "name": "dolphin-popover",
+          "description": "Dolphin CLI Component (dolphin-popover.html)"
+        },
+        {
+          "name": "dolphin-skeleton",
+          "description": "Dolphin CLI Component (dolphin-skeleton.html)"
+        },
+        {
+          "name": "dolphin-progress",
+          "description": "Dolphin CLI Component (dolphin-progress.html)"
+        },
+        {
+          "name": "dolphin-theme-bar",
+          "description": "Dolphin CLI Component (dolphin-theme-bar.html)"
         }
       ]
     }
