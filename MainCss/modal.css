@@ -1,0 +1,545 @@
+/* ===== MODAL - GLOBAL CLASSES COMPATIBLE ===== */
+@layer components {
+  /* Modal Container */
+  .modal-container {
+    @apply fixed inset-0 overflow-y-auto;
+    z-index: 9998;
+  }
+
+  /* Modal Wrapper */
+  .modal-wrapper {
+    @apply fixed inset-0 flex items-center justify-center p-4;
+    z-index: 10000;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+  }
+
+  /* ===== NATIVE DIALOG MODAL (ULTRA SIMPLE) ===== */
+  dialog.modal {
+    @apply fixed m-auto p-6 rounded-2xl backdrop-blur-xl;
+    background-color: color-mix(in oklch, var(--color-surface) 95%, transparent);
+    color: var(--color-text);
+    border: 1px solid color-mix(in oklch, var(--color-border) 50%, transparent);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    max-width: 500px;
+    width: calc(100% - 2rem);
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, display 0.3s ease allow-discrete;
+  }
+
+  dialog.modal[open] {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  @starting-style {
+    dialog.modal[open] {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+    }
+  }
+
+  dialog.modal::backdrop {
+    @apply bg-gray-900/40 backdrop-blur-sm;
+    opacity: 0;
+    transition: opacity 0.3s ease, display 0.3s ease allow-discrete;
+  }
+
+  dialog.modal[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    dialog.modal[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* ===== MODAL PANEL BASE ===== */
+  .modal-panel {
+    @apply w-full rounded-2xl backdrop-blur-xl;
+    background-color: color-mix(in oklch, var(--color-surface) 95%, transparent);
+    z-index: 10001;
+    border: 1px solid color-mix(in oklch, var(--modal-border, var(--color-border)), transparent 50%);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: auto;
+    position: relative;
+    
+    /* Base display - block नै रहने */
+    /* display: block !important; removed to allow flex */
+    
+    /* Hover effects reset - यो सबैभन्दा महत्त्वपूर्ण */
+    transition: all 0.3s var(--theme-transition) !important;
+  }
+
+  /* ===== HOVER EFFECTS RESET - सबै hover effects हटाउने ===== */
+  .modal-panel:hover,
+  .modal-panel:focus,
+  .modal-panel:active {
+    /* Button को सबै hover effects override */
+    transform: none !important;
+    filter: none !important;
+    background-image: none !important;
+    background-color: var(--modal-bg, var(--color-surface)) !important;
+  }
+
+  /* Filled variants hover reset */
+  .modal-panel.filled:hover {
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .modal-panel.filled.primary:hover {
+    background-color: var(--color-primary) !important;
+  }
+
+  .modal-panel.filled.success:hover {
+    background-color: var(--color-success) !important;
+  }
+
+  .modal-panel.filled.warning:hover {
+    background-color: var(--color-warning) !important;
+  }
+
+  .modal-panel.filled.danger:hover {
+    background-color: var(--color-danger) !important;
+  }
+
+  .modal-panel.filled.info:hover {
+    background-color: var(--color-info) !important;
+  }
+
+  /* Outlined variants hover reset */
+  .modal-panel.outlined:hover {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-width: 2px !important;
+  }
+
+  .modal-panel.outlined.primary:hover {
+    border-color: var(--color-primary) !important;
+    background-color: transparent !important;
+  }
+
+  .modal-panel.outlined.success:hover {
+    border-color: var(--color-success) !important;
+  }
+
+  .modal-panel.outlined.warning:hover {
+    border-color: var(--color-warning) !important;
+  }
+
+  .modal-panel.outlined.danger:hover {
+    border-color: var(--color-danger) !important;
+  }
+
+  .modal-panel.outlined.info:hover {
+    border-color: var(--color-info) !important;
+  }
+
+  /* Gradient variants hover reset */
+  .modal-panel.gradient:hover {
+    filter: none !important;
+    transform: none !important;
+    box-shadow: var(--modal-shadow, var(--shadow-elevate)) !important;
+  }
+
+  .modal-panel.gradient.primary:hover {
+    background: var(--gradient-primary) !important;
+  }
+
+  .modal-panel.gradient.success:hover {
+    background: var(--gradient-success) !important;
+  }
+
+  .modal-panel.gradient.warning:hover {
+    background: var(--gradient-warning) !important;
+  }
+
+  .modal-panel.gradient.danger:hover {
+    background: var(--gradient-danger) !important;
+  }
+
+  .modal-panel.gradient.info:hover {
+    background: var(--gradient-info) !important;
+  }
+
+  /* Glass variants hover reset */
+  .modal-panel.glass:hover {
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    transform: none !important;
+  }
+
+  /* Plain variants hover reset */
+  .modal-panel.plain:hover {
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Glow variants - glow मात्र रहने तर अन्य effects नआउने */
+  .modal-panel.glow:hover {
+    box-shadow: var(--glow-primary) !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  /* ===== MODAL SIZES ===== */
+  .modal-panel.sm {
+    max-width: var(--modal-sm-width, 384px) !important;
+    width: 100% !important;
+  }
+  
+  .modal-panel.md {
+    max-width: var(--modal-md-width, 448px) !important;
+    width: 100% !important;
+  }
+  
+  .modal-panel.lg {
+    max-width: var(--modal-lg-width, 512px) !important;
+    width: 100% !important;
+  }
+  
+  .modal-panel.xl {
+    max-width: var(--modal-xl-width, 576px) !important;
+    width: 100% !important;
+  }
+  
+  .modal-panel.\32xl {
+    max-width: var(--modal-2xl-width, 672px) !important;
+    width: 100% !important;
+  }
+  
+  .modal-panel.\33xl {
+    max-width: var(--modal-3xl-width, 768px) !important;
+    width: 100% !important;
+  }
+  
+  .modal-panel.\34xl {
+    max-width: var(--modal-4xl-width, 896px) !important;
+    width: 100% !important;
+  }
+
+  /* ===== सबै VARIANT मा DISPLAY BLOCK FORCE ===== */
+  .modal-panel.primary,
+  .modal-panel.secondary,
+  .modal-panel.success,
+  .modal-panel.warning,
+  .modal-panel.danger,
+  .modal-panel.info,
+  .modal-panel.filled,
+  .modal-panel.outlined,
+  .modal-panel.gradient,
+  .modal-panel.glass,
+  .modal-panel.plain {
+    /* display: block !important; removed to allow flex */
+    
+    
+    
+  }
+
+  /* ===== COLOR VARIANTS ===== */
+  .modal-panel.primary {
+    border-color: var(--color-primary) !important;
+  }
+  
+  .modal-panel.primary .modal-header h3 {
+    color: var(--color-primary) !important;
+  }
+  
+  .modal-panel.secondary {
+    border-color: var(--color-secondary) !important;
+  }
+  
+  .modal-panel.secondary .modal-header h3 {
+    color: var(--color-secondary) !important;
+  }
+  
+  .modal-panel.success {
+    border-color: var(--color-success) !important;
+  }
+  
+  .modal-panel.success .modal-header h3 {
+    color: var(--color-success) !important;
+  }
+  
+  .modal-panel.warning {
+    border-color: var(--color-warning) !important;
+  }
+  
+  .modal-panel.warning .modal-header h3 {
+    color: var(--color-warning) !important;
+  }
+  
+  .modal-panel.danger {
+    border-color: var(--color-danger) !important;
+  }
+  
+  .modal-panel.danger .modal-header h3 {
+    color: var(--color-danger) !important;
+  }
+  
+  .modal-panel.info {
+    border-color: var(--color-info) !important;
+  }
+  
+  .modal-panel.info .modal-header h3 {
+    color: var(--color-info) !important;
+  }
+
+  /* ===== FILLED VARIANTS ===== */
+  .modal-panel.filled.primary {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+  }
+  
+  .modal-panel.filled.secondary {
+    background-color: var(--color-secondary) !important;
+    border-color: var(--color-secondary) !important;
+  }
+  
+  .modal-panel.filled.success {
+    background-color: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+  }
+  
+  .modal-panel.filled.warning {
+    background-color: var(--color-warning) !important;
+    border-color: var(--color-warning) !important;
+  }
+  
+  .modal-panel.filled.danger {
+    background-color: var(--color-danger) !important;
+    border-color: var(--color-danger) !important;
+  }
+  
+  .modal-panel.filled.info {
+    background-color: var(--color-info) !important;
+    border-color: var(--color-info) !important;
+  }
+  
+  /* Filled variants को header/footer */
+  .modal-panel.filled .modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .modal-panel.filled .modal-header h3,
+  .modal-panel.filled .modal-body,
+  .modal-panel.filled .modal-footer {
+    color: white !important;
+  }
+  
+  .modal-panel.filled .modal-footer {
+    border-top-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* ===== OUTLINED VARIANTS ===== */
+  .modal-panel.outlined {
+    background-color: transparent !important;
+  }
+  
+  .modal-panel.outlined.primary {
+    border: 2px solid var(--color-primary) !important;
+  }
+  
+  .modal-panel.outlined.secondary {
+    border: 2px solid var(--color-secondary) !important;
+  }
+  
+  .modal-panel.outlined.success {
+    border: 2px solid var(--color-success) !important;
+  }
+  
+  .modal-panel.outlined.warning {
+    border: 2px solid var(--color-warning) !important;
+  }
+  
+  .modal-panel.outlined.danger {
+    border: 2px solid var(--color-danger) !important;
+  }
+  
+  .modal-panel.outlined.info {
+    border: 2px solid var(--color-info) !important;
+  }
+
+  /* ===== GRADIENT VARIANTS ===== */
+  .modal-panel.gradient {
+    border: none !important;
+    color: white;
+  }
+  
+  .modal-panel.gradient.primary {
+    background: var(--gradient-primary) !important;
+  }
+  
+  .modal-panel.gradient.secondary {
+    background: var(--gradient-secondary) !important;
+  }
+  
+  .modal-panel.gradient.success {
+    background: var(--gradient-success) !important;
+  }
+  
+  .modal-panel.gradient.warning {
+    background: var(--gradient-warning) !important;
+  }
+  
+  .modal-panel.gradient.danger {
+    background: var(--gradient-danger) !important;
+  }
+  
+  .modal-panel.gradient.info {
+    background: var(--gradient-info) !important;
+  }
+  
+  .modal-panel.gradient .modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .modal-panel.gradient .modal-header h3,
+  .modal-panel.gradient .modal-body,
+  .modal-panel.gradient .modal-footer {
+    color: white !important;
+  }
+  
+  .modal-panel.gradient .modal-footer {
+    border-top-color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* ===== GLASS VARIANT ===== */
+  .modal-panel.glass {
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    border: 1px solid var(--glass-border) !important;
+  }
+
+  /* ===== PLAIN VARIANT ===== */
+  .modal-panel.plain {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===== MODAL HEADER ===== */
+  .modal-header {
+    @apply flex items-center justify-between px-6 py-5;
+    border-bottom: 1px solid var(--header-border, var(--color-border));
+  }
+
+  .modal-header h3 {
+    @apply text-lg font-semibold tracking-tight;
+    color: var(--header-text, var(--color-text));
+  }
+
+  .modal-header button {
+    @apply p-2 rounded-xl transition-all;
+    color: var(--close-color, var(--color-text-muted));
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .modal-header button:hover {
+    background-color: var(--close-hover-bg, color-mix(in oklch, var(--color-text) 5%, transparent));
+    color: var(--close-hover-color, var(--color-text));
+  }
+
+  /* ===== MODAL BODY ===== */
+  .modal-body {
+    @apply px-6 py-5;
+    color: var(--body-text, var(--color-text-muted));
+  }
+
+  /* ===== MODAL FOOTER ===== */
+  .modal-footer {
+    @apply flex items-center justify-end gap-3 px-6 py-4 rounded-b-2xl;
+    border-top: 1px solid var(--footer-border, var(--color-border));
+    background-color: var(--footer-bg, color-mix(in oklch, var(--color-surface) 95%, var(--color-border)));
+  }
+
+  /* ===== MODAL POSITIONS ===== */
+  .modal-wrapper.modal-top { align-items: flex-start; }
+  .modal-wrapper.modal-bottom { align-items: flex-end; }
+  .modal-wrapper.modal-left { justify-content: flex-start; }
+  .modal-wrapper.modal-right { justify-content: flex-end; }
+
+  /* ===== FULLSCREEN MODAL ===== */
+  .modal-panel.fullscreen {
+    max-width: var(--fullscreen-width, 100%);
+    min-height: var(--fullscreen-height, 100vh);
+    margin: var(--fullscreen-margin, 0);
+    border-radius: var(--fullscreen-radius, 0);
+  }
+
+  .modal-wrapper.fullscreen {
+    padding: var(--fullscreen-wrapper-padding, 0);
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes modalSlide {
+    0% {
+      opacity: 0;
+      transform: scale(0.96) translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .modal-panel {
+    animation-fill-mode: forwards;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  .modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb, var(--color-primary)) 
+                     var(--scrollbar-track, var(--color-border));
+  }
+
+  .modal-body::-webkit-scrollbar {
+    width: var(--scrollbar-width, 6px);
+  }
+
+  .modal-body::-webkit-scrollbar-track {
+    background: var(--scrollbar-track, var(--color-border));
+    border-radius: var(--scrollbar-track-radius, 20px);
+  }
+
+  .modal-body::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb, var(--color-primary));
+    border-radius: var(--scrollbar-thumb-radius, 20px);
+    transition: all 0.3s var(--bounce-effect);
+  }
+
+  .modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover, var(--color-hover));
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .modal-panel {
+      max-width: var(--mobile-panel-width, calc(100% - 2rem));
+      margin: var(--mobile-panel-margin, 0 1rem);
+    }
+
+    .modal-header {
+      padding: var(--mobile-header-padding, 1rem 1.5rem);
+    }
+
+    .modal-body {
+      padding: var(--mobile-body-padding, 1rem 1.5rem);
+    }
+
+    .modal-footer {
+      padding: var(--mobile-footer-padding, 0.75rem 1.5rem);
+    }
+  }
+}
