@@ -7,7 +7,6 @@ test-register.html
 
 # Ignore local configuration files
 dolphin.config.json
-marker.json
 
 # Ignore temporary/scratch folders if they exist
 scratch/

@@ -8,6 +8,40 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function indentHtmlOrJsx(htmlStr, initialIndent = 8) {
+  const lines = htmlStr.split('\n');
+  let currentIndent = initialIndent;
+  const indentStep = 2; // 2 spaces
+  
+  const formattedLines = lines.map(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return '';
+    
+    // Count tags
+    const openCount = (trimmed.match(/<[a-zA-Z0-9-]+(?:\s|>)/gi) || []).length;
+    const closeCount = (trimmed.match(/<\/[a-zA-Z0-9-]+>/gi) || []).length;
+    const selfCloseCount = (trimmed.match(/\/>/g) || []).length;
+    
+    const netChange = (openCount - selfCloseCount) - closeCount;
+    
+    // If the line starts with a closing tag, adjust its indent before printing
+    let lineIndent = currentIndent;
+    if (trimmed.startsWith('</') || trimmed.startsWith('}')) {
+      lineIndent = Math.max(initialIndent, currentIndent - indentStep);
+    }
+    
+    const spaces = ' '.repeat(lineIndent);
+    const result = spaces + trimmed;
+    
+    // Apply net depth change for the next lines
+    currentIndent = Math.max(initialIndent, currentIndent + netChange * indentStep);
+    
+    return result;
+  });
+  
+  return formattedLines.filter(Boolean).join('\n');
+}
+
 console.log('🐬 Dolphin CLI [Full-Cloud] Started');
 console.log('====================================');
 
@@ -23,14 +57,22 @@ const fetchingMarkers = new Set(); // Fetch हुँदै गरेका म�
 let templateRegistry = {};
 
 function loadLocalMarkers() {
-  const localMarkersPath = path.join(__dirname, '../config/markers.json');
+  let localMarkersPath = path.join(__dirname, '../config/markers.json');
+  if (!fs.existsSync(localMarkersPath)) {
+    localMarkersPath = path.join(__dirname, '../marker.json');
+  }
+
   if (fs.existsSync(localMarkersPath)) {
     const localMarkers = JSON.parse(fs.readFileSync(localMarkersPath, 'utf8'));
     let loadedCount = 0;
     
     for (const [marker, data] of Object.entries(localMarkers)) {
       const templateFile = typeof data === 'string' ? data : data.templateFile;
-      const fullTemplatePath = path.join(templatesDir, templateFile);
+      let fullTemplatePath = path.join(templatesDir, templateFile);
+      if (!fs.existsSync(fullTemplatePath)) {
+        fullTemplatePath = path.join(__dirname, '../core-templates', templateFile);
+      }
+
       if (fs.existsSync(fullTemplatePath)) {
         templateRegistry[marker] = {
           content: fs.readFileSync(fullTemplatePath, 'utf8'),
@@ -148,11 +190,8 @@ async function init() {
   }
 
   if (!remoteUrl) {
-    console.log('📄 Using local mode (No remoteUrl in dolphin.config.json)');
-    const allMarkers = loadLocalMarkers();
-    setupVSCodeIntelliSense(allMarkers);
-    startWatcher();
-    return;
+    remoteUrl = 'https://raw.githubusercontent.com/Phuyalshankar/dolphincss-template/main/config/markers.json';
+    console.log(`📄 No remoteUrl in dolphin.config.json. Defaulting to official remote repository: ${remoteUrl}`);
   }
 
   // Remote Sync with Retry
@@ -225,10 +264,20 @@ async function processFile(filePath) {
           try {
             const data = remoteMarkerMap[markerClass];
             const templateFile = typeof data === 'string' ? data : data.templateFile;
-            const templateUrl = `${remoteBaseUrl}/templates/${templateFile}?t=${Date.now()}`;
-            
-            console.log(`🌐 Fetching template for: ${markerClass} from ${templateUrl}...`);
-            const templateContent = await fetchRemote(templateUrl);
+              const localTemplatePath = path.join(__dirname, '../core-templates', templateFile);
+              let templateContent = '';
+              if (fs.existsSync(localTemplatePath)) {
+                console.log('🏠 Loaded core template locally: ' + markerClass);
+                templateContent = fs.readFileSync(localTemplatePath, 'utf8');
+              } else {
+                const templateUrl = `${remoteBaseUrl}/templates/${templateFile}?t=${Date.now()}`;
+                console.log('🌐 Fetching template for: ' + markerClass + ' from ' + templateUrl + '...');
+                templateContent = await fetchRemote(templateUrl);
+              }
+            if (templateContent) {
+              templateContent = templateContent.replace(/>\s*</g, '>\n<');
+              templateContent = indentHtmlOrJsx(templateContent, 8);
+            }
             templateRegistry[markerClass] = {
               content: templateContent,
               addClasses: data.addClasses || '',
@@ -401,3 +450,4 @@ process.on('SIGINT', () => {
   console.log('\n👋 Dolphin CLI stopped');
   process.exit(0);
 });
+
