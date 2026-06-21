@@ -1,0 +1,707 @@
+/* ===== variables.css - COMPLETE FIXED VERSION ===== */
+@import "tailwindcss";
+
+/* ===== THEME SWITCHING BASE ===== */
+:root {
+  /* ===== DEFAULT THEME: DOLPHIN ===== */
+  --theme-primary: var(--color-primary);
+  --theme-secondary: var(--color-secondary);
+  --theme-accent: var(--color-accent);
+  --theme-gradient: var(--gradient-primary);
+  --theme-glass-bg: var(--glass-primary-bg);
+  --theme-glass-border: var(--glass-primary-border);
+  --theme-glow: var(--glow-primary);
+  --theme-icon: '🌊';
+  --theme-name: 'Dolphin';
+  
+  /* Theme-specific interactive states */
+  --theme-hover: var(--color-primary-dark);
+  --theme-ring: var(--color-primary-light);
+  --theme-focus: var(--color-primary-light);
+  --theme-active: var(--color-primary-dark);
+  --theme-outline: var(--color-primary);
+  --theme-placeholder: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  --theme-selection-bg: color-mix(in oklch, var(--color-primary) 20%, transparent);
+  --theme-selection-text: var(--color-text-light);
+
+  /* Input Focus Variables - CLEAN SINGLE RING */
+  --input-focus-border: var(--color-primary);
+  --input-focus-ring: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent);
+}
+
+[data-theme="danphe"] {
+  /* ===== DANPHE THEME OVERRIDES ===== */
+  --theme-primary: var(--color-primary);
+  --theme-secondary: var(--color-secondary);
+  --theme-accent: var(--color-accent);
+  --theme-gradient: var(--gradient-danphe);
+  --theme-glass-bg: var(--glass-danphe-bg);
+  --theme-glass-border: var(--glass-danphe-border);
+  --theme-glow: var(--glow-danphe);
+  --theme-icon: '🇳🇵';
+  --theme-name: 'Danphe';
+  
+  /* Danphe-specific interactive states */
+  --theme-hover: var(--color-hover);
+  --theme-ring: var(--color-ring);
+  --theme-focus: var(--color-focus);
+  --theme-active: var(--color-active);
+  --theme-outline: var(--color-outline);
+  --theme-placeholder: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  --theme-selection-bg: color-mix(in oklch, var(--color-primary) 20%, transparent);
+  --theme-selection-text: var(--color-text-light);
+
+  /* Danphe Input Focus */
+  --input-focus-border: var(--color-primary);
+  --input-focus-ring: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent);
+}
+
+/* ===== DOLPHIN THEME COLORS - LIGHT MODE ===== */
+:root,
+[data-theme="dolphin"],
+[data-theme="dolphin"]:root {
+  /* Primary Colors - Ocean Blue Palette */
+  --color-primary: oklch(50% 0.14 220);      /* Vibrant Ocean Blue */
+  --color-primary-dark: oklch(40% 0.16 220); /* Deep Ocean */
+  --color-primary-light: oklch(60% 0.12 220);/* Shallow Water */
+  --color-secondary: oklch(58% 0.10 180);    /* Soft Seafoam */
+  --color-accent: oklch(68% 0.15 350);       /* Happy Coral */
+  
+  /* Interactive States - Dolphin */
+  --color-hover: oklch(45% 0.15 220);
+  --color-ring: oklch(65% 0.10 220);
+  --color-focus: oklch(65% 0.10 220);
+  --color-active: oklch(40% 0.16 220);
+  --color-outline: oklch(50% 0.14 220);
+  
+  /* Semantic Colors - Marine Ecosystem */
+  --color-success: oklch(62% 0.14 160);      /* Healthy Seaweed */
+  --color-success-dark: oklch(52% 0.16 160);
+  --color-success-light: oklch(72% 0.12 160);
+  --color-warning: oklch(72% 0.16 80);       /* Sunset Orange */
+  --color-warning-dark: oklch(62% 0.18 80);
+  --color-warning-light: oklch(82% 0.14 80);
+  --color-danger: oklch(58% 0.16 10);        /* Deep Sea Red */
+  --color-danger-dark: oklch(48% 0.18 10);
+  --color-danger-light: oklch(68% 0.14 10);
+  --color-info: oklch(68% 0.12 220);         /* Clear Sky */
+  --color-info-dark: oklch(58% 0.14 220);
+  --color-info-light: oklch(78% 0.10 220);
+  
+  /* Neutral Colors - Ocean Depths */
+  --color-surface: oklch(98% 0.003 220);     /* Ocean Foam */
+  --color-surface-alt: oklch(94% 0.008 220); /* Light Waves */
+  --color-surface-dark: oklch(22% 0.03 220); /* Deep Sea */
+  --color-text: oklch(18% 0.03 220);         /* Ocean Depth */
+  --color-text-muted: oklch(42% 0.05 220);   /* Mid Ocean */
+  --color-text-light: oklch(90% 0.008 220);  /* Ocean Spray */
+  --color-border: oklch(85% 0.02 220);       /* Water Surface */
+  --color-shadow: oklch(0% 0 0 / 0.15);
+  
+  /* Input Specific */
+  --color-input-bg: var(--color-surface);
+  --color-input-border: var(--color-border);
+  --color-input-text: var(--color-text);
+  --color-input-placeholder: oklch(42% 0.05 220);
+  --color-input-disabled-bg: oklch(92% 0.008 220);
+  --color-input-disabled-text: oklch(58% 0.02 220);
+  --color-input-disabled-border: oklch(80% 0.02 220);
+}
+
+/* ===== DOLPHIN THEME COLORS - DARK MODE ===== */
+[data-theme="dolphin"][data-theme-mode="dark"] {
+  /* Primary Colors - Night Ocean */
+  --color-primary: oklch(48% 0.15 220);      /* Deep Ocean Blue */
+  --color-primary-dark: oklch(38% 0.17 220); /* Abyssal Blue */
+  --color-primary-light: oklch(58% 0.13 220);/* Moonlit Ocean */
+  --color-secondary: oklch(56% 0.11 180);    /* Night Seafoam */
+  --color-accent: oklch(66% 0.16 350);       /* Deep Sea Coral */
+  
+  /* Interactive States - Dark Dolphin */
+  --color-hover: oklch(43% 0.16 220);
+  --color-ring: oklch(63% 0.11 220);
+  --color-focus: oklch(63% 0.11 220);
+  --color-active: oklch(38% 0.17 220);
+  --color-outline: oklch(48% 0.15 220);
+  
+  /* Semantic Colors - Night Marine */
+  --color-success: oklch(60% 0.15 160);
+  --color-success-dark: oklch(50% 0.17 160);
+  --color-success-light: oklch(70% 0.13 160);
+  --color-warning: oklch(70% 0.17 80);
+  --color-warning-dark: oklch(60% 0.19 80);
+  --color-warning-light: oklch(80% 0.15 80);
+  --color-danger: oklch(56% 0.17 10);
+  --color-danger-dark: oklch(46% 0.19 10);
+  --color-danger-light: oklch(66% 0.15 10);
+  --color-info: oklch(66% 0.13 220);
+  --color-info-dark: oklch(56% 0.15 220);
+  --color-info-light: oklch(76% 0.11 220);
+  
+  /* Neutral Colors - Ocean Night */
+  --color-surface: oklch(14% 0.03 220);      /* Midnight Sea */
+  --color-surface-alt: oklch(18% 0.035 220); /* Deep Water */
+  --color-surface-dark: oklch(10% 0.025 220);/* Abyss */
+  --color-text: oklch(95% 0.002 220);        /* Moonlight */
+  --color-text-muted: oklch(75% 0.015 220);  /* Starlight */
+  --color-text-light: oklch(88% 0.008 220);  /* Bioluminescence */
+  --color-border: oklch(32% 0.04 220);       /* Deep Current */
+  --color-shadow: oklch(0% 0 0 / 0.42);
+  
+  /* Input Specific - Dark Mode */
+  --color-input-bg: oklch(18% 0.035 220);
+  --color-input-border: oklch(32% 0.04 220);
+  --color-input-text: oklch(95% 0.002 220);
+  --color-input-placeholder: oklch(75% 0.015 220);
+  --color-input-disabled-bg: oklch(14% 0.03 220);
+  --color-input-disabled-text: oklch(58% 0.02 220);
+  --color-input-disabled-border: oklch(25% 0.03 220);
+}
+
+/* ===== DANPHE THEME COLORS - LIGHT MODE ===== */
+[data-theme="danphe"] {
+  /* Primary Colors - Danphe Feathers */
+  --color-primary: oklch(52% 0.20 25);    /* True Danphe Red */
+  --color-primary-dark: oklch(42% 0.22 25); /* Dark Danphe Red */
+  --color-primary-light: oklch(62% 0.18 25); /* Light Danphe Red */
+  --color-secondary: oklch(60% 0.18 135); /* Himalayan Green */
+  --color-secondary-dark: oklch(50% 0.20 135);
+  --color-secondary-light: oklch(70% 0.16 135);
+  --color-accent: oklch(70% 0.14 290);    /* Buddhist Purple */
+  --color-accent-dark: oklch(60% 0.16 290);
+  --color-accent-light: oklch(80% 0.12 290);
+  
+  /* Interactive States - Danphe */
+  --color-hover: oklch(48% 0.21 25);
+  --color-ring: oklch(65% 0.17 25);
+  --color-focus: oklch(65% 0.19 25);
+  --color-active: oklch(48% 0.22 25);
+  --color-outline: oklch(52% 0.20 25);
+  
+  /* Semantic Colors - Himalayan Nature */
+  --color-success: oklch(62% 0.17 135);   /* Forest Green */
+  --color-success-dark: oklch(52% 0.19 135);
+  --color-success-light: oklch(72% 0.15 135);
+  --color-warning: oklch(72% 0.18 60);    /* Autumn Orange */
+  --color-warning-dark: oklch(62% 0.20 60);
+  --color-warning-light: oklch(82% 0.16 60);
+  --color-danger: oklch(58% 0.19 20);     /* Deep Red */
+  --color-danger-dark: oklch(48% 0.21 20);
+  --color-danger-light: oklch(68% 0.17 20);
+  --color-info: oklch(68% 0.15 220);      /* Mountain Sky */
+  --color-info-dark: oklch(58% 0.17 220);
+  --color-info-light: oklch(78% 0.13 220);
+  
+  /* Himalayan Colors - Natural */
+  --color-himalayan-white: oklch(98% 0.004 220); /* Snow Cap */
+  --color-himalayan-gray: oklch(88% 0.012 220);  /* Mountain Mist */
+  --color-himalayan-stone: oklch(62% 0.03 60);   /* River Stone */
+  --color-himalayan-earth: oklch(42% 0.05 60);   /* Terracotta */
+  --color-himalayan-forest: oklch(32% 0.06 140); /* Pine Forest */
+  
+  /* Neutral Colors for Danphe Theme */
+  --color-surface: var(--color-himalayan-white);
+  --color-surface-alt: oklch(92% 0.010 220);
+  --color-border: var(--color-himalayan-gray);
+  --color-text: oklch(18% 0.03 220);
+  --color-text-muted: oklch(42% 0.05 220);
+  --color-text-light: oklch(90% 0.008 220);
+  
+  /* Danphe Input Specific */
+  --color-input-bg: var(--color-himalayan-white);
+  --color-input-border: var(--color-himalayan-gray);
+  --color-input-text: var(--color-text);
+  --color-input-placeholder: oklch(42% 0.05 220);
+  --color-input-disabled-bg: oklch(92% 0.008 220);
+  --color-input-disabled-text: oklch(58% 0.02 220);
+  --color-input-disabled-border: oklch(80% 0.02 220);
+  
+  /* Danphe Special Colors */
+  --color-danphe-gold: oklch(82% 0.12 85);       /* Prayer Flag Gold */
+  --color-danphe-bronze: oklch(65% 0.14 60);
+  --color-danphe-wood: oklch(55% 0.10 60);
+}
+
+/* ===== DANPHE THEME COLORS - DARK MODE ===== */
+[data-theme="danphe"][data-theme-mode="dark"] {
+  /* Primary Colors - Night Danphe */
+  --color-primary: oklch(50% 0.21 25);    /* Ember Red */
+  --color-primary-dark: oklch(40% 0.23 25);
+  --color-primary-light: oklch(60% 0.19 25);
+  --color-secondary: oklch(58% 0.19 135); /* Night Forest */
+  --color-secondary-dark: oklch(48% 0.21 135);
+  --color-secondary-light: oklch(68% 0.17 135);
+  --color-accent: oklch(68% 0.15 290);    /* Twilight Purple */
+  --color-accent-dark: oklch(58% 0.17 290);
+  --color-accent-light: oklch(78% 0.13 290);
+  
+  /* Interactive States - Night Danphe */
+  --color-hover: oklch(46% 0.22 25);
+  --color-ring: oklch(63% 0.18 25);
+  --color-focus: oklch(63% 0.20 25);
+  --color-active: oklch(46% 0.23 25);
+  --color-outline: oklch(50% 0.21 25);
+  
+  /* Semantic Colors - Night Himalayan */
+  --color-success: oklch(58% 0.18 135);
+  --color-success-dark: oklch(48% 0.20 135);
+  --color-success-light: oklch(68% 0.16 135);
+  --color-warning: oklch(68% 0.18 70);
+  --color-warning-dark: oklch(58% 0.20 70);
+  --color-warning-light: oklch(78% 0.16 70);
+  --color-danger: oklch(56% 0.20 20);
+  --color-danger-dark: oklch(46% 0.22 20);
+  --color-danger-light: oklch(66% 0.18 20);
+  --color-info: oklch(63% 0.14 220);
+  --color-info-dark: oklch(53% 0.16 220);
+  --color-info-light: oklch(73% 0.12 220);
+  
+  /* Himalayan Night Colors */
+  --color-himalayan-white: oklch(15% 0.008 220); /* Moonlit Snow */
+  --color-himalayan-gray: oklch(22% 0.018 220);  /* Mountain Shadow */
+  --color-himalayan-stone: oklch(40% 0.04 60);   /* Night Stone */
+  --color-himalayan-earth: oklch(38% 0.06 60);   /* Dark Earth */
+  --color-himalayan-forest: oklch(28% 0.07 140); /* Pine at Night */
+  
+  /* Neutral Colors for Dark Danphe */
+  --color-surface: var(--color-himalayan-white);
+  --color-surface-alt: oklch(18% 0.035 220);
+  --color-border: var(--color-himalayan-gray);
+  --color-text: oklch(95% 0.002 220);
+  --color-text-muted: oklch(75% 0.015 220);
+  --color-text-light: oklch(88% 0.008 220);
+  
+  /* Danphe Input - Dark Mode */
+  --color-input-bg: oklch(18% 0.035 220);
+  --color-input-border: oklch(22% 0.018 220);
+  --color-input-text: oklch(95% 0.002 220);
+  --color-input-placeholder: oklch(75% 0.015 220);
+  --color-input-disabled-bg: oklch(15% 0.008 220);
+  --color-input-disabled-text: oklch(58% 0.02 220);
+  --color-input-disabled-border: oklch(20% 0.02 220);
+  
+  /* Danphe Special Colors - Dark */
+  --color-danphe-gold: oklch(78% 0.14 85);
+  --color-danphe-bronze: oklch(60% 0.16 60);
+  --color-danphe-wood: oklch(50% 0.12 60);
+}
+
+/* ===== GRADIENTS - DOLPHIN ===== */
+[data-theme="dolphin"] {
+  --gradient-primary: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-primary-light), 
+    var(--color-primary), 
+    var(--color-primary-dark)
+  );
+  --gradient-secondary: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-secondary-light), 
+    var(--color-secondary), 
+    var(--color-secondary-dark)
+  );
+  --gradient-accent: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-accent-light), 
+    var(--color-accent), 
+    var(--color-accent-dark)
+  );
+  --gradient-success: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-success-light), 
+    var(--color-success), 
+    var(--color-success-dark)
+  );
+  --gradient-warning: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-warning-light), 
+    var(--color-warning), 
+    var(--color-warning-dark)
+  );
+  --gradient-danger: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-danger-light), 
+    var(--color-danger), 
+    var(--color-danger-dark)
+  );
+  --gradient-info: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-info-light), 
+    var(--color-info), 
+    var(--color-info-dark)
+  );
+}
+
+[data-theme="dolphin"][data-theme-mode="dark"] {
+  --gradient-primary: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-primary-light), 
+    var(--color-primary), 
+    var(--color-primary-dark)
+  );
+}
+
+/* ===== GRADIENTS - DANPHE ===== */
+[data-theme="danphe"] {
+  --gradient-primary: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-primary-light), 
+    var(--color-primary), 
+    var(--color-primary-dark)
+  );
+  --gradient-danphe: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-primary), 
+    var(--color-secondary), 
+    var(--color-accent)
+  );
+  --gradient-danphe-sunset: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-warning), 
+    var(--color-danger), 
+    var(--color-primary)
+  );
+  --gradient-danphe-forest: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-success), 
+    var(--color-secondary), 
+    var(--color-info)
+  );
+  --gradient-success: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-success-light), 
+    var(--color-success), 
+    var(--color-success-dark)
+  );
+  --gradient-warning: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-warning-light), 
+    var(--color-warning), 
+    var(--color-warning-dark)
+  );
+  --gradient-danger: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-danger-light), 
+    var(--color-danger), 
+    var(--color-danger-dark)
+  );
+  --gradient-info: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-info-light), 
+    var(--color-info), 
+    var(--color-info-dark)
+  );
+}
+
+[data-theme="danphe"][data-theme-mode="dark"] {
+  --gradient-primary: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-primary-light), 
+    var(--color-primary), 
+    var(--color-primary-dark)
+  );
+  --gradient-danphe: linear-gradient(var(--gradient-angle, 135deg), 
+    var(--color-primary), 
+    var(--color-secondary), 
+    var(--color-accent)
+  );
+}
+
+/* ===== GLASSMORPHISM SYSTEM ===== */
+:root {
+  /* Base Glass Properties */
+  --glass-bg: rgba(255, 255, 255, 0.28);
+  --glass-bg-alt: rgba(255, 255, 255, 0.38);
+  --glass-border: rgba(255, 255, 255, 0.38);
+  --glass-border-alt: rgba(255, 255, 255, 0.48);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.18);
+  --glass-blur: blur(20px);
+  --glass-blur-sm: blur(12px);
+  --glass-blur-lg: blur(24px);
+  
+  /* Colored Glass */
+  --glass-primary-bg: color-mix(in oklch, var(--color-primary) 18%, transparent);
+  --glass-primary-border: color-mix(in oklch, var(--color-primary) 35%, transparent);
+  --glass-success-bg: color-mix(in oklch, var(--color-success) 18%, transparent);
+  --glass-warning-bg: color-mix(in oklch, var(--color-warning) 18%, transparent);
+  --glass-danger-bg: color-mix(in oklch, var(--color-danger) 18%, transparent);
+  --glass-info-bg: color-mix(in oklch, var(--color-info) 18%, transparent);
+}
+
+[data-theme-mode="dark"] {
+  --glass-bg: rgba(15, 23, 42, 0.52);
+  --glass-bg-alt: rgba(15, 23, 42, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.24);
+  --glass-border-alt: rgba(255, 255, 255, 0.34);
+}
+
+/* ===== GLOW EFFECTS ===== */
+[data-theme="dolphin"] {
+  --glow-primary: 0 0 24px color-mix(in oklch, var(--color-primary) 38%, transparent);
+  --glow-primary-hover: 0 0 28px color-mix(in oklch, var(--color-primary) 48%, transparent);
+}
+
+[data-theme="dolphin"][data-theme-mode="dark"] {
+  --glow-primary: 0 0 30px color-mix(in oklch, var(--color-primary) 58%, transparent);
+}
+
+[data-theme="danphe"] {
+  --glow-primary: 0 0 24px color-mix(in oklch, var(--color-primary) 38%, transparent);
+  --glow-primary-hover: 0 0 28px color-mix(in oklch, var(--color-primary) 48%, transparent);
+}
+
+[data-theme="danphe"][data-theme-mode="dark"] {
+  --glow-primary: 0 0 30px color-mix(in oklch, var(--color-primary) 58%, transparent);
+}
+
+/* ===== INPUT FOCUS SYSTEM ===== */
+*:focus {
+  outline: none;
+}
+
+/* Dolphin Focus Styles */
+[data-theme="dolphin"] .floatinglabel-input:focus,
+[data-theme="dolphin"] .standardlabel-input:focus,
+[data-theme="dolphin"] .input-icon-left > input:focus,
+[data-theme="dolphin"] .input-icon-right > input:focus,
+[data-theme="dolphin"] .input-icon-both > input:focus,
+[data-theme="dolphin"] select:focus,
+[data-theme="dolphin"] textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent) !important;
+  outline: none !important;
+}
+
+[data-theme="dolphin"] .floatinglabel-input:focus ~ .floatinglabel-label,
+[data-theme="dolphin"] .standardlabel-input:focus ~ .standardlabel-label {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="dolphin"] .select-wrapper:focus-within::after {
+  border-color: var(--color-primary) !important;
+}
+
+[data-theme="dolphin"][data-theme-mode="dark"] .floatinglabel-input:focus,
+[data-theme="dolphin"][data-theme-mode="dark"] .standardlabel-input:focus,
+[data-theme="dolphin"][data-theme-mode="dark"] .input-icon-left > input:focus,
+[data-theme="dolphin"][data-theme-mode="dark"] .input-icon-right > input:focus,
+[data-theme="dolphin"][data-theme-mode="dark"] .input-icon-both > input:focus,
+[data-theme="dolphin"][data-theme-mode="dark"] select:focus,
+[data-theme="dolphin"][data-theme-mode="dark"] textarea:focus {
+  border-color: var(--color-primary-light) !important;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 30%, transparent) !important;
+}
+
+/* Danphe Focus Styles - Light Mode (पहिले MISS थियो) */
+[data-theme="danphe"] .floatinglabel-input:focus,
+[data-theme="danphe"] .standardlabel-input:focus,
+[data-theme="danphe"] .input-icon-left > input:focus,
+[data-theme="danphe"] .input-icon-right > input:focus,
+[data-theme="danphe"] .input-icon-both > input:focus,
+[data-theme="danphe"] select:focus,
+[data-theme="danphe"] textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent) !important;
+  outline: none !important;
+}
+
+[data-theme="danphe"] .floatinglabel-input:focus ~ .floatinglabel-label,
+[data-theme="danphe"] .standardlabel-input:focus ~ .standardlabel-label {
+  color: var(--color-primary) !important;
+}
+
+[data-theme="danphe"] .select-wrapper:focus-within::after {
+  border-color: var(--color-primary) !important;
+}
+
+[data-theme="danphe"] .radio-item input[type="radio"]:focus-visible,
+[data-theme="danphe"] input[type="checkbox"]:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent) !important;
+}
+
+/* Danphe Focus Styles - Dark Mode */
+[data-theme="danphe"][data-theme-mode="dark"] .floatinglabel-input:focus,
+[data-theme="danphe"][data-theme-mode="dark"] .standardlabel-input:focus,
+[data-theme="danphe"][data-theme-mode="dark"] .input-icon-left > input:focus,
+[data-theme="danphe"][data-theme-mode="dark"] .input-icon-right > input:focus,
+[data-theme="danphe"][data-theme-mode="dark"] .input-icon-both > input:focus,
+[data-theme="danphe"][data-theme-mode="dark"] select:focus,
+[data-theme="danphe"][data-theme-mode="dark"] textarea:focus {
+  border-color: var(--color-primary-light) !important;
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 30%, transparent) !important;
+}
+
+[data-theme="danphe"][data-theme-mode="dark"] .floatinglabel-input:focus ~ .floatinglabel-label,
+[data-theme="danphe"][data-theme-mode="dark"] .standardlabel-input:focus ~ .standardlabel-label {
+  color: var(--color-primary-light) !important;
+}
+
+[data-theme="danphe"][data-theme-mode="dark"] .select-wrapper:focus-within::after {
+  border-color: var(--color-primary-light) !important;
+}
+
+/* ===== HAPPINESS ENHANCEMENTS ===== */
+:root {
+  --theme-transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bounce-effect: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --shadow-joy: 0 10px 40px color-mix(in oklch, var(--color-primary) 15%, transparent);
+  --shadow-elevate: 0 20px 60px color-mix(in oklch, var(--color-primary) 10%, transparent);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: color-mix(in oklch, var(--color-surface) 90%, transparent);
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 12px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  transition: all 0.3s var(--bounce-effect);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-hover);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-surface-alt);
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background-color: var(--theme-selection-bg);
+  color: var(--theme-selection-text);
+}
+
+/* ===== PLACEHOLDERS ===== */
+::placeholder {
+  color: var(--color-input-placeholder);
+  opacity: 1;
+  transition: color 0.3s var(--theme-transition);
+}
+
+/* ===== DISABLED STATES ===== */
+:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  [data-theme="dolphin"] {
+    --color-primary: oklch(45% 0.25 220);
+    --color-text: oklch(10% 0.05 220);
+  }
+  
+  [data-theme="danphe"] {
+    --color-primary: oklch(45% 0.25 25);
+    --color-text: oklch(10% 0.05 220);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-bg: var(--color-surface-alt);
+    --glass-border: var(--color-border);
+    --glass-blur: none;
+  }
+}
+
+/* ===== PRINT ===== */
+@media print {
+  :root {
+    --theme-primary: #000000;
+    --color-text: #000000;
+    --color-text-muted: #333333;
+    --glass-bg: transparent;
+    --glass-border: transparent;
+    --glow-primary: none;
+    --input-focus-ring: none;
+  }
+}
+
+  /* overlay  */
+   /* variables.css मा यो section थप्नुहोस् */
+
+/* ===== OVERLAY SYSTEM ===== */
+:root {
+  /* Base Overlay Colors - Light Mode */
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: blur(4px);
+  
+  /* Overlay Intensities */
+  --overlay-1: rgba(0, 0, 0, 0.1);
+  --overlay-2: rgba(0, 0, 0, 0.2);
+  --overlay-3: rgba(0, 0, 0, 0.3);
+  --overlay-4: rgba(0, 0, 0, 0.4);
+  --overlay-5: rgba(0, 0, 0, 0.5);
+  --overlay-6: rgba(0, 0, 0, 0.6);
+  --overlay-7: rgba(0, 0, 0, 0.7);
+  --overlay-8: rgba(0, 0, 0, 0.8);
+  --overlay-9: rgba(0, 0, 0, 0.9);
+  
+  /* Glass Overlay */
+  --overlay-glass-bg: rgba(255, 255, 255, 0.1);
+  --overlay-glass-blur: blur(12px);
+  
+  /* Color Overlays - Theme Based */
+  --overlay-primary: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  --overlay-secondary: color-mix(in oklch, var(--color-secondary) 30%, transparent);
+  --overlay-success: color-mix(in oklch, var(--color-success) 30%, transparent);
+  --overlay-warning: color-mix(in oklch, var(--color-warning) 30%, transparent);
+  --overlay-danger: color-mix(in oklch, var(--color-danger) 30%, transparent);
+  --overlay-info: color-mix(in oklch, var(--color-info) 30%, transparent);
+  --overlay-accent: color-mix(in oklch, var(--color-accent) 30%, transparent);
+  
+  /* Overlay Intensities for Colors */
+  --overlay-primary-1: color-mix(in oklch, var(--color-primary) 10%, transparent);
+  --overlay-primary-2: color-mix(in oklch, var(--color-primary) 20%, transparent);
+  --overlay-primary-3: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  --overlay-primary-4: color-mix(in oklch, var(--color-primary) 40%, transparent);
+  --overlay-primary-5: color-mix(in oklch, var(--color-primary) 50%, transparent);
+  --overlay-primary-6: color-mix(in oklch, var(--color-primary) 60%, transparent);
+  --overlay-primary-7: color-mix(in oklch, var(--color-primary) 70%, transparent);
+  --overlay-primary-8: color-mix(in oklch, var(--color-primary) 80%, transparent);
+  --overlay-primary-9: color-mix(in oklch, var(--color-primary) 90%, transparent);
+  
+  /* Gradient Overlays */
+  --overlay-gradient-primary: linear-gradient(var(--gradient-angle, 135deg), 
+    color-mix(in oklch, var(--color-primary) 30%, transparent), 
+    color-mix(in oklch, var(--color-primary-dark) 30%, transparent)
+  );
+  --overlay-gradient-secondary: linear-gradient(var(--gradient-angle, 135deg), 
+    color-mix(in oklch, var(--color-secondary) 30%, transparent), 
+    color-mix(in oklch, var(--color-secondary-dark) 30%, transparent)
+  );
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+[data-theme-mode="dark"] {
+  /* Dark Mode Base Overlay */
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --overlay-blur: blur(8px);
+  
+  /* Dark Mode Intensities */
+  --overlay-1: rgba(0, 0, 0, 0.2);
+  --overlay-2: rgba(0, 0, 0, 0.3);
+  --overlay-3: rgba(0, 0, 0, 0.4);
+  --overlay-4: rgba(0, 0, 0, 0.5);
+  --overlay-5: rgba(0, 0, 0, 0.6);
+  --overlay-6: rgba(0, 0, 0, 0.7);
+  --overlay-7: rgba(0, 0, 0, 0.8);
+  --overlay-8: rgba(0, 0, 0, 0.9);
+  --overlay-9: rgba(0, 0, 0, 0.95);
+  
+  /* Dark Mode Glass */
+  --overlay-glass-bg: rgba(0, 0, 0, 0.3);
+  
+  /* Dark Mode Color Overlays (slightly more opaque) */
+  --overlay-primary: color-mix(in oklch, var(--color-primary) 40%, transparent);
+  --overlay-secondary: color-mix(in oklch, var(--color-secondary) 40%, transparent);
+  --overlay-success: color-mix(in oklch, var(--color-success) 40%, transparent);
+  --overlay-warning: color-mix(in oklch, var(--color-warning) 40%, transparent);
+  --overlay-danger: color-mix(in oklch, var(--color-danger) 40%, transparent);
+  --overlay-info: color-mix(in oklch, var(--color-info) 40%, transparent);
+  --overlay-accent: color-mix(in oklch, var(--color-accent) 40%, transparent);
+}

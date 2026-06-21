@@ -47,6 +47,12 @@ export default function dolphincssPlugin() {
   const activeFetches = new Map();
   let isDev = false;
 
+  // Auto-Push Config Settings
+  let pushUrl = 'http://localhost:3000/api/templates/push';
+  let secretKey = 'dolphin-admin-2025';
+  let username = 'core';
+  let authorName = 'DolphinCSS Core';
+
   async function ensureInitialized(projectRoot) {
     if (initPromise) return initPromise;
 
@@ -89,6 +95,20 @@ export default function dolphincssPlugin() {
             rawUrl = rawUrl.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
           }
           remoteUrl = rawUrl;
+
+          // Parse push settings
+          if (userConfig.pushUrl) pushUrl = userConfig.pushUrl;
+          else if (remoteUrl) {
+            try {
+              const urlObj = new URL(remoteUrl);
+              if (urlObj.hostname !== 'github.com' && urlObj.hostname !== 'raw.githubusercontent.com') {
+                pushUrl = `${urlObj.origin}/api/templates/push`;
+              }
+            } catch (e) {}
+          }
+          if (userConfig.secretKey) secretKey = userConfig.secretKey;
+          if (userConfig.username) username = userConfig.username;
+          if (userConfig.author) authorName = userConfig.author;
         } catch (e) {}
       }
 
@@ -126,7 +146,7 @@ export default function dolphincssPlugin() {
 
   async function handleTransform(code, id) {
     const ext = path.extname(id).toLowerCase();
-    if (!['.jsx', '.tsx', '.js', '.ts', '.html'].includes(ext) || id.includes('node_modules')) {
+    if (!['.jsx', '.tsx', '.js', '.ts', '.html', '.vue', '.svelte', '.astro', '.php'].includes(ext) || id.includes('node_modules')) {
       return null;
     }
 
@@ -137,6 +157,255 @@ export default function dolphincssPlugin() {
     let modified = false;
     const isReact = ['.jsx', '.tsx', '.js', '.ts'].includes(ext);
     const classAttrName = isReact ? 'className' : 'class';
+
+    // 0. Scan and handle Component Actions via Markers (push, put, patch, inject, delete)
+    const markerRegex = new RegExp(
+      `(<([a-z0-9-]+)\\s+[^>]*${classAttrName}=\\s*["']([^"']*?\\s)?(dolphin-(push|put|patch|inject|delete)--([a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)(?:--([a-zA-Z0-9-_]+))?)(\\s[^"']*?)?["'][^>]*>)`,
+      'gi'
+    );
+
+    let markerMatch;
+    markerRegex.lastIndex = 0;
+    if ((markerMatch = markerRegex.exec(content)) !== null) {
+      const fullOpeningTag = markerMatch[1];
+      const tagName = markerMatch[2];
+      const beforeClasses = markerMatch[3] || '';
+      const markerClass = markerMatch[4];
+      const action = markerMatch[5].toLowerCase();
+      const componentName = markerMatch[6];
+      const componentVariant = markerMatch[7] || 'default';
+      const afterClasses = markerMatch[8] || '';
+
+      // Find matching closing tag
+      let depth = 1;
+      const startIndex = markerMatch.index + fullOpeningTag.length;
+      const tagPattern = new RegExp(`</?${tagName}(?:\\s|>|/)`, 'gi');
+      tagPattern.lastIndex = startIndex;
+      
+      let closingTagIndex = -1;
+      let tagMatch;
+      while ((tagMatch = tagPattern.exec(content)) !== null) {
+        const isClosing = tagMatch[0].startsWith('</');
+        if (!isClosing) {
+          const tagEnd = content.indexOf('>', tagMatch.index);
+          if (tagEnd !== -1 && content[tagEnd - 1] === '/') {
+            continue;
+          }
+          depth++;
+        } else {
+          depth--;
+        }
+        if (depth === 0) {
+          closingTagIndex = tagMatch.index;
+          break;
+        }
+      }
+
+      if (closingTagIndex !== -1) {
+        const innerContent = content.substring(startIndex, closingTagIndex).trim();
+        const closingTagMatch = content.substring(closingTagIndex).match(new RegExp(`^</${tagName}\\s*>`, 'i'));
+        const closingTag = closingTagMatch ? closingTagMatch[0] : `</${tagName}>`;
+
+        // Extract metadata from data attributes
+        const versionMatch = fullOpeningTag.match(/data-version=["']([^"']+)["']/i);
+        const categoryMatch = fullOpeningTag.match(/data-category=["']([^"']+)["']/i);
+        const tagsMatch = fullOpeningTag.match(/data-tags=["']([^"']+)["']/i);
+        const descMatch = fullOpeningTag.match(/data-description=["']([^"']+)["']/i);
+        const publicMatch = fullOpeningTag.match(/data-ispublic=["']([^"']+)["']/i);
+        const premiumMatch = fullOpeningTag.match(/data-ispremium=["']([^"']+)["']/i);
+
+        const componentVersion = versionMatch ? versionMatch[1] : '1.0.0';
+        const componentCategory = categoryMatch ? categoryMatch[1] : 'general';
+        const componentTags = tagsMatch ? tagsMatch[1] : '';
+        const componentDesc = descMatch ? descMatch[1] : '';
+        const componentIsPublic = publicMatch ? publicMatch[1] === 'true' : true;
+        const componentIsPremium = premiumMatch ? premiumMatch[1] === 'true' : false;
+
+        const baseUrl = pushUrl.substring(0, pushUrl.lastIndexOf('/'));
+
+        try {
+          if (action === 'push' || action === 'put') {
+            console.log(`\n📤 DolphinCSS: Pushing/PUTing component '${componentName}' (${componentVariant}) to ${pushUrl}...`);
+            const response = await fetch(pushUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-admin-secret': secretKey
+              },
+              body: JSON.stringify({
+                name: componentName,
+                variant: componentVariant,
+                code: innerContent,
+                version: componentVersion,
+                category: componentCategory,
+                tags: componentTags,
+                description: componentDesc,
+                username: username,
+                author: authorName,
+                isPublic: componentIsPublic,
+                isPremium: componentIsPremium
+              })
+            });
+
+            const resultJson = await response.json();
+            if (response.ok && resultJson.success) {
+              console.log(`\n✅ DolphinCSS: Component '${componentName}' pushed successfully!`);
+              
+              // If the server returns a developer-specific token, automatically save it back to dolphin.config.json
+              if (resultJson.developerToken && resultJson.developerToken !== secretKey) {
+                try {
+                  const configPath = path.join(projectRoot, 'dolphin.config.json');
+                  if (fs.existsSync(configPath)) {
+                    const currentConfig = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+                    currentConfig.secretKey = resultJson.developerToken;
+                    fs.writeFileSync(configPath, JSON.stringify(currentConfig, null, 2), 'utf8');
+                    console.log(`\n🔑 DolphinCSS: Auto-registered developer! Your personal API token has been saved in dolphin.config.json.`);
+                    secretKey = resultJson.developerToken; // update local key reference
+                  }
+                } catch (e) {
+                  console.error(`⚠️ DolphinCSS: Failed to auto-save developerToken: ${e.message}`);
+                }
+              }
+
+              const pushedClass = markerClass.replace(`dolphin-${action}--`, `dolphin-${action === 'push' ? 'pushed' : 'puted'}--`);
+              const newClassAttr = `${beforeClasses}${pushedClass}${afterClasses}`.trim();
+              const newOpeningTag = fullOpeningTag.replace(
+                new RegExp(`${classAttrName}=\\s*["'][^"']*["']`, 'i'),
+                `${classAttrName}="${newClassAttr}"`
+              );
+
+              const modifiedCode = content.substring(0, markerMatch.index) + 
+                                   newOpeningTag + 
+                                   content.substring(startIndex, closingTagIndex) + 
+                                   closingTag + 
+                                   content.substring(closingTagIndex + closingTag.length);
+
+              return { code: modifiedCode, map: null };
+            } else {
+              console.error(`\n❌ DolphinCSS Push/PUT Failed: ${resultJson.error || response.statusText}`);
+            }
+          }
+
+          else if (action === 'patch') {
+            const patchUrl = `${baseUrl}/${encodeURIComponent(componentName)}/settings?author=${encodeURIComponent(username)}&variant=${encodeURIComponent(componentVariant)}`;
+            console.log(`\n📤 DolphinCSS: PATCHing component '${componentName}' (${componentVariant}) to ${patchUrl}...`);
+            
+            const payload = {
+              code: innerContent,
+              version: componentVersion,
+              category: componentCategory,
+              tags: componentTags,
+              description: componentDesc,
+              isPublic: componentIsPublic,
+              isPremium: componentIsPremium
+            };
+
+            const response = await fetch(patchUrl, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-admin-secret': secretKey
+              },
+              body: JSON.stringify(payload)
+            });
+
+            const resultJson = await response.json();
+            if (response.ok && resultJson.success) {
+              console.log(`\n✅ DolphinCSS: Component '${componentName}' PATCHed successfully!`);
+              const pushedClass = markerClass.replace('dolphin-patch--', 'dolphin-patched--');
+              const newClassAttr = `${beforeClasses}${pushedClass}${afterClasses}`.trim();
+              const newOpeningTag = fullOpeningTag.replace(
+                new RegExp(`${classAttrName}=\\s*["'][^"']*["']`, 'i'),
+                `${classAttrName}="${newClassAttr}"`
+              );
+
+              const modifiedCode = content.substring(0, markerMatch.index) + 
+                                   newOpeningTag + 
+                                   content.substring(startIndex, closingTagIndex) + 
+                                   closingTag + 
+                                   content.substring(closingTagIndex + closingTag.length);
+
+              return { code: modifiedCode, map: null };
+            } else {
+              console.error(`\n❌ DolphinCSS PATCH Failed: ${resultJson.error || response.statusText}`);
+            }
+          }
+
+          else if (action === 'inject') {
+            const getUrl = `${baseUrl}/${encodeURIComponent(componentName)}?author=${encodeURIComponent(username)}&variant=${encodeURIComponent(componentVariant)}&version=${encodeURIComponent(componentVersion)}`;
+            console.log(`\n📥 DolphinCSS: Injecting component '${componentName}' (${componentVariant}) from ${getUrl}...`);
+
+            const response = await fetch(getUrl, {
+              headers: {
+                'x-admin-secret': secretKey
+              }
+            });
+
+            if (response.ok) {
+              let templateContent = await response.text();
+              console.log(`\n✅ DolphinCSS: Component '${componentName}' fetched successfully!`);
+
+              templateContent = templateContent.replace(/>\s*</g, '>\n<');
+              templateContent = indentHtmlOrJsx(templateContent, 8);
+
+              const pushedClass = markerClass.replace('dolphin-inject--', 'dolphin-injected--');
+              const newClassAttr = `${beforeClasses}${pushedClass}${afterClasses}`.trim();
+              const newOpeningTag = fullOpeningTag.replace(
+                new RegExp(`${classAttrName}=\\s*["'][^"']*["']`, 'i'),
+                `${classAttrName}="${newClassAttr}"`
+              );
+
+              const modifiedCode = content.substring(0, markerMatch.index) + 
+                                   newOpeningTag + 
+                                   `\n${templateContent}\n` + 
+                                   closingTag + 
+                                   content.substring(closingTagIndex + closingTag.length);
+
+              return { code: modifiedCode, map: null };
+            } else {
+              const errText = await response.text();
+              console.error(`\n❌ DolphinCSS Inject Failed: ${errText || response.statusText}`);
+            }
+          }
+
+          else if (action === 'delete') {
+            const deleteUrl = `${baseUrl}/${encodeURIComponent(componentName)}?author=${encodeURIComponent(username)}&variant=${encodeURIComponent(componentVariant)}`;
+            console.log(`\n🗑️ DolphinCSS: Deleting component '${componentName}' (${componentVariant}) from server: ${deleteUrl}...`);
+
+            const response = await fetch(deleteUrl, {
+              method: 'DELETE',
+              headers: {
+                'x-admin-secret': secretKey
+              }
+            });
+
+            const resultJson = await response.json();
+            if (response.ok && resultJson.success) {
+              console.log(`\n✅ DolphinCSS: Component '${componentName}' deleted successfully!`);
+              const pushedClass = markerClass.replace('dolphin-delete--', 'dolphin-deleted--');
+              const newClassAttr = `${beforeClasses}${pushedClass}${afterClasses}`.trim();
+              const newOpeningTag = fullOpeningTag.replace(
+                new RegExp(`${classAttrName}=\\s*["'][^"']*["']`, 'i'),
+                `${classAttrName}="${newClassAttr}"`
+              );
+
+              const modifiedCode = content.substring(0, markerMatch.index) + 
+                                   newOpeningTag + 
+                                   content.substring(startIndex, closingTagIndex) + 
+                                   closingTag + 
+                                   content.substring(closingTagIndex + closingTag.length);
+
+              return { code: modifiedCode, map: null };
+            } else {
+              console.error(`\n❌ DolphinCSS Delete Failed: ${resultJson.error || response.statusText}`);
+            }
+          }
+
+        } catch (err) {
+          console.error(`\n❌ DolphinCSS Marker Action Error: ${err.message}`);
+        }
+      }
+    }
 
     // 1. Fetch missing markers on-demand (with race-condition protection)
     const possibleMarkers = content.match(/dolphin-[a-zA-Z0-9-]+/g);
@@ -350,7 +619,7 @@ export default function dolphincssPlugin() {
             }
           } else if (entry.isFile()) {
             const ext = path.extname(entry.name).toLowerCase();
-            if (['.jsx', '.tsx', '.js', '.ts', '.html'].includes(ext)) {
+            if (['.jsx', '.tsx', '.js', '.ts', '.html', '.vue', '.svelte', '.astro', '.php'].includes(ext)) {
               try {
                 const code = fs.readFileSync(fullPath, 'utf8');
                 const result = await handleTransform(code, fullPath);

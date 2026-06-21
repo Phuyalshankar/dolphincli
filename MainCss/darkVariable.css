@@ -1,0 +1,9 @@
+@layer components {
+  /* डार्क मोडमा कार्डको variants को लागि स्पष्ट रंगहरू */
+  [data-theme="dark"] .card.primary { background-color: var(--color-primary); color: var(--color-text); }
+  [data-theme="dark"] .card.secondary { background-color: var(--color-secondary); color: var(--color-text); }
+  [data-theme="dark"] .card.success { background-color: var(--color-success); color: var(--color-text); }
+  [data-theme="dark"] .card.warning { background-color: var(--color-warning); color: var(--color-text); }
+  [data-theme="dark"] .card.danger { background-color: var(--color-danger); color: var(--color-text); }
+  [data-theme="dark"] .card.info { background-color: var(--color-info); color: var(--color-text); }
+}

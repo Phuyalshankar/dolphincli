@@ -1,0 +1,62 @@
+/* ===== PREMIUM NEPALI THEME BACKGROUNDS ===== */
+@layer components {
+
+  /* 1. Sagarmatha (सगरमाथा) - Everest Ice Blue to Deep Ocean Blue */
+  .bg-sagarmatha {
+    background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0284c7 100%);
+    color: var(--color-text);
+  }
+  
+  /* 2. Danphe (डाँफे) - Vibrant Multi-color (National Bird) */
+  .bg-danphe {
+    background: linear-gradient(45deg, #10b981 0%, #3b82f6 25%, #8b5cf6 50%, #f97316 75%, #ef4444 100%);
+    color: white;
+  }
+
+  /* 3. Munal (मुनाल) - Royal Deep Purple and Gold */
+  .bg-munal {
+    background: linear-gradient(135deg, #4c1d95 0%, #7e22ce 50%, #fbbf24 100%);
+    color: white;
+  }
+
+  /* 4. Laligurans (लालीगुराँस) - Crimson Red to Soft Pink */
+  .bg-laligurans {
+    background: linear-gradient(135deg, #be123c 0%, #e11d48 50%, #fbcfe8 100%);
+    color: white;
+  }
+
+  /* 5. Machhapuchhre (माछापुच्छ्रे) - Dark Slate and Frosty Silver */
+  .bg-machhapuchhre {
+    background: linear-gradient(135deg, #0f172a 0%, #334155 50%, #e2e8f0 100%);
+    color: white;
+  }
+
+  /* 6. Mustang (मुस्ताङ) - Earthy Terracotta and Warm Orange */
+  .bg-mustang {
+    background: linear-gradient(135deg, #78350f 0%, #b45309 50%, #fcd34d 100%);
+    color: white;
+  }
+
+  /* 7. Tilicho (तिलिचो) - High Altitude Turquoise to Deep Teal */
+  .bg-tilicho {
+    background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #99f6e4 100%);
+    color: white;
+  }
+
+  /* 8. Lumbini (लुम्बिनी) - Peaceful Soft Gold and Calm White */
+  .bg-lumbini {
+    background: linear-gradient(135deg, #fefce8 0%, #fef08a 50%, #ffffff 100%);
+    color: var(--color-text);
+  }
+
+  /* Glass variants for premium themes */
+  .bg-sagarmatha-glass { background: linear-gradient(135deg, rgba(224, 242, 254, 0.8), rgba(2, 132, 199, 0.8)); backdrop-filter: blur(16px); }
+  .bg-danphe-glass { background: linear-gradient(45deg, rgba(16, 185, 129, 0.8), rgba(139, 92, 246, 0.8), rgba(239, 68, 68, 0.8)); backdrop-filter: blur(16px); }
+  .bg-munal-glass { background: linear-gradient(135deg, rgba(76, 29, 149, 0.8), rgba(251, 191, 36, 0.8)); backdrop-filter: blur(16px); }
+  .bg-laligurans-glass { background: linear-gradient(135deg, rgba(190, 18, 60, 0.8), rgba(251, 207, 232, 0.8)); backdrop-filter: blur(16px); }
+  .bg-machhapuchhre-glass { background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(226, 232, 240, 0.8)); backdrop-filter: blur(16px); }
+  .bg-mustang-glass { background: linear-gradient(135deg, rgba(120, 53, 15, 0.8), rgba(252, 211, 77, 0.8)); backdrop-filter: blur(16px); }
+  .bg-tilicho-glass { background: linear-gradient(135deg, rgba(15, 118, 110, 0.8), rgba(153, 246, 228, 0.8)); backdrop-filter: blur(16px); }
+  .bg-lumbini-glass { background: linear-gradient(135deg, rgba(254, 240, 138, 0.8), rgba(255, 255, 255, 0.8)); backdrop-filter: blur(16px); }
+
+}

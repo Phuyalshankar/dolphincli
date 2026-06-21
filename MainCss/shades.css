@@ -1,0 +1,475 @@
+/* ===== DYNAMIC SHADES (50-950) ===== */
+
+:root {
+  --color-primary-50: color-mix(in oklch, var(--color-primary) 10%, white);
+  --color-primary-100: color-mix(in oklch, var(--color-primary) 20%, white);
+  --color-primary-200: color-mix(in oklch, var(--color-primary) 40%, white);
+  --color-primary-300: color-mix(in oklch, var(--color-primary) 60%, white);
+  --color-primary-400: color-mix(in oklch, var(--color-primary) 80%, white);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: color-mix(in oklch, var(--color-primary) 80%, black);
+  --color-primary-700: color-mix(in oklch, var(--color-primary) 60%, black);
+  --color-primary-800: color-mix(in oklch, var(--color-primary) 40%, black);
+  --color-primary-900: color-mix(in oklch, var(--color-primary) 20%, black);
+  --color-primary-950: color-mix(in oklch, var(--color-primary) 10%, black);
+
+  --color-secondary-50: color-mix(in oklch, var(--color-secondary) 10%, white);
+  --color-secondary-100: color-mix(in oklch, var(--color-secondary) 20%, white);
+  --color-secondary-200: color-mix(in oklch, var(--color-secondary) 40%, white);
+  --color-secondary-300: color-mix(in oklch, var(--color-secondary) 60%, white);
+  --color-secondary-400: color-mix(in oklch, var(--color-secondary) 80%, white);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-600: color-mix(in oklch, var(--color-secondary) 80%, black);
+  --color-secondary-700: color-mix(in oklch, var(--color-secondary) 60%, black);
+  --color-secondary-800: color-mix(in oklch, var(--color-secondary) 40%, black);
+  --color-secondary-900: color-mix(in oklch, var(--color-secondary) 20%, black);
+  --color-secondary-950: color-mix(in oklch, var(--color-secondary) 10%, black);
+
+  --color-success-50: color-mix(in oklch, var(--color-success) 10%, white);
+  --color-success-100: color-mix(in oklch, var(--color-success) 20%, white);
+  --color-success-200: color-mix(in oklch, var(--color-success) 40%, white);
+  --color-success-300: color-mix(in oklch, var(--color-success) 60%, white);
+  --color-success-400: color-mix(in oklch, var(--color-success) 80%, white);
+  --color-success-500: var(--color-success);
+  --color-success-600: color-mix(in oklch, var(--color-success) 80%, black);
+  --color-success-700: color-mix(in oklch, var(--color-success) 60%, black);
+  --color-success-800: color-mix(in oklch, var(--color-success) 40%, black);
+  --color-success-900: color-mix(in oklch, var(--color-success) 20%, black);
+  --color-success-950: color-mix(in oklch, var(--color-success) 10%, black);
+
+  --color-warning-50: color-mix(in oklch, var(--color-warning) 10%, white);
+  --color-warning-100: color-mix(in oklch, var(--color-warning) 20%, white);
+  --color-warning-200: color-mix(in oklch, var(--color-warning) 40%, white);
+  --color-warning-300: color-mix(in oklch, var(--color-warning) 60%, white);
+  --color-warning-400: color-mix(in oklch, var(--color-warning) 80%, white);
+  --color-warning-500: var(--color-warning);
+  --color-warning-600: color-mix(in oklch, var(--color-warning) 80%, black);
+  --color-warning-700: color-mix(in oklch, var(--color-warning) 60%, black);
+  --color-warning-800: color-mix(in oklch, var(--color-warning) 40%, black);
+  --color-warning-900: color-mix(in oklch, var(--color-warning) 20%, black);
+  --color-warning-950: color-mix(in oklch, var(--color-warning) 10%, black);
+
+  --color-danger-50: color-mix(in oklch, var(--color-danger) 10%, white);
+  --color-danger-100: color-mix(in oklch, var(--color-danger) 20%, white);
+  --color-danger-200: color-mix(in oklch, var(--color-danger) 40%, white);
+  --color-danger-300: color-mix(in oklch, var(--color-danger) 60%, white);
+  --color-danger-400: color-mix(in oklch, var(--color-danger) 80%, white);
+  --color-danger-500: var(--color-danger);
+  --color-danger-600: color-mix(in oklch, var(--color-danger) 80%, black);
+  --color-danger-700: color-mix(in oklch, var(--color-danger) 60%, black);
+  --color-danger-800: color-mix(in oklch, var(--color-danger) 40%, black);
+  --color-danger-900: color-mix(in oklch, var(--color-danger) 20%, black);
+  --color-danger-950: color-mix(in oklch, var(--color-danger) 10%, black);
+
+  --color-info-50: color-mix(in oklch, var(--color-info) 10%, white);
+  --color-info-100: color-mix(in oklch, var(--color-info) 20%, white);
+  --color-info-200: color-mix(in oklch, var(--color-info) 40%, white);
+  --color-info-300: color-mix(in oklch, var(--color-info) 60%, white);
+  --color-info-400: color-mix(in oklch, var(--color-info) 80%, white);
+  --color-info-500: var(--color-info);
+  --color-info-600: color-mix(in oklch, var(--color-info) 80%, black);
+  --color-info-700: color-mix(in oklch, var(--color-info) 60%, black);
+  --color-info-800: color-mix(in oklch, var(--color-info) 40%, black);
+  --color-info-900: color-mix(in oklch, var(--color-info) 20%, black);
+  --color-info-950: color-mix(in oklch, var(--color-info) 10%, black);
+
+}
+
+/* ===== GLOBAL SHADE CLASSES ===== */
+
+.primary-50 {
+  --current-bg: var(--color-primary-50);
+  --current-border: var(--color-primary-50);
+  --current-color: var(--color-primary-50);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-100 {
+  --current-bg: var(--color-primary-100);
+  --current-border: var(--color-primary-100);
+  --current-color: var(--color-primary-100);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-200 {
+  --current-bg: var(--color-primary-200);
+  --current-border: var(--color-primary-200);
+  --current-color: var(--color-primary-200);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-300 {
+  --current-bg: var(--color-primary-300);
+  --current-border: var(--color-primary-300);
+  --current-color: var(--color-primary-300);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-400 {
+  --current-bg: var(--color-primary-400);
+  --current-border: var(--color-primary-400);
+  --current-color: var(--color-primary-400);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-500 {
+  --current-bg: var(--color-primary-500);
+  --current-border: var(--color-primary-500);
+  --current-color: var(--color-primary-500);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-600 {
+  --current-bg: var(--color-primary-600);
+  --current-border: var(--color-primary-600);
+  --current-color: var(--color-primary-600);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-700 {
+  --current-bg: var(--color-primary-700);
+  --current-border: var(--color-primary-700);
+  --current-color: var(--color-primary-700);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-800 {
+  --current-bg: var(--color-primary-800);
+  --current-border: var(--color-primary-800);
+  --current-color: var(--color-primary-800);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-900 {
+  --current-bg: var(--color-primary-900);
+  --current-border: var(--color-primary-900);
+  --current-color: var(--color-primary-900);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.primary-950 {
+  --current-bg: var(--color-primary-950);
+  --current-border: var(--color-primary-950);
+  --current-color: var(--color-primary-950);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-50 {
+  --current-bg: var(--color-secondary-50);
+  --current-border: var(--color-secondary-50);
+  --current-color: var(--color-secondary-50);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-100 {
+  --current-bg: var(--color-secondary-100);
+  --current-border: var(--color-secondary-100);
+  --current-color: var(--color-secondary-100);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-200 {
+  --current-bg: var(--color-secondary-200);
+  --current-border: var(--color-secondary-200);
+  --current-color: var(--color-secondary-200);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-300 {
+  --current-bg: var(--color-secondary-300);
+  --current-border: var(--color-secondary-300);
+  --current-color: var(--color-secondary-300);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-400 {
+  --current-bg: var(--color-secondary-400);
+  --current-border: var(--color-secondary-400);
+  --current-color: var(--color-secondary-400);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-500 {
+  --current-bg: var(--color-secondary-500);
+  --current-border: var(--color-secondary-500);
+  --current-color: var(--color-secondary-500);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-600 {
+  --current-bg: var(--color-secondary-600);
+  --current-border: var(--color-secondary-600);
+  --current-color: var(--color-secondary-600);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-700 {
+  --current-bg: var(--color-secondary-700);
+  --current-border: var(--color-secondary-700);
+  --current-color: var(--color-secondary-700);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-800 {
+  --current-bg: var(--color-secondary-800);
+  --current-border: var(--color-secondary-800);
+  --current-color: var(--color-secondary-800);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-900 {
+  --current-bg: var(--color-secondary-900);
+  --current-border: var(--color-secondary-900);
+  --current-color: var(--color-secondary-900);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.secondary-950 {
+  --current-bg: var(--color-secondary-950);
+  --current-border: var(--color-secondary-950);
+  --current-color: var(--color-secondary-950);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-50 {
+  --current-bg: var(--color-success-50);
+  --current-border: var(--color-success-50);
+  --current-color: var(--color-success-50);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-100 {
+  --current-bg: var(--color-success-100);
+  --current-border: var(--color-success-100);
+  --current-color: var(--color-success-100);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-200 {
+  --current-bg: var(--color-success-200);
+  --current-border: var(--color-success-200);
+  --current-color: var(--color-success-200);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-300 {
+  --current-bg: var(--color-success-300);
+  --current-border: var(--color-success-300);
+  --current-color: var(--color-success-300);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-400 {
+  --current-bg: var(--color-success-400);
+  --current-border: var(--color-success-400);
+  --current-color: var(--color-success-400);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-500 {
+  --current-bg: var(--color-success-500);
+  --current-border: var(--color-success-500);
+  --current-color: var(--color-success-500);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-600 {
+  --current-bg: var(--color-success-600);
+  --current-border: var(--color-success-600);
+  --current-color: var(--color-success-600);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-700 {
+  --current-bg: var(--color-success-700);
+  --current-border: var(--color-success-700);
+  --current-color: var(--color-success-700);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-800 {
+  --current-bg: var(--color-success-800);
+  --current-border: var(--color-success-800);
+  --current-color: var(--color-success-800);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-900 {
+  --current-bg: var(--color-success-900);
+  --current-border: var(--color-success-900);
+  --current-color: var(--color-success-900);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.success-950 {
+  --current-bg: var(--color-success-950);
+  --current-border: var(--color-success-950);
+  --current-color: var(--color-success-950);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-50 {
+  --current-bg: var(--color-warning-50);
+  --current-border: var(--color-warning-50);
+  --current-color: var(--color-warning-50);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-100 {
+  --current-bg: var(--color-warning-100);
+  --current-border: var(--color-warning-100);
+  --current-color: var(--color-warning-100);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-200 {
+  --current-bg: var(--color-warning-200);
+  --current-border: var(--color-warning-200);
+  --current-color: var(--color-warning-200);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-300 {
+  --current-bg: var(--color-warning-300);
+  --current-border: var(--color-warning-300);
+  --current-color: var(--color-warning-300);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-400 {
+  --current-bg: var(--color-warning-400);
+  --current-border: var(--color-warning-400);
+  --current-color: var(--color-warning-400);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-500 {
+  --current-bg: var(--color-warning-500);
+  --current-border: var(--color-warning-500);
+  --current-color: var(--color-warning-500);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-600 {
+  --current-bg: var(--color-warning-600);
+  --current-border: var(--color-warning-600);
+  --current-color: var(--color-warning-600);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-700 {
+  --current-bg: var(--color-warning-700);
+  --current-border: var(--color-warning-700);
+  --current-color: var(--color-warning-700);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-800 {
+  --current-bg: var(--color-warning-800);
+  --current-border: var(--color-warning-800);
+  --current-color: var(--color-warning-800);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-900 {
+  --current-bg: var(--color-warning-900);
+  --current-border: var(--color-warning-900);
+  --current-color: var(--color-warning-900);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.warning-950 {
+  --current-bg: var(--color-warning-950);
+  --current-border: var(--color-warning-950);
+  --current-color: var(--color-warning-950);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-50 {
+  --current-bg: var(--color-danger-50);
+  --current-border: var(--color-danger-50);
+  --current-color: var(--color-danger-50);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-100 {
+  --current-bg: var(--color-danger-100);
+  --current-border: var(--color-danger-100);
+  --current-color: var(--color-danger-100);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-200 {
+  --current-bg: var(--color-danger-200);
+  --current-border: var(--color-danger-200);
+  --current-color: var(--color-danger-200);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-300 {
+  --current-bg: var(--color-danger-300);
+  --current-border: var(--color-danger-300);
+  --current-color: var(--color-danger-300);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-400 {
+  --current-bg: var(--color-danger-400);
+  --current-border: var(--color-danger-400);
+  --current-color: var(--color-danger-400);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-500 {
+  --current-bg: var(--color-danger-500);
+  --current-border: var(--color-danger-500);
+  --current-color: var(--color-danger-500);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-600 {
+  --current-bg: var(--color-danger-600);
+  --current-border: var(--color-danger-600);
+  --current-color: var(--color-danger-600);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-700 {
+  --current-bg: var(--color-danger-700);
+  --current-border: var(--color-danger-700);
+  --current-color: var(--color-danger-700);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-800 {
+  --current-bg: var(--color-danger-800);
+  --current-border: var(--color-danger-800);
+  --current-color: var(--color-danger-800);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-900 {
+  --current-bg: var(--color-danger-900);
+  --current-border: var(--color-danger-900);
+  --current-color: var(--color-danger-900);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.danger-950 {
+  --current-bg: var(--color-danger-950);
+  --current-border: var(--color-danger-950);
+  --current-color: var(--color-danger-950);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-50 {
+  --current-bg: var(--color-info-50);
+  --current-border: var(--color-info-50);
+  --current-color: var(--color-info-50);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-100 {
+  --current-bg: var(--color-info-100);
+  --current-border: var(--color-info-100);
+  --current-color: var(--color-info-100);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-200 {
+  --current-bg: var(--color-info-200);
+  --current-border: var(--color-info-200);
+  --current-color: var(--color-info-200);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-300 {
+  --current-bg: var(--color-info-300);
+  --current-border: var(--color-info-300);
+  --current-color: var(--color-info-300);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-400 {
+  --current-bg: var(--color-info-400);
+  --current-border: var(--color-info-400);
+  --current-color: var(--color-info-400);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-500 {
+  --current-bg: var(--color-info-500);
+  --current-border: var(--color-info-500);
+  --current-color: var(--color-info-500);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-600 {
+  --current-bg: var(--color-info-600);
+  --current-border: var(--color-info-600);
+  --current-color: var(--color-info-600);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-700 {
+  --current-bg: var(--color-info-700);
+  --current-border: var(--color-info-700);
+  --current-color: var(--color-info-700);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-800 {
+  --current-bg: var(--color-info-800);
+  --current-border: var(--color-info-800);
+  --current-color: var(--color-info-800);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-900 {
+  --current-bg: var(--color-info-900);
+  --current-border: var(--color-info-900);
+  --current-color: var(--color-info-900);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}
+.info-950 {
+  --current-bg: var(--color-info-950);
+  --current-border: var(--color-info-950);
+  --current-color: var(--color-info-950);
+  --current-text: var(--color-text-light); /* Or appropriate contrast */
+}

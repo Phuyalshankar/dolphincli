@@ -1,0 +1,520 @@
+/* ===== RADIO SYSTEM - CLEAN FOCUS ===== */
+@layer components {
+  .radio-group { @apply flex flex-col gap-2; }
+  .radio-item { @apply flex items-center gap-2 cursor-pointer select-none relative; }
+  
+  .radio-item input[type="radio"] {
+    @apply appearance-none w-5 h-5 rounded-full border border-(--color-border) 
+           checked:bg-(--color-primary) checked:border-(--color-primary) 
+           transition-all duration-200;
+    box-shadow: 0 1px 2px 0 color-mix(in srgb, var(--color-text), transparent 90%);
+  }
+  
+  /* FIXED: Clean single focus ring */
+  .radio-item input[type="radio"]:focus-visible {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent);
+  }
+  
+  .radio-label { @apply text-(--color-text) select-none transition-colors; }
+  .radio-item input[type="radio"]:disabled + .radio-label {
+    @apply opacity-50 cursor-not-allowed;
+  }
+  .radio-group.horizontal { @apply flex-row gap-4; }
+
+  /* ===== CHECKBOX SYSTEM - CLEAN FOCUS ===== */
+  input[type="checkbox"] {
+    @apply w-5 h-5 m-0 align-middle border-2 rounded border-(--color-border) 
+           bg-(--color-surface) cursor-pointer relative appearance-none;
+    box-shadow: 0 1px 2px 0 color-mix(in srgb, var(--color-text), transparent 90%);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Render a clean white SVG tick mark when checked */
+  input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  /* FIXED: Clean single focus ring */
+  input[type="checkbox"]:focus-visible {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 20%, transparent);
+  }
+  
+  /* Variants - keep same class names */
+  input[type="checkbox"].primary:checked { 
+    background-color: var(--color-primary); 
+    border-color: var(--color-primary); 
+  }
+  input[type="checkbox"].secondary:checked { 
+    background-color: var(--color-secondary); 
+    border-color: var(--color-secondary); 
+  }
+  input[type="checkbox"].success:checked { 
+    background-color: var(--color-success); 
+    border-color: var(--color-success); 
+  }
+  input[type="checkbox"].warning:checked { 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
+  }
+  input[type="checkbox"].danger:checked { 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
+  }
+  input[type="checkbox"].info:checked { 
+    background-color: var(--color-info); 
+    border-color: var(--color-info); 
+  }
+  
+  input[type="checkbox"]:disabled { 
+    @apply opacity-50 cursor-not-allowed; 
+  }
+
+  /* ===== SELECT SYSTEM - CLEAN FOCUS ===== */
+  .select-wrapper { @apply relative inline-block w-full; }
+  
+  .select {
+    @apply w-full px-4 py-2.5 text-base rounded-xl border
+           border-(--color-border) text-(--color-text) cursor-pointer appearance-none;
+    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    box-shadow: inset 0 2px 4px color-mix(in srgb, black 2%, transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 3rem;
+  }
+  
+  /* FIXED: Single clean focus style */
+  .select:focus {
+    @apply outline-none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+  }
+  
+  .select:disabled {
+    @apply opacity-50 cursor-not-allowed 
+           bg-[color-mix(in_srgb,var(--color-surface),black_2%)] 
+           text-(--color-border);
+  }
+  
+  /* Variants - same class names */
+  .select.primary { 
+    border-color: var(--color-primary); 
+    background-color: color-mix(in srgb, var(--color-primary) 5%, transparent); 
+  }
+  .select.primary:focus { 
+    background-color: color-mix(in srgb, var(--color-primary) 10%, transparent); 
+  }
+  
+  .select.secondary { 
+    border-color: var(--color-secondary); 
+    background-color: color-mix(in srgb, var(--color-secondary) 5%, transparent); 
+  }
+  .select.success { 
+    border-color: var(--color-success); 
+    background-color: color-mix(in srgb, var(--color-success) 5%, transparent); 
+  }
+  .select.warning { 
+    border-color: var(--color-warning); 
+    background-color: color-mix(in srgb, var(--color-warning) 5%, transparent); 
+  }
+  .select.danger { 
+    border-color: var(--color-danger); 
+    background-color: color-mix(in srgb, var(--color-danger) 5%, transparent); 
+  }
+  .select.info { 
+    border-color: var(--color-info); 
+    background-color: color-mix(in srgb, var(--color-info) 5%, transparent); 
+  }
+  
+  .select.gradient.primary { 
+    background-image: var(--gradient-primary); 
+    color: var(--color-text); 
+    border: none; 
+    box-shadow: 0 2px 4px color-mix(in srgb, black 10%, transparent); 
+  }
+  
+  .select-wrapper::after {
+    content: '';
+    @apply absolute top-1/2 right-4 w-2 h-2 
+           border-r-2 border-b-2 border-(--color-text) 
+           pointer-events-none -translate-y-1/2 rotate-45;
+    opacity: 0.6;
+  }
+
+  /* ===== FLOATING LABEL - CLEAN FOCUS ===== */
+  .floatinglabel {
+    @apply relative w-full;
+  }
+
+  .floatinglabel-input {
+    @apply w-full px-4 py-2.5 text-base rounded-xl border
+           border-(--color-border) text-(--color-text);
+    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    box-shadow: inset 0 2px 4px color-mix(in srgb, black 2%, transparent);
+    min-height: 3.5rem;
+    z-index: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    line-height: 1.5;
+  }
+
+  /* FIXED: Clean focus with single ring */
+  .floatinglabel-input:focus {
+    @apply outline-none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+  }
+  
+  .floatinglabel-input:focus-visible {
+    @apply outline-none;
+  }
+
+  .floatinglabel-input:disabled {
+    @apply opacity-50 cursor-not-allowed 
+           bg-[color-mix(in_srgb,var(--color-surface),black_2%)] 
+           text-(--color-border);
+    border-color: color-mix(in srgb, var(--color-border), transparent 20%) !important;
+  }
+
+  /* Label styles unchanged */
+  .floatinglabel-label {
+    @apply absolute left-3 top-1/2 -translate-y-1/2
+           text-(--color-text-muted) text-base
+           pointer-events-none;
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent) !important;
+    backdrop-filter: blur(8px);
+    border-radius: 4px;
+    padding: 2px 6px;
+    z-index: 10;
+    line-height: 1.1;
+    transition: 
+      top 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .floatinglabel-input:focus ~ .floatinglabel-label,
+  .floatinglabel-input:not(:placeholder-shown) ~ .floatinglabel-label {
+    top: 0 !important;
+    transform: translateY(0) !important;
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    left: 0.75rem !important;
+  }
+
+  /* आइकन भएको बेला लेबलको सुरुवाती स्थान मिलाउने */
+  .floatinglabel.input-icon-left .floatinglabel-label,
+  .floatinglabel.input-icon-both .floatinglabel-label {
+    left: 2.75rem;
+  }
+
+  /* फोकस वा टेक्स्ट भएपछि लेबल बायाँ सर्ने */
+  .floatinglabel.input-icon-left .floatinglabel-input:focus ~ .floatinglabel-label,
+  .floatinglabel.input-icon-left .floatinglabel-input:not(:placeholder-shown) ~ .floatinglabel-label,
+  .floatinglabel.input-icon-both .floatinglabel-input:focus ~ .floatinglabel-label,
+  .floatinglabel.input-icon-both .floatinglabel-input:not(:placeholder-shown) ~ .floatinglabel-label {
+    left: 0.75rem !important;
+  }
+
+  /* ===== STANDARD LABEL - CLEAN FOCUS ===== */
+  .standardlabel {
+    @apply relative w-full;
+  }
+
+  .standardlabel-input {
+    border-bottom: 2px solid var(--color-border) !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    min-height: 2.75rem;
+    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    line-height: 1.5;
+    
+    /* क्लिक/ट्याप गर्दा कुनै पनि ring हटाउने */
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* FIXED: Standard label लागि मात्र तलको underline, ring हटाउने */
+  .standardlabel-input:focus {
+    @apply outline-none;
+    border-color: var(--color-primary) !important;
+    border-width: 0 0 2px 0 !important;
+    /* Ring हटाउने र मात्र तलको shadow राख्ने */
+    box-shadow: 0 2px 0 0 var(--color-primary) !important;
+  }
+  
+  /* Focus-visible पनि fix गर्ने */
+  .standardlabel-input:focus-visible {
+    @apply outline-none;
+    box-shadow: 0 2px 0 0 var(--color-primary) !important;
+  }
+  
+  /* Active state पनि fix गर्ने */
+  .standardlabel-input:active {
+    @apply outline-none;
+    box-shadow: 0 2px 0 0 var(--color-primary) !important;
+  }
+  
+  .standardlabel-input:disabled {
+    @apply opacity-50 cursor-not-allowed text-(--color-border);
+    border-color: color-mix(in srgb, var(--color-border), transparent 20%) !important;
+  }
+
+  .standardlabel-label {
+    @apply absolute left-3 top-1/2 -translate-y-1/2
+           text-(--color-text-muted) text-base
+           pointer-events-none;
+    background: color-mix(in srgb, var(--color-surface) 60%, transparent) !important;
+    backdrop-filter: blur(8px);
+    border-radius: 4px;
+    padding: 2px 6px;
+    z-index: 10;
+    line-height: 1.1;
+    transition: 
+      top 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+      left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .standardlabel-input:focus ~ .standardlabel-label,
+  .standardlabel-input:not(:placeholder-shown) ~ .standardlabel-label {
+    top: 0 !important;
+    transform: translateY(0) !important;
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    left: 0.75rem !important;
+  }
+
+  /* ===== REGULAR INPUTS WITH ICONS - CLEAN FOCUS ===== */
+  .input-icon-left {
+    @apply relative w-full;
+  }
+  .input-icon-left > svg {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-(--color-text-muted);
+    z-index: 10;
+  }
+  .input-icon-left > input,
+  .input-icon-left > select {
+    @apply w-full pl-10 pr-4 py-2.5 rounded-xl border 
+           border-(--color-border) text-(--color-text);
+    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    box-shadow: inset 0 2px 4px color-mix(in srgb, black 2%, transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* FIXED: Clean focus for icon inputs */
+  .input-icon-left > input:focus,
+  .input-icon-left > select:focus {
+    @apply outline-none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+  }
+
+  .input-icon-right {
+    @apply relative w-full;
+  }
+  .input-icon-right > svg {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-(--color-text-muted);
+    z-index: 10;
+  }
+  .input-icon-right > input,
+  .input-icon-right > select {
+    @apply w-full pl-4 pr-10 py-2.5 rounded-xl border 
+           border-(--color-border) text-(--color-text);
+    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    box-shadow: inset 0 2px 4px color-mix(in srgb, black 2%, transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* FIXED: Clean focus for icon inputs */
+  .input-icon-right > input:focus,
+  .input-icon-right > select:focus {
+    @apply outline-none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+  }
+
+  .input-icon-both {
+    @apply relative w-full;
+  }
+  .input-icon-both > .icon-left {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 
+           w-5 h-5 text-(--color-text-muted) pointer-events-none z-20;
+  }
+  .input-icon-both > .icon-right {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 
+           w-5 h-5 text-(--color-text-muted) cursor-pointer z-30;
+    pointer-events: auto;
+  }
+  .input-icon-both > input,
+  .input-icon-both > select {
+    @apply w-full pl-10 pr-10 py-2.5 rounded-xl border 
+           border-(--color-border) text-(--color-text);
+    background-color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+    box-shadow: inset 0 2px 4px color-mix(in srgb, black 2%, transparent);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* FIXED: Clean focus for both icon inputs */
+  .input-icon-both > input:focus,
+  .input-icon-both > select:focus {
+    @apply outline-none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 15%, transparent);
+  }
+
+  /* ===== THEME-AWARE FOCUS STYLES ===== */
+  /* Danphe theme लाई अलग focus style */
+  [data-theme="danphe"] {
+    /* Radio focus */
+    .radio-item input[type="radio"]:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danphe-primary) 20%, transparent);
+    }
+    
+    /* Checkbox focus */
+    input[type="checkbox"]:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danphe-primary) 20%, transparent);
+    }
+    
+    /* Select focus */
+    .select:focus {
+      border-color: var(--color-danphe-primary);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danphe-primary) 15%, transparent);
+    }
+    
+    /* Floating label focus */
+    .floatinglabel-input:focus {
+      border-color: var(--color-danphe-primary);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danphe-primary) 15%, transparent);
+    }
+    
+    .floatinglabel-input:focus ~ .floatinglabel-label {
+      color: var(--color-danphe-primary);
+    }
+    
+    /* Standard label focus - ring हटाउने */
+    .standardlabel-input:focus {
+      border-color: var(--color-danphe-primary) !important;
+      box-shadow: 0 2px 0 0 var(--color-danphe-primary) !important;
+    }
+    
+    .standardlabel-input:focus-visible {
+      box-shadow: 0 2px 0 0 var(--color-danphe-primary) !important;
+    }
+    
+    .standardlabel-input:active {
+      box-shadow: 0 2px 0 0 var(--color-danphe-primary) !important;
+    }
+    
+    .standardlabel-input:focus ~ .standardlabel-label {
+      color: var(--color-danphe-primary);
+    }
+    
+    /* Icon inputs focus */
+    .input-icon-left > input:focus,
+    .input-icon-left > select:focus,
+    .input-icon-right > input:focus,
+    .input-icon-right > select:focus,
+    .input-icon-both > input:focus,
+    .input-icon-both > select:focus {
+      border-color: var(--color-danphe-primary);
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danphe-primary) 15%, transparent);
+    }
+  }
+
+  /* Dark mode adjustments */
+  [data-theme-mode="dark"] {
+    /* Focus rings अझ soft बनाउने */
+    .radio-item input[type="radio"]:focus-visible,
+    input[type="checkbox"]:focus-visible,
+    .select:focus,
+    .floatinglabel-input:focus,
+    .input-icon-left > input:focus,
+    .input-icon-left > select:focus,
+    .input-icon-right > input:focus,
+    .input-icon-right > select:focus,
+    .input-icon-both > input:focus,
+    .input-icon-both > select:focus {
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 25%, transparent);
+    }
+    
+    /* Standard label dark mode - ring हटाउने */
+    .standardlabel-input:focus {
+      box-shadow: 0 2px 0 0 var(--color-primary) !important;
+    }
+    
+    .standardlabel-input:focus-visible {
+      box-shadow: 0 2px 0 0 var(--color-primary) !important;
+    }
+    
+    .standardlabel-input:active {
+      box-shadow: 0 2px 0 0 var(--color-primary) !important;
+    }
+    
+    /* Danphe theme dark mode */
+    [data-theme="danphe"] & {
+      .radio-item input[type="radio"]:focus-visible,
+      input[type="checkbox"]:focus-visible,
+      .select:focus,
+      .floatinglabel-input:focus,
+      .input-icon-left > input:focus,
+      .input-icon-left > select:focus,
+      .input-icon-right > input:focus,
+      .input-icon-right > select:focus,
+      .input-icon-both > input:focus,
+      .input-icon-both > select:focus {
+        box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danphe-primary) 25%, transparent);
+      }
+      
+      /* Standard label dark mode Danphe */
+      .standardlabel-input:focus {
+        box-shadow: 0 2px 0 0 var(--color-danphe-primary) !important;
+      }
+      
+      .standardlabel-input:focus-visible {
+        box-shadow: 0 2px 0 0 var(--color-danphe-primary) !important;
+      }
+      
+      .standardlabel-input:active {
+        box-shadow: 0 2px 0 0 var(--color-danphe-primary) !important;
+      }
+    }
+  }
+
+  /* ===== FORM VALIDATION STATES ===== */
+  .has-error .floatinglabel-input,
+  .has-error .standardlabel-input,
+  .has-error .select,
+  .has-error .input-icon-left > input,
+  .has-error .input-icon-right > input,
+  .has-error .input-icon-both > input {
+    border-color: var(--color-danger, #ef4444) !important;
+  }
+
+  .has-error .floatinglabel-input:focus,
+  .has-error .select:focus,
+  .has-error .input-icon-left > input:focus,
+  .has-error .input-icon-right > input:focus,
+  .has-error .input-icon-both > input:focus {
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-danger, #ef4444) 15%, transparent) !important;
+  }
+
+  .has-error .standardlabel-input:focus {
+    box-shadow: 0 2px 0 0 var(--color-danger, #ef4444) !important;
+  }
+
+  .has-error .floatinglabel-label,
+  .has-error .standardlabel-label {
+    color: var(--color-danger, #ef4444) !important;
+  }
+
+  .error-text {
+    @apply text-sm mt-1;
+    color: var(--color-danger, #ef4444);
+  }
+}

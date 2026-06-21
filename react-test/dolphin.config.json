@@ -1,0 +1,8 @@
+{
+  "cacheTemplates": true,
+  "framework": "react",
+  "username": "john_dev",
+  "author": "John Dev",
+  "secretKey": "dolphin-admin-2025",
+  "pushUrl": "http://localhost:3000/api/templates/push"
+}

@@ -1,16 +1,24 @@
 {
   "name": "dolphincss",
-  "version": "1.3.2",
+  "version": "1.3.9",
   "type": "module",
   "description": "DolphinCSS - World-class TailwindCSS + React component library",
   "main": "dolphin-css.css",
   "bin": {
-    "dolphin": "./bin/dolphin.js"
+    "dolphin-template": "bin/dolphin.js"
   },
   "exports": {
     ".": "./dolphin-css.css",
     "./dolphin-css.css": "./dolphin-css.css",
-    "./vite-plugin": "./vite-plugin.js"
+    "./vite-plugin": "./vite-plugin.js",
+    "./ub": {
+      "types": "./src/ub.d.ts",
+      "default": "./src/ub.js"
+    },
+    "./ub/vanilla": {
+      "types": "./src/ub-vanilla.d.ts",
+      "default": "./src/ub-vanilla.js"
+    }
   },
   "files": [
     "dist/",
@@ -24,7 +32,11 @@
     "templates/",
     "vite-plugin.js",
     "marker.json",
-    "dolphincss-plugin.cjs"
+    "dolphincss-plugin.cjs",
+    "src/ub.js",
+    "src/ub.d.ts",
+    "src/ub-vanilla.js",
+    "src/ub-vanilla.d.ts"
   ],
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run watch:dolphin\"",
@@ -46,9 +58,12 @@
   "author": "Shankar Phunyal",
   "license": "MIT",
   "peerDependencies": {
-    "lucide-react": "^1.17.0",
     "react": ">=18",
     "react-dom": ">=18"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chokidar": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
@@ -56,8 +71,6 @@
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
-    "axios": "^1.6.0",
-    "chokidar": "^5.0.0",
     "concurrently": "^10.0.0",
     "eslint": "^9.36.0",
     "eslint-plugin-react": "^7.37.5",
@@ -68,4 +81,3 @@
     "vite": "^7.1.7"
   }
 }
-

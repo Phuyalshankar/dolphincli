@@ -1,0 +1,95 @@
+/* utilities.css */
+/* ===== THEME-AWARE UTILITY CLASSES ===== */
+
+/* Theme Color Utilities */
+.theme-color { color: var(--theme-primary); }
+.theme-bg { background-color: var(--theme-primary); }
+.theme-gradient { background: var(--theme-gradient); }
+.theme-border { border-color: var(--theme-primary); }
+
+/* Theme Glass */
+.theme-glass {
+  background-color: var(--theme-glass-bg);
+  border-color: var(--theme-glass-border);
+  backdrop-filter: var(--glass-blur);
+}
+
+/* Theme Glow */
+.theme-glow { box-shadow: var(--theme-glow); }
+.theme-glow-hover:hover { box-shadow: var(--theme-glow); }
+
+/* Theme Icons */
+.theme-icon::before { content: var(--theme-icon); }
+.theme-name::before { content: var(--theme-name); }
+
+/* Dolphin Specific Utilities */
+.color-primary { color: var(--color-primary); }
+.bg-primary { background-color: var(--color-primary); }
+.border-primary { border-color: var(--color-primary); }
+.dolphin-gradient { background: var(--gradient-primary); }
+.ocean-gradient { background: var(--gradient-ocean); }
+
+/* Danphe Specific Utilities */
+.color-danphe { color: var(--color-danphe-primary); }
+.bg-danphe { background-color: var(--color-danphe-primary); }
+.border-danphe { border-color: var(--color-danphe-primary); }
+.danphe-gradient { background: var(--gradient-danphe); }
+.himalayan-gradient { background: var(--gradient-himalayan); }
+
+/* Semantic Colors (Common for both) */
+.color-success { color: var(--color-success); }
+.bg-success { background-color: var(--color-success); }
+.border-success { border-color: var(--color-success); }
+
+.color-warning { color: var(--color-warning); }
+.bg-warning { background-color: var(--color-warning); }
+.border-warning { border-color: var(--color-warning); }
+
+.color-danger { color: var(--color-danger); }
+.bg-danger { background-color: var(--color-danger); }
+.border-danger { border-color: var(--color-danger); }
+
+.color-info { color: var(--color-info); }
+.bg-info { background-color: var(--color-info); }
+.border-info { border-color: var(--color-info); }
+
+/* Background Utilities */
+.bg-surface { background-color: var(--color-surface); }
+.bg-surface-alt { background-color: var(--color-surface-alt); }
+.bg-surface-dark { background-color: var(--color-surface-dark); }
+
+/* Text Utilities */
+.color-text { color: var(--color-text); }
+.color-text-muted { color: var(--color-text-muted); }
+.color-text-light { color: var(--color-text-light); }
+
+/* Glass Utilities */
+.glass { backdrop-filter: var(--glass-blur); }
+.glass-sm { backdrop-filter: var(--glass-blur-sm); }
+.glass-lg { backdrop-filter: var(--glass-blur-lg); }
+
+/* Glow Utilities */
+.glow-primary { box-shadow: var(--glow-primary); }
+.glow-danphe { box-shadow: var(--glow-danphe); }
+.glow-success { box-shadow: var(--glow-success); }
+.glow-warning { box-shadow: var(--glow-warning); }
+.glow-danger { box-shadow: var(--glow-danger); }
+.glow-info { box-shadow: var(--glow-info); }
+
+/* Theme Specific Display */
+.dolphin-only { 
+  display: var(--dolphin-display, block); 
+}
+.danphe-only { 
+  display: var(--danphe-display, none); 
+}
+
+[data-theme="dolphin"] {
+  --dolphin-display: block;
+  --danphe-display: none;
+}
+
+[data-theme="danphe"] {
+  --dolphin-display: none;
+  --danphe-display: block;
+}

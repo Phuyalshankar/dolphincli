@@ -1,0 +1,279 @@
+/* ===== GLOBAL OVERLAY - कुनै पनि component मा लागू हुने ===== */
+@layer components {
+  /* Base overlay - जहाँ पनि apply हुने */
+  .overlay {
+    background: var(--overlay-bg, rgba(0, 0, 0, 0.5));
+    backdrop-filter: var(--overlay-blur, blur(4px));
+    transition: all 0.3s var(--theme-transition);
+  }
+
+  /* Overlay intensities - theme variables प्रयोग गर्ने */
+  .overlay-1 { background: var(--overlay-1, rgba(0, 0, 0, 0.1)); }
+  .overlay-2 { background: var(--overlay-2, rgba(0, 0, 0, 0.2)); }
+  .overlay-3 { background: var(--overlay-3, rgba(0, 0, 0, 0.3)); }
+  .overlay-4 { background: var(--overlay-4, rgba(0, 0, 0, 0.4)); }
+  .overlay-5 { background: var(--overlay-5, rgba(0, 0, 0, 0.5)); }
+  .overlay-6 { background: var(--overlay-6, rgba(0, 0, 0, 0.6)); }
+  .overlay-7 { background: var(--overlay-7, rgba(0, 0, 0, 0.7)); }
+  .overlay-8 { background: var(--overlay-8, rgba(0, 0, 0, 0.8)); }
+  .overlay-9 { background: var(--overlay-9, rgba(0, 0, 0, 0.9)); }
+
+  /* Blur variants */
+  .overlay-blur-none { backdrop-filter: none; }
+  .overlay-blur-sm { backdrop-filter: blur(2px); }
+  .overlay-blur-md { backdrop-filter: blur(4px); }
+  .overlay-blur-lg { backdrop-filter: blur(8px); }
+  .overlay-blur-xl { backdrop-filter: blur(12px); }
+  .overlay-blur-2xl { backdrop-filter: blur(16px); }
+  .overlay-blur-3xl { backdrop-filter: blur(24px); }
+
+  /* Color overlays - तपाईंको existing colors प्रयोग गर्ने */
+  .overlay-primary { background: color-mix(in oklch, var(--color-primary) 30%, transparent); }
+  .overlay-secondary { background: color-mix(in oklch, var(--color-secondary) 30%, transparent); }
+  .overlay-success { background: color-mix(in oklch, var(--color-success) 30%, transparent); }
+  .overlay-warning { background: color-mix(in oklch, var(--color-warning) 30%, transparent); }
+  .overlay-danger { background: color-mix(in oklch, var(--color-danger) 30%, transparent); }
+  .overlay-info { background: color-mix(in oklch, var(--color-info) 30%, transparent); }
+  .overlay-accent { background: color-mix(in oklch, var(--color-accent) 30%, transparent); }
+
+  /* Color overlays with different intensities */
+  .overlay-primary-1 { background: color-mix(in oklch, var(--color-primary) 10%, transparent); }
+  .overlay-primary-2 { background: color-mix(in oklch, var(--color-primary) 20%, transparent); }
+  .overlay-primary-3 { background: color-mix(in oklch, var(--color-primary) 30%, transparent); }
+  .overlay-primary-4 { background: color-mix(in oklch, var(--color-primary) 40%, transparent); }
+  .overlay-primary-5 { background: color-mix(in oklch, var(--color-primary) 50%, transparent); }
+  .overlay-primary-6 { background: color-mix(in oklch, var(--color-primary) 60%, transparent); }
+  .overlay-primary-7 { background: color-mix(in oklch, var(--color-primary) 70%, transparent); }
+  .overlay-primary-8 { background: color-mix(in oklch, var(--color-primary) 80%, transparent); }
+  .overlay-primary-9 { background: color-mix(in oklch, var(--color-primary) 90%, transparent); }
+
+  .overlay-success-1 { background: color-mix(in oklch, var(--color-success) 10%, transparent); }
+  .overlay-success-2 { background: color-mix(in oklch, var(--color-success) 20%, transparent); }
+  .overlay-success-3 { background: color-mix(in oklch, var(--color-success) 30%, transparent); }
+  .overlay-success-4 { background: color-mix(in oklch, var(--color-success) 40%, transparent); }
+  .overlay-success-5 { background: color-mix(in oklch, var(--color-success) 50%, transparent); }
+  .overlay-success-6 { background: color-mix(in oklch, var(--color-success) 60%, transparent); }
+  .overlay-success-7 { background: color-mix(in oklch, var(--color-success) 70%, transparent); }
+  .overlay-success-8 { background: color-mix(in oklch, var(--color-success) 80%, transparent); }
+  .overlay-success-9 { background: color-mix(in oklch, var(--color-success) 90%, transparent); }
+
+  .overlay-warning-1 { background: color-mix(in oklch, var(--color-warning) 10%, transparent); }
+  .overlay-warning-2 { background: color-mix(in oklch, var(--color-warning) 20%, transparent); }
+  .overlay-warning-3 { background: color-mix(in oklch, var(--color-warning) 30%, transparent); }
+  .overlay-warning-4 { background: color-mix(in oklch, var(--color-warning) 40%, transparent); }
+  .overlay-warning-5 { background: color-mix(in oklch, var(--color-warning) 50%, transparent); }
+  .overlay-warning-6 { background: color-mix(in oklch, var(--color-warning) 60%, transparent); }
+  .overlay-warning-7 { background: color-mix(in oklch, var(--color-warning) 70%, transparent); }
+  .overlay-warning-8 { background: color-mix(in oklch, var(--color-warning) 80%, transparent); }
+  .overlay-warning-9 { background: color-mix(in oklch, var(--color-warning) 90%, transparent); }
+
+  .overlay-danger-1 { background: color-mix(in oklch, var(--color-danger) 10%, transparent); }
+  .overlay-danger-2 { background: color-mix(in oklch, var(--color-danger) 20%, transparent); }
+  .overlay-danger-3 { background: color-mix(in oklch, var(--color-danger) 30%, transparent); }
+  .overlay-danger-4 { background: color-mix(in oklch, var(--color-danger) 40%, transparent); }
+  .overlay-danger-5 { background: color-mix(in oklch, var(--color-danger) 50%, transparent); }
+  .overlay-danger-6 { background: color-mix(in oklch, var(--color-danger) 60%, transparent); }
+  .overlay-danger-7 { background: color-mix(in oklch, var(--color-danger) 70%, transparent); }
+  .overlay-danger-8 { background: color-mix(in oklch, var(--color-danger) 80%, transparent); }
+  .overlay-danger-9 { background: color-mix(in oklch, var(--color-danger) 90%, transparent); }
+
+  .overlay-info-1 { background: color-mix(in oklch, var(--color-info) 10%, transparent); }
+  .overlay-info-2 { background: color-mix(in oklch, var(--color-info) 20%, transparent); }
+  .overlay-info-3 { background: color-mix(in oklch, var(--color-info) 30%, transparent); }
+  .overlay-info-4 { background: color-mix(in oklch, var(--color-info) 40%, transparent); }
+  .overlay-info-5 { background: color-mix(in oklch, var(--color-info) 50%, transparent); }
+  .overlay-info-6 { background: color-mix(in oklch, var(--color-info) 60%, transparent); }
+  .overlay-info-7 { background: color-mix(in oklch, var(--color-info) 70%, transparent); }
+  .overlay-info-8 { background: color-mix(in oklch, var(--color-info) 80%, transparent); }
+  .overlay-info-9 { background: color-mix(in oklch, var(--color-info) 90%, transparent); }
+
+  .overlay-secondary-1 { background: color-mix(in oklch, var(--color-secondary) 10%, transparent); }
+  .overlay-secondary-2 { background: color-mix(in oklch, var(--color-secondary) 20%, transparent); }
+  .overlay-secondary-3 { background: color-mix(in oklch, var(--color-secondary) 30%, transparent); }
+  .overlay-secondary-4 { background: color-mix(in oklch, var(--color-secondary) 40%, transparent); }
+  .overlay-secondary-5 { background: color-mix(in oklch, var(--color-secondary) 50%, transparent); }
+  .overlay-secondary-6 { background: color-mix(in oklch, var(--color-secondary) 60%, transparent); }
+  .overlay-secondary-7 { background: color-mix(in oklch, var(--color-secondary) 70%, transparent); }
+  .overlay-secondary-8 { background: color-mix(in oklch, var(--color-secondary) 80%, transparent); }
+  .overlay-secondary-9 { background: color-mix(in oklch, var(--color-secondary) 90%, transparent); }
+
+  .overlay-accent-1 { background: color-mix(in oklch, var(--color-accent) 10%, transparent); }
+  .overlay-accent-2 { background: color-mix(in oklch, var(--color-accent) 20%, transparent); }
+  .overlay-accent-3 { background: color-mix(in oklch, var(--color-accent) 30%, transparent); }
+  .overlay-accent-4 { background: color-mix(in oklch, var(--color-accent) 40%, transparent); }
+  .overlay-accent-5 { background: color-mix(in oklch, var(--color-accent) 50%, transparent); }
+  .overlay-accent-6 { background: color-mix(in oklch, var(--color-accent) 60%, transparent); }
+  .overlay-accent-7 { background: color-mix(in oklch, var(--color-accent) 70%, transparent); }
+  .overlay-accent-8 { background: color-mix(in oklch, var(--color-accent) 80%, transparent); }
+  .overlay-accent-9 { background: color-mix(in oklch, var(--color-accent) 90%, transparent); }
+
+  /* Glass overlay */
+  .overlay-glass {
+    background: var(--glass-bg, rgba(255, 255, 255, 0.1));
+    backdrop-filter: var(--glass-blur, blur(12px));
+  }
+
+  .overlay-glass-dark {
+    background: var(--glass-dark-bg, rgba(0, 0, 0, 0.3));
+    backdrop-filter: var(--glass-blur, blur(12px));
+  }
+
+  /* ⭐ GRADIENT OVERLAY - existing gradient class प्रयोग गर्ने */
+  .overlay.gradient {
+    background: var(--gradient-primary);
+    opacity: 0.3;  /* पारदर्शी बनाउन */
+  }
+
+  .overlay.gradient.primary { background: var(--gradient-primary); }
+  .overlay.gradient.secondary { background: var(--gradient-secondary); }
+  .overlay.gradient.success { background: var(--gradient-success); }
+  .overlay.gradient.warning { background: var(--gradient-warning); }
+  .overlay.gradient.danger { background: var(--gradient-danger); }
+  .overlay.gradient.info { background: var(--gradient-info); }
+  .overlay.gradient.accent { background: var(--gradient-accent); }
+
+  /* Gradient intensities */
+  .overlay.gradient-1 { opacity: 0.1; }
+  .overlay.gradient-2 { opacity: 0.2; }
+  .overlay.gradient-3 { opacity: 0.3; }
+  .overlay.gradient-4 { opacity: 0.4; }
+  .overlay.gradient-5 { opacity: 0.5; }
+  .overlay.gradient-6 { opacity: 0.6; }
+  .overlay.gradient-7 { opacity: 0.7; }
+  .overlay.gradient-8 { opacity: 0.8; }
+  .overlay.gradient-9 { opacity: 0.9; }
+
+  /* Pattern overlays */
+  .overlay-pattern-dots {
+    background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.2;
+  }
+
+  .overlay-pattern-lines {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      currentColor 10px,
+      currentColor 20px
+    );
+    opacity: 0.1;
+  }
+
+  .overlay-pattern-grid {
+    background-image: 
+      linear-gradient(currentColor 1px, transparent 1px),
+      linear-gradient(90deg, currentColor 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.1;
+  }
+
+  /* Position utilities */
+  .overlay-absolute {
+    position: absolute;
+    inset: 0;
+  }
+
+  .overlay-fixed {
+    position: fixed;
+    inset: 0;
+    z-index: var(--overlay-z, 1000);
+  }
+
+  .overlay-relative {
+    position: relative;
+  }
+
+  .overlay-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--overlay-height, 50%);
+  }
+
+  .overlay-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--overlay-height, 50%);
+  }
+
+  .overlay-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--overlay-width, 50%);
+  }
+
+  .overlay-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--overlay-width, 50%);
+  }
+
+  /* Z-index utilities */
+  .overlay-z-1 { --overlay-z: 100; }
+  .overlay-z-2 { --overlay-z: 200; }
+  .overlay-z-3 { --overlay-z: 300; }
+  .overlay-z-4 { --overlay-z: 400; }
+  .overlay-z-5 { --overlay-z: 500; }
+  .overlay-z-6 { --overlay-z: 600; }
+  .overlay-z-7 { --overlay-z: 700; }
+  .overlay-z-8 { --overlay-z: 800; }
+  .overlay-z-9 { --overlay-z: 900; }
+  .overlay-z-10 { --overlay-z: 1000; }
+  .overlay-z-max { --overlay-z: 9999; }
+
+  /* Pointer events */
+  .overlay-pointer-none { pointer-events: none; }
+  .overlay-pointer-auto { pointer-events: auto; }
+
+  /* Hover effects */
+  .overlay-hover {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .overlay-hover:hover {
+    opacity: 1;
+  }
+
+  .group:hover .group-hover\:overlay {
+    opacity: 1;
+  }
+
+  /* Animation */
+  .overlay-fade {
+    animation: overlayFade 0.3s ease;
+  }
+
+  @keyframes overlayFade {
+    from {
+      opacity: 0;
+      backdrop-filter: blur(0);
+    }
+    to {
+      opacity: 1;
+      backdrop-filter: var(--overlay-blur, blur(4px));
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .overlay-top,
+    .overlay-bottom {
+      --overlay-height: 40%;
+    }
+
+    .overlay-left,
+    .overlay-right {
+      --overlay-width: 80%;
+    }
+  }
+}

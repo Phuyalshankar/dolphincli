@@ -1,0 +1,44 @@
+# AI Context Ignore Rules
+# This file instructs the AI on which directories to skip reading/searching depending on the active task to save time and API costs.
+
+# ============================
+# ALWAYS IGNORE
+# ============================
+node_modules/
+dist/
+.git/
+.vscode/
+package-lock.json
+
+# ============================
+# CONTEXT: CLI / Backend Task
+# (Working on dolphin.js)
+# ============================
+# [CLI-IGNORE-START]
+MainCss/
+snippets/
+public/
+react-test/
+# [CLI-IGNORE-END]
+
+# ============================
+# CONTEXT: Core CSS Task 
+# (Working on MainCss styling)
+# ============================
+# [CSS-IGNORE-START]
+bin/
+snippets/
+public/
+react-test/
+# [CSS-IGNORE-END]
+
+# ============================
+# CONTEXT: Template Building Task
+# (Adding new Shadcn-like components)
+# ============================
+# [TEMPLATE-IGNORE-START]
+bin/
+MainCss/
+snippets/
+react-test/
+# [TEMPLATE-IGNORE-END]

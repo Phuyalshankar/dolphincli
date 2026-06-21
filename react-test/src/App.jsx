@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Eye, EyeOff, Mail, Lock, Globe, X } from 'lucide-react'
+import TestPush from './TestPush'
 
 export default function App() {
   const [formData, setFormData] = useState({
@@ -222,6 +223,17 @@ export default function App() {
         </div>
       </div>
 
+      {/* Test CLI Link Component Generation */}
+      <div>
+        <div className="relative inline-block group w-fit">
+          <button className="px-4 py-2 bg-white/10 glass rounded-lg text-white font-medium border border-white/20 hover:bg-white/20 transition-all"> Hover me </button>
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-surface-dark/80 glass backdrop-blur-md border border-border/20 text-white text-xs rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50"> This is a tooltip <svg className="absolute text-text h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve">
+              <polygon className="fill-current" points="0,0 127.5,127.5 255,0"/>
+            </svg>
+          </div>
+        </div>
+</div>
+
       {/* Decorative Background */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
         <div
@@ -237,6 +249,7 @@ export default function App() {
           style={{ backgroundColor: 'var(--color-accent)', animationDelay: '2s' }}
         />
       </div>
+      <TestPush />
     </div>
   )
 }

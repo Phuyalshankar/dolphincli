@@ -1,0 +1,152 @@
+<div class="dolphin-file-explorer" data-dolphin-vfs="root" style="
+  display: flex;
+  height: 600px;
+  background: #1e1e1e;
+  color: #cccccc;
+  font-family: Consolas, 'Courier New', monospace;
+  border-radius: 12px;
+  border: 1px solid #333;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+">
+  <!-- Sidebar (File Tree) -->
+  <div class="sidebar" style="
+    width: 260px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  ">
+    <!-- Header -->
+    <div style="
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #858585;
+      border-bottom: 1px solid #3c3c3c;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    ">
+      <span>EXPLORER</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="cursor:pointer; font-weight: bold; font-size:12px; color: #007acc;" data-vfs-new-file title="New File">+File</span>
+        <span style="cursor:pointer; font-weight: bold; font-size:12px; color: #007acc;" data-vfs-new-folder title="New Folder">+Folder</span>
+      </div>
+    </div>
+
+    <!-- Mount local windows directory button -->
+    <div style="padding: 10px 14px; border-bottom: 1px solid #3c3c3c; display: flex; flex-direction: column; gap: 6px;">
+      <button data-vfs-mount style="
+        background: #0e639c;
+        color: #ffffff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-family: var(--font-outfit), sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s;
+        text-align: center;
+      " onmouseover="this.style.backgroundColor='#1177bb'" onmouseout="this.style.backgroundColor='#0e639c'">
+        📁 Mount Local Directory
+      </button>
+      <span style="font-size: 9px; color: #858585; text-align: center; line-height: 1.3;">
+        Mount any folder on your Windows computer directly to view and edit files.
+      </span>
+    </div>
+
+    <!-- Tree View Container -->
+    <div id="file-tree-container" data-vfs-tree class="dolphin-scrollbar" style="
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    ">
+      <!-- Generated dynamically by dolphin-client VFS engine -->
+    </div>
+  </div>
+
+  <!-- Main Content (Editor Area) -->
+  <div class="editor-area" style="
+    flex: 1;
+    background: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  ">
+    <!-- Tab / Breadcrumb -->
+    <div style="
+      height: 38px;
+      background: #2d2d2d;
+      border-bottom: 1px solid #3c3c3c;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 13px;
+      color: #969696;
+    ">
+      <span id="active-file-crumb" data-vfs-breadcrumbs>No file open</span>
+      
+      <!-- Save Button -->
+      <button data-vfs-save style="
+        background: #007acc;
+        color: #ffffff;
+        border: none;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-outfit), sans-serif;
+        font-weight: 500;
+        transition: background 0.15s;
+      " onmouseover="this.style.backgroundColor='#0098ff'" onmouseout="this.style.backgroundColor='#007acc'">
+        💾 Save File
+      </button>
+    </div>
+
+    <!-- Code Display / Textarea -->
+    <div style="
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    ">
+      <textarea id="editor-textarea" data-vfs-editor class="dolphin-scrollbar" placeholder="// Mount a folder or click a file to start editing..." style="
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #d4d4d4;
+        padding: 16px;
+        font-family: Consolas, 'Courier New', monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: none;
+      " disabled></textarea>
+    </div>
+
+    <!-- Footer Status Bar -->
+    <div style="
+      height: 22px;
+      background: #007acc;
+      color: #ffffff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    ">
+      <span>Dolphin VFS Client</span>
+      <span id="editor-status" data-vfs-status>Ready</span>
+    </div>
+  </div>
+</div>

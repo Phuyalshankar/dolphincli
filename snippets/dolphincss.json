@@ -1,0 +1,74 @@
+{
+  "DolphinCSS Effect - Neon": { "prefix": "fx-neon", "body": ["fx-neon"], "description": "Bright cyber neon glow effect" },
+  "DolphinCSS Effect - Glass": { "prefix": "fx-glass", "body": ["fx-glass"], "description": "Translucent glassmorphism effect" },
+  "DolphinCSS Effect - Metal": { "prefix": "fx-metal", "body": ["fx-metal"], "description": "Liquid metal gradient effect" },
+  "DolphinCSS Effect - Rainbow": { "prefix": "fx-rainbow", "body": ["fx-rainbow"], "description": "Psychedelic animated rainbow gradient" },
+  "DolphinCSS Effect - Float": { "prefix": "fx-float", "body": ["fx-float"], "description": "Floating element with shadow" },
+  "DolphinCSS Effect - Flare": { "prefix": "fx-flare", "body": ["fx-flare"], "description": "Solar flare warm gradient" },
+  "DolphinCSS Effect - Holo": { "prefix": "fx-holo", "body": ["fx-holo"], "description": "Holographic matrix grid effect" },
+  "DolphinCSS Effect - Crystal": { "prefix": "fx-crystal", "body": ["fx-crystal"], "description": "Crystal clear glass effect" },
+  "DolphinCSS Effect - Aqua": { "prefix": "fx-aqua", "body": ["fx-aqua"], "description": "Deep aqua water effect" },
+  "DolphinCSS Effect - Nebula": { "prefix": "fx-nebula", "body": ["fx-nebula"], "description": "Galactic purple/blue nebula effect" },
+  "DolphinCSS Effect - Aurora": { "prefix": "fx-aurora", "body": ["fx-aurora"], "description": "Frosted aurora light effect" },
+
+  "DolphinCSS Theme - Sagarmatha": { "prefix": "bg-sagarmatha", "body": ["bg-sagarmatha"], "description": "Ice Blue to Deep Ocean Blue Premium Theme" },
+  "DolphinCSS Theme - Danphe": { "prefix": "bg-danphe", "body": ["bg-danphe"], "description": "Vibrant Multi-color Premium Theme" },
+  "DolphinCSS Theme - Munal": { "prefix": "bg-munal", "body": ["bg-munal"], "description": "Royal Deep Purple and Gold Premium Theme" },
+  "DolphinCSS Theme - Laligurans": { "prefix": "bg-laligurans", "body": ["bg-laligurans"], "description": "Crimson Red to Soft Pink Premium Theme" },
+  "DolphinCSS Theme - Machhapuchhre": { "prefix": "bg-machhapuchhre", "body": ["bg-machhapuchhre"], "description": "Dark Slate and Frosty Silver Premium Theme" },
+  "DolphinCSS Theme - Mustang": { "prefix": "bg-mustang", "body": ["bg-mustang"], "description": "Earthy Terracotta and Warm Orange Premium Theme" },
+  "DolphinCSS Theme - Tilicho": { "prefix": "bg-tilicho", "body": ["bg-tilicho"], "description": "High Altitude Turquoise to Deep Teal Premium Theme" },
+  "DolphinCSS Theme - Lumbini": { "prefix": "bg-lumbini", "body": ["bg-lumbini"], "description": "Peaceful Soft Gold and Calm White Premium Theme" },
+
+  "DolphinCSS Layout - Flex Center": { "prefix": "flex-center", "body": ["flex-center"], "description": "Flexbox centered items (both axes)" },
+  "DolphinCSS Layout - Flex Between": { "prefix": "flex-between", "body": ["flex-between"], "description": "Flexbox justify space-between" },
+  "DolphinCSS Layout - Flex Left": { "prefix": "flex-left", "body": ["flex-left"], "description": "Flexbox items-center justify-start" },
+  "DolphinCSS Layout - Flex Right": { "prefix": "flex-right", "body": ["flex-right"], "description": "Flexbox items-center justify-end" },
+  "DolphinCSS Layout - Flex Col Center": { "prefix": "flex-col-center", "body": ["flex-col-center"], "description": "Flex column centered items" },
+  "DolphinCSS Layout - Flex Col Left": { "prefix": "flex-col-left", "body": ["flex-col-left"], "description": "Flex column items start" },
+  "DolphinCSS Layout - Flex Col Right": { "prefix": "flex-col-right", "body": ["flex-col-right"], "description": "Flex column items end" },
+  
+  "DolphinCSS Layout - Grid Center": { "prefix": "grid-center", "body": ["grid-center"], "description": "Grid place-items center" },
+  "DolphinCSS Layout - Grid 2 Col": { "prefix": "grid-col-2", "body": ["grid-col-2"], "description": "CSS Grid 2 columns" },
+  "DolphinCSS Layout - Grid 3 Col": { "prefix": "grid-col-3", "body": ["grid-col-3"], "description": "CSS Grid 3 columns" },
+  "DolphinCSS Layout - Grid 4 Col": { "prefix": "grid-col-4", "body": ["grid-col-4"], "description": "CSS Grid 4 columns" },
+
+  "DolphinCSS Component - Button Filled": { "prefix": "btn-filled", "body": ["filled primary"], "description": "Primary solid button" },
+  "DolphinCSS Component - Button Outlined": { "prefix": "btn-outlined", "body": ["outlined primary"], "description": "Primary outlined button" },
+  "DolphinCSS Component - Button Circle": { "prefix": "btn-circle", "body": ["circle md filled primary"], "description": "Medium circular button" },
+  "DolphinCSS Component - Card": { "prefix": "card", "body": ["card"], "description": "Base modern AI card" },
+  "DolphinCSS Component - Card Glass": { "prefix": "card-glass", "body": ["card glass"], "description": "Glassmorphism card" },
+  "DolphinCSS Component - Card Outlined": { "prefix": "card-outlined", "body": ["card outlined"], "description": "Bordered modern AI card" },
+
+  "DolphinCSS Component - Form Floating Label": { 
+    "prefix": "form-floating", 
+    "body": [
+      "<div className=\"floatinglabel w-full\">",
+      "  <input type=\"text\" id=\"$1\" className=\"floatinglabel-input w-full\" placeholder=\" \" />",
+      "  <label htmlFor=\"$1\" className=\"floatinglabel-label\">$2</label>",
+      "</div>"
+    ], 
+    "description": "Input with animated floating label" 
+  },
+  "DolphinCSS Component - Form Standard Label": { 
+    "prefix": "form-standard", 
+    "body": [
+      "<div className=\"standardlabel w-full\">",
+      "  <input type=\"text\" id=\"$1\" className=\"standardlabel-input w-full\" placeholder=\" \" />",
+      "  <label htmlFor=\"$1\" className=\"standardlabel-label\">$2</label>",
+      "</div>"
+    ], 
+    "description": "Input with minimalist bottom border" 
+  },
+  "DolphinCSS Component - Form Icon Left": { 
+    "prefix": "form-icon-left", 
+    "body": [
+      "<div className=\"floatinglabel input-icon-left w-full\">",
+      "  <Icon className=\"icon-left text-muted\" />",
+      "  <input type=\"text\" id=\"$1\" className=\"floatinglabel-input w-full\" placeholder=\" \" />",
+      "  <label htmlFor=\"$1\" className=\"floatinglabel-label\">$2</label>",
+      "</div>"
+    ], 
+    "description": "Floating label input with left icon" 
+  }
+}

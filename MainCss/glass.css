@@ -1,0 +1,340 @@
+/* ===== GLASS SYSTEM - COMPLETE FIXED VERSION ===== */
+@layer components {
+  /* ===== GLASS COMPONENT (Global) ===== */
+  .glass {
+    background-color: var(--glass-bg) !important;
+    border-color: var(--glass-border) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    box-shadow: var(--glass-shadow) !important;
+    color: var(--color-text, #1f2937) !important; /* Text color added */
+    @apply rounded-xl border transition-all duration-300 ease-out;
+  }
+
+  .glass:hover {
+    background-color: var(--glass-bg-alt) !important;
+    border-color: var(--glass-border-alt) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+    box-shadow: var(--glass-shadow-lg) !important;
+  }
+
+  /* ===== GLASS COLOR VARIANTS ===== */
+  .glass.primary {
+    background-color: var(--glass-primary-bg) !important;
+    border-color: var(--glass-primary-border) !important;
+    color: var(--color-text-light, #ffffff) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .glass.success {
+    background-color: var(--glass-success-bg) !important;
+    border-color: var(--glass-success-border, var(--glass-primary-border)) !important;
+    color: var(--color-text-light, #ffffff) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .glass.warning {
+    background-color: var(--glass-warning-bg) !important;
+    border-color: var(--glass-warning-border, var(--glass-primary-border)) !important;
+    color: var(--color-text-dark, #1f2937) !important; /* Dark text for warning */
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .glass.danger {
+    background-color: var(--glass-danger-bg) !important;
+    border-color: var(--glass-danger-border, var(--glass-primary-border)) !important;
+    color: var(--color-text-light, #ffffff) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .glass.info {
+    background-color: var(--glass-info-bg) !important;
+    border-color: var(--glass-info-border, var(--glass-primary-border)) !important;
+    color: var(--color-text-light, #ffffff) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .glass.secondary {
+    background-color: var(--glass-secondary-bg) !important;
+    border-color: var(--glass-secondary-border, var(--glass-primary-border)) !important;
+    color: var(--color-text-light, #ffffff) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  /* ===== GLASS HOVER STATES ===== */
+  .glass.primary:hover {
+    background-color: var(--glass-primary-hover, var(--glass-primary-bg)) !important;
+    border-color: var(--glass-primary-border) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+  }
+
+  .glass.success:hover {
+    background-color: var(--glass-success-hover, var(--glass-success-bg)) !important;
+    border-color: var(--glass-success-border, var(--glass-primary-border)) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+  }
+
+  .glass.warning:hover {
+    background-color: var(--glass-warning-hover, var(--glass-warning-bg)) !important;
+    border-color: var(--glass-warning-border, var(--glass-primary-border)) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+  }
+
+  .glass.danger:hover {
+    background-color: var(--glass-danger-hover, var(--glass-danger-bg)) !important;
+    border-color: var(--glass-danger-border, var(--glass-primary-border)) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+  }
+
+  .glass.info:hover {
+    background-color: var(--glass-info-hover, var(--glass-info-bg)) !important;
+    border-color: var(--glass-info-border, var(--glass-primary-border)) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+  }
+
+  .glass.secondary:hover {
+    background-color: var(--glass-secondary-hover, var(--glass-secondary-bg)) !important;
+    border-color: var(--glass-secondary-border, var(--glass-primary-border)) !important;
+    backdrop-filter: var(--glass-blur-lg) !important;
+    -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+  }
+
+  /* ===== GLASS WITH FILLED VARIANT ===== */
+  .glass.filled {
+    background-color: var(--glass-bg) !important;
+    color: var(--color-text) !important;
+  }
+
+  .glass.filled.primary {
+    background-color: var(--glass-primary-bg) !important;
+    color: var(--color-text-light) !important;
+  }
+
+  /* ===== GLASS WITH OUTLINED VARIANT ===== */
+  .glass.outlined {
+    background-color: transparent !important;
+    border-width: 2px !important;
+  }
+
+  .glass.outlined.primary {
+    border-color: var(--glass-primary-border) !important;
+    color: var(--color-primary) !important;
+  }
+
+  /* ===== GLASS WITH PLAIN VARIANT ===== */
+  .glass.plain {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===== GLASS WITH GLOW ===== */
+  .glass.glow {
+    box-shadow: var(--glass-shadow), var(--glow-primary, 0 0 20px var(--color-primary)) !important;
+  }
+
+  .glass.glow:hover {
+    box-shadow: var(--glass-shadow-lg), var(--glow-primary-hover, 0 0 25px var(--color-primary)) !important;
+  }
+
+  /* ===== GLASS WITH PULSE ===== */
+  .glass.pulse {
+    animation: glass-pulse 3s ease-in-out infinite !important;
+  }
+
+  @keyframes glass-pulse {
+    0%, 100% {
+      backdrop-filter: var(--glass-blur) !important;
+      -webkit-backdrop-filter: var(--glass-blur) !important;
+    }
+    50% {
+      backdrop-filter: var(--glass-blur-lg) !important;
+      -webkit-backdrop-filter: var(--glass-blur-lg) !important;
+    }
+  }
+
+  /* ===== GLASS LOADING STATES ===== */
+  .glass.loading {
+    @apply relative cursor-wait;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .glass.loading:not(.loading-text) {
+    color: transparent !important;
+  }
+
+  .glass.loading:not(.loading-text) > *:not(.loading-spinner) {
+    @apply opacity-0;
+  }
+
+  .glass.loading::after {
+    content: '';
+    @apply absolute inset-0 m-auto;
+    width: 1.25em;
+    height: 1.25em;
+    border: 2px solid;
+    border-top-color: transparent !important;
+    border-radius: 50%;
+    animation: dolphin-spin 0.75s linear infinite;
+  }
+
+  .glass.primary.loading::after {
+    border-color: var(--color-text-light) !important;
+  }
+
+  .glass.warning.loading::after {
+    border-color: var(--color-text-dark) !important;
+  }
+
+  /* ===== GLASS BUTTON SPECIFIC ===== */
+  .filled.glass {
+    @apply font-medium rounded-md inline-flex items-center justify-center select-none transition-all duration-200;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  .outlined.glass {
+    @apply border-2 rounded-md inline-flex items-center justify-center select-none transition-all duration-200;
+    background-color: transparent !important;
+    backdrop-filter: var(--glass-blur-sm) !important;
+    -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+  }
+
+  .plain.glass {
+    @apply bg-transparent inline-flex items-center justify-center select-none transition-all duration-200;
+    backdrop-filter: var(--glass-blur-sm) !important;
+    -webkit-backdrop-filter: var(--glass-blur-sm) !important;
+  }
+
+  /* Button sizes */
+  .filled.glass.btn-xs { @apply px-2 py-1 text-xs; }
+  .filled.glass.btn-sm { @apply px-3 py-1.5 text-sm; }
+  .filled.glass.btn-md { @apply px-4 py-2 text-base; }
+  .filled.glass.btn-lg { @apply px-6 py-3 text-lg; }
+  .filled.glass.btn-xl { @apply px-8 py-4 text-xl; }
+
+  .outlined.glass.btn-xs { @apply px-2 py-1 text-xs; }
+  .outlined.glass.btn-sm { @apply px-3 py-1.5 text-sm; }
+  .outlined.glass.btn-md { @apply px-4 py-2 text-base; }
+
+  /* ===== GLASS CARD ===== */
+  .card.glass {
+    @apply rounded-2xl;
+  }
+
+  /* ===== GLASS CARD WITH GRADIENT COMBINATION ===== */
+  .glass.gradient,
+  .card.glass.gradient {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-primary) 20%, transparent), 
+      color-mix(in oklch, var(--color-secondary) 20%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .glass.gradient.primary,
+  .card.glass.gradient.primary {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-primary-light) 25%, transparent), 
+      color-mix(in oklch, var(--color-primary-dark) 25%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    border-color: var(--glass-primary-border) !important;
+  }
+
+  .glass.gradient.secondary,
+  .card.glass.gradient.secondary {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-secondary-light) 25%, transparent), 
+      color-mix(in oklch, var(--color-secondary-dark) 25%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    border-color: var(--glass-secondary-border, var(--glass-primary-border)) !important;
+  }
+
+  .glass.gradient.success,
+  .card.glass.gradient.success {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-success-light) 25%, transparent), 
+      color-mix(in oklch, var(--color-success-dark) 25%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    border-color: var(--glass-success-border, var(--glass-primary-border)) !important;
+  }
+
+  .glass.gradient.warning,
+  .card.glass.gradient.warning {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-warning-light) 25%, transparent), 
+      color-mix(in oklch, var(--color-warning-dark) 25%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    border-color: var(--glass-warning-border, var(--glass-primary-border)) !important;
+  }
+
+  .glass.gradient.danger,
+  .card.glass.gradient.danger {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-danger-light) 25%, transparent), 
+      color-mix(in oklch, var(--color-danger-dark) 25%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    border-color: var(--glass-danger-border, var(--glass-primary-border)) !important;
+  }
+
+  .glass.gradient.info,
+  .card.glass.gradient.info {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-info-light) 25%, transparent), 
+      color-mix(in oklch, var(--color-info-dark) 25%, transparent)
+    ) !important;
+    background-color: transparent !important;
+    border-color: var(--glass-info-border, var(--glass-primary-border)) !important;
+  }
+
+  .glass.gradient.danphe,
+  .card.glass.gradient.danphe {
+    background-image: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-primary) 20%, transparent), 
+      color-mix(in oklch, var(--color-secondary) 20%, transparent),
+      color-mix(in oklch, var(--color-accent) 20%, transparent)
+    ) !important;
+    background-color: transparent !important;
+  }
+
+  /* ===== DARK MODE ADJUSTMENTS ===== */
+  [data-theme-mode="dark"] .glass {
+    color: var(--color-text-light, #f9fafb) !important;
+  }
+
+  [data-theme-mode="dark"] .glass.warning {
+    color: var(--color-text-light, #f9fafb) !important;
+  }
+
+  [data-theme-mode="dark"] .glass.outlined {
+    background-color: transparent !important;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes dolphin-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

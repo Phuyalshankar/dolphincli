@@ -1,0 +1,445 @@
+/* ===== BACKGROUND.CSS - Global Background System (Tailwind 4 Compatible) ===== */
+@layer components {
+  /* === Base Background Class === */
+  .background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  /* === BACKGROUND TYPES === */
+  
+  /* Filled Background */
+  .background.filled {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Outlined Background */
+  .background.outlined {
+    background-image: linear-gradient(var(--color-surface, white), var(--color-surface, white)), 
+                      var(--bg-image, none) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+    border: 2px solid transparent !important;
+    background-size: cover, cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+  }
+
+  /* Plain Background */
+  .background.plain {
+    background: transparent !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* === SHAPES === */
+  
+  /* Circle Shape */
+  .background.circle {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+  }
+
+  /* Rounded Shape */
+  .background.rounded {
+    border-radius: 0.5rem;
+  }
+
+  .background.rounded-sm { border-radius: 0.25rem; }
+  .background.rounded-md { border-radius: 0.5rem; }
+  .background.rounded-lg { border-radius: 1rem; }
+  .background.rounded-xl { border-radius: 1.5rem; }
+  .background.rounded-full { border-radius: 9999px; }
+
+  /* === COLOR VARIANTS (Primary, Secondary, etc.) === */
+  
+  /* Primary */
+  .background.primary {
+    --bg-image: var(--bg-primary, none);
+    background-image: var(--bg-image);
+  }
+
+  .background.primary.outlined {
+    background-image: linear-gradient(var(--color-surface, white), var(--color-surface, white)), 
+                      var(--bg-primary, none) !important;
+  }
+
+  /* Secondary */
+  .background.secondary {
+    --bg-image: var(--bg-secondary, none);
+    background-image: var(--bg-image);
+  }
+
+  .background.secondary.outlined {
+    background-image: linear-gradient(var(--color-surface, white), var(--color-surface, white)), 
+                      var(--bg-secondary, none) !important;
+  }
+
+  /* Success */
+  .background.success {
+    --bg-image: var(--bg-success, none);
+    background-image: var(--bg-image);
+  }
+
+  /* Warning */
+  .background.warning {
+    --bg-image: var(--bg-warning, none);
+    background-image: var(--bg-image);
+  }
+
+  /* Danger */
+  .background.danger {
+    --bg-image: var(--bg-danger, none);
+    background-image: var(--bg-image);
+  }
+
+  /* Info */
+  .background.info {
+    --bg-image: var(--bg-info, none);
+    background-image: var(--bg-image);
+  }
+
+  /* Danphe Theme */
+  .background.danphe {
+    --bg-image: var(--bg-danphe, none);
+    background-image: var(--bg-image);
+  }
+
+  /* === NEUTRAL / SURFACE BACKGROUNDS === */
+  .bg-surface {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .bg-surface-alt {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+  }
+
+  /* === SIZES (lg, md, sm, xs, xl) === */
+  
+  /* Width Sizes */
+  .background.xs { width: 4rem; }
+  .background.sm { width: 8rem; }
+  .background.md { width: 12rem; }
+  .background.lg { width: 16rem; }
+  .background.xl { width: 20rem; }
+  .background.full { width: 100%; }
+  .background.screen { width: 100vw; }
+
+  /* Height Sizes (auto if shape defined) */
+  .background.xs:not(.circle):not(.rounded):not(.shape-defined) { height: 4rem; }
+  .background.sm:not(.circle):not(.rounded):not(.shape-defined) { height: 8rem; }
+  .background.md:not(.circle):not(.rounded):not(.shape-defined) { height: 12rem; }
+  .background.lg:not(.circle):not(.rounded):not(.shape-defined) { height: 16rem; }
+  .background.xl:not(.circle):not(.rounded):not(.shape-defined) { height: 20rem; }
+
+  /* For circle shapes, use width for both dimensions */
+  .background.circle.xs { width: 4rem; height: 4rem; }
+  .background.circle.sm { width: 8rem; height: 8rem; }
+  .background.circle.md { width: 12rem; height: 12rem; }
+  .background.circle.lg { width: 16rem; height: 16rem; }
+  .background.circle.xl { width: 20rem; height: 20rem; }
+  .background.circle.full { width: 100%; height: 100%; }
+
+  /* === BACKGROUND WITH GRADIENT OVERLAY === */
+  .background.gradient {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .background.gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-overlay, linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2)));
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .background.gradient > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Gradient variants */
+  .background.gradient-primary::before {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    opacity: 0.7;
+  }
+
+  .background.gradient-secondary::before {
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
+    opacity: 0.7;
+  }
+
+  .background.gradient-danphe::before {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    opacity: 0.7;
+  }
+
+  .background.gradient-dark::before {
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+  }
+
+  .background.gradient-light::before {
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.8));
+  }
+
+  /* === GLASS EFFECT === */
+  .background.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+  }
+
+  .background.glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg-image, none);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: -1;
+  }
+
+  .background.glass-dark {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* === GLOW EFFECT === */
+  .background.glow {
+    position: relative;
+  }
+
+  .background.glow::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    background: inherit;
+    background-size: cover;
+    filter: blur(20px);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    border-radius: inherit;
+  }
+
+  .background.glow:hover::after {
+    opacity: 0.5;
+  }
+
+  .background.glow-pulse::after {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.3; filter: blur(15px); }
+    50% { opacity: 0.7; filter: blur(25px); }
+  }
+
+  /* === LOADING STATE === */
+  .background.loading {
+    position: relative;
+    min-height: 100px;
+    background: #f0f0f0 !important;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .background.loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+
+  .background.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid var(--color-primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* === DISABLED STATE === */
+  .background.disabled {
+    opacity: 0.5;
+    filter: grayscale(0.5);
+    pointer-events: none;
+    position: relative;
+  }
+
+  .background.disabled::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(128, 128, 128, 0.2);
+    backdrop-filter: blur(2px);
+  }
+
+  /* === BACKGROUND POSITIONS === */
+  .background.center { background-position: center; }
+  .background.top { background-position: top; }
+  .background.bottom { background-position: bottom; }
+  .background.left { background-position: left; }
+  .background.right { background-position: right; }
+  .background.top-left { background-position: top left; }
+  .background.top-right { background-position: top right; }
+  .background.bottom-left { background-position: bottom left; }
+  .background.bottom-right { background-position: bottom right; }
+
+  /* === BACKGROUND SIZES === */
+  .background.cover { background-size: cover; }
+  .background.contain { background-size: contain; }
+  .background.auto { background-size: auto; }
+  .background.size-50 { background-size: 50%; }
+  .background.size-75 { background-size: 75%; }
+  .background.size-100 { background-size: 100% 100%; }
+  .background.size-150 { background-size: 150% 150%; }
+
+  /* === BACKGROUND REPEAT === */
+  .background.repeat { background-repeat: repeat; }
+  .background.repeat-x { background-repeat: repeat-x; }
+  .background.repeat-y { background-repeat: repeat-y; }
+  .background.no-repeat { background-repeat: no-repeat; }
+
+  /* === BACKGROUND ATTACHMENT === */
+  .background.fixed { background-attachment: fixed; }
+  .background.scroll { background-attachment: scroll; }
+
+  /* === BLEND MODES === */
+  .background.blend-normal { background-blend-mode: normal; }
+  .background.blend-multiply { background-blend-mode: multiply; }
+  .background.blend-overlay { background-blend-mode: overlay; }
+  .background.blend-screen { background-blend-mode: screen; }
+  .background.blend-darken { background-blend-mode: darken; }
+  .background.blend-lighten { background-blend-mode: lighten; }
+  .background.blend-soft-light { background-blend-mode: soft-light; }
+
+  /* === FILTERS === */
+  .background.blur-sm { filter: blur(2px); }
+  .background.blur-md { filter: blur(4px); }
+  .background.blur-lg { filter: blur(8px); }
+  .background.brightness-50 { filter: brightness(0.5); }
+  .background.brightness-75 { filter: brightness(0.75); }
+  .background.brightness-100 { filter: brightness(1); }
+  .background.brightness-125 { filter: brightness(1.25); }
+  .background.grayscale { filter: grayscale(1); }
+  .background.sepia { filter: sepia(0.7); }
+  .background.contrast-50 { filter: contrast(0.5); }
+  .background.contrast-150 { filter: contrast(1.5); }
+
+  /* === PATTERNS === */
+  .background.pattern-dots {
+    background-image: radial-gradient(var(--color-primary) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .background.pattern-lines {
+    background-image: repeating-linear-gradient(45deg, var(--color-primary) 0px, var(--color-primary) 2px, transparent 2px, transparent 10px);
+  }
+
+  .background.pattern-grid {
+    background-image: 
+      linear-gradient(var(--color-primary) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-primary) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* === OVERLAYS === */
+  .background.overlay-dark {
+    position: relative;
+  }
+
+  .background.overlay-dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+
+  .background.overlay-dark-25::before { background: rgba(0, 0, 0, 0.25); }
+  .background.overlay-dark-50::before { background: rgba(0, 0, 0, 0.5); }
+  .background.overlay-dark-75::before { background: rgba(0, 0, 0, 0.75); }
+
+  .background.overlay-light {
+    position: relative;
+  }
+
+  .background.overlay-light::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+  }
+
+  /* === DARK MODE === */
+  [data-theme-mode="dark"] .background.glass {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  [data-theme-mode="dark"] .background.outlined {
+    background-image: linear-gradient(var(--color-surface-dark, #1a1a1a), var(--color-surface-dark, #1a1a1a)), 
+                      var(--bg-image, none) !important;
+  }
+
+  /* === RESPONSIVE (Tailwind 4 style) === */
+  @media (max-width: 640px) {
+    .background.responsive {
+      background-size: cover;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .background.responsive {
+      background-size: contain;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .background.responsive {
+      background-size: cover;
+    }
+  }
+
+  /* === PRINT === */
+  @media print {
+    .background {
+      background: none !important;
+      background-image: none !important;
+      filter: none !important;
+    }
+  }
+}

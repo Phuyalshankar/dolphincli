@@ -1,0 +1,8 @@
+/* ===== Button Sizes ===== */
+@layer components {
+    .xs { @apply text-[0.7rem] px-2 py-1; }
+    .sm { @apply text-xs px-3 py-1.5; }
+    .md { @apply text-sm px-4 py-2; }
+    .lg { @apply text-base px-5 py-3; }
+    .xl { @apply text-lg px-6 py-3; }
+}

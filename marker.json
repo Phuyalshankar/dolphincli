@@ -38,5 +38,29 @@
   "d-card": {
     "templateFile": "card.html",
     "addClasses": "card"
+  },
+  "dolphin-loader": {
+    "templateFile": "dolphin-loader.html",
+    "addClasses": ""
+  },
+  "dolphin-loading-button": {
+    "templateFile": "dolphin-loading-button.html",
+    "addClasses": ""
+  },
+  "dolphin-file-tree": {
+    "templateFile": "dolphin-file-tree.html",
+    "addClasses": ""
+  },
+  "dolphin-admin-dashboard": {
+    "templateFile": "dolphin-admin-dashboard.html",
+    "addClasses": ""
+  },
+  "dolphin-crud-table": {
+    "templateFile": "dolphin-crud-table.html",
+    "addClasses": ""
+  },
+  "dolphin-crud-form": {
+    "templateFile": "dolphin-crud-form.html",
+    "addClasses": ""
   }
 }

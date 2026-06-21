@@ -1,0 +1,27 @@
+/* ===== KPI Card System ===== */
+@layer components {
+  .kpi-card {
+    @apply flex items-center justify-between p-4 rounded-xl shadow-md transition-all duration-300 hover:shadow-xl bg-(--color-surface) text-(--color-text);
+  }
+  .kpi-card .kpi-text { @apply flex flex-col; }
+  .kpi-card .kpi-text .kpi-title { @apply text-sm text-(--color-text-muted); }
+  .kpi-card .kpi-text .kpi-value { @apply text-2xl font-bold text-(--color-text); }
+  .kpi-card .kpi-text .kpi-change { @apply text-sm font-medium mt-1; }
+  .kpi-card .kpi-text .kpi-change.positive { @apply text-(--color-success); }
+  .kpi-card .kpi-text .kpi-change.negative { @apply text-(--color-danger); }
+  .kpi-card .kpi-chart {
+    @apply w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300 shadow-inner bg-(--color-primary) text-(--color-text);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card .kpi-chart::before {
+    content: '';
+    @apply absolute bottom-1 left-1 w-[calc(100%-0.5rem)] h-1/2 bg-gradient-to-r from-(--color-gradient-start) to-(--color-gradient-end) rounded-sm;
+  }
+  .kpi-card:hover .kpi-chart { @apply shadow-lg; }
+  @media (max-width: 768px) {
+    .kpi-card { @apply flex-col items-start gap-3; }
+    .kpi-card .kpi-chart { @apply w-12 h-12; }
+  }
+}
+  

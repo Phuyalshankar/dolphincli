@@ -1,0 +1,586 @@
+/* ===== Table System - Complete with Sort, Filter & Footer ===== */
+@layer components {
+  .table {
+    @apply w-full border-collapse transition-all duration-200 bg-(--color-surface) rounded-xl shadow-md my-4;
+  }
+  
+  .table th, .table td {
+    @apply px-4 py-3 text-left border-b border-(--color-border) transition-all duration-200;
+  }
+  
+  .table th {
+    @apply bg-(--color-primary) text-white font-semibold text-sm uppercase tracking-wide relative;
+  }
+  
+  .table td {
+    @apply bg-(--color-surface) text-(--color-text);
+  }
+
+  /* ======================= */
+  /* 🔄 SORTING FUNCTIONALITY - UNCHANGED */
+  /* ======================= */
+  .table th.sortable {
+    @apply cursor-pointer select-none pr-8;
+  }
+  
+  .table th.sortable:hover {
+    background-color: color-mix(in oklch, var(--color-primary), black 15%);
+  }
+  
+  .table th.sortable .sort-indicator {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 opacity-50 text-xs;
+    transition: all 0.2s ease;
+  }
+  
+  .table th.sortable:hover .sort-indicator {
+    @apply opacity-80;
+  }
+  
+  .table th.sortable.asc .sort-indicator,
+  .table th.sortable.desc .sort-indicator {
+    @apply opacity-100;
+  }
+  
+  .table th.sortable.asc .sort-indicator::before {
+    content: '↑';
+  }
+  
+  .table th.sortable.desc .sort-indicator::before {
+    content: '↓';
+  }
+  
+  .table th.sortable .sort-indicator::before {
+    content: '↕';
+  }
+  
+  .sorting-active {
+    animation: sortHighlight 0.4s ease-out;
+  }
+
+  /* ======================= */
+  /* 🔍 FILTERING SYSTEM - UNCHANGED */
+  /* ======================= */
+  .table-filter-container {
+    @apply mb-6 bg-(--color-surface) rounded-xl border border-(--color-border) shadow-sm overflow-hidden;
+  }
+  
+  .table-filter-header {
+    @apply flex flex-wrap items-center justify-between p-4 border-b border-(--color-border);
+  }
+  
+  .table-search {
+    @apply flex-1 min-w-[200px] max-w-[400px];
+  }
+  
+  .table-search input {
+    @apply w-full px-4 py-2.5 border border-(--color-border) rounded-lg 
+           bg-(--color-surface) text-(--color-text) placeholder-(--color-text-muted)
+           focus:outline-none focus:ring-2 focus:ring-(--color-primary) focus:border-transparent
+           transition-all duration-200;
+  }
+  
+  .table-filters {
+    @apply flex flex-wrap gap-3 items-center mt-3 md:mt-0;
+  }
+  
+  .filter-group {
+    @apply flex items-center gap-2;
+  }
+  
+  .filter-group label {
+    @apply text-sm font-medium text-(--color-text-muted) whitespace-nowrap;
+  }
+  
+  .filter-group select,
+  .filter-group input[type="date"],
+  .filter-group input[type="number"] {
+    @apply px-3 py-2 border border-(--color-border) rounded-lg bg-(--color-surface) 
+           text-(--color-text) text-sm focus:outline-none focus:ring-1 focus:ring-(--color-primary)
+           min-w-[120px];
+  }
+  
+  .filter-actions {
+    @apply flex gap-2 mt-3 md:mt-0;
+  }
+  
+  .filter-btn {
+    @apply px-4 py-2 rounded-lg border border-(--color-border) bg-(--color-surface)
+           text-(--color-text) text-sm font-medium hover:bg-(--color-primary) 
+           hover:text-white hover:border-(--color-primary) transition-all duration-200
+           flex items-center gap-2;
+  }
+  
+  .filter-btn.active {
+    @apply bg-(--color-primary) text-white border-(--color-primary);
+  }
+  
+  .filter-reset {
+    @apply text-sm text-(--color-primary) hover:underline cursor-pointer ml-4;
+  }
+
+  /* ======================= */
+  /* 📊 TABLE FOOTER & PAGINATION - UNCHANGED */
+  /* ======================= */
+  .table-footer {
+    @apply flex flex-col md:flex-row justify-between items-center p-4 mt-4 
+           bg-(--color-surface) rounded-xl border border-(--color-border) shadow-sm;
+  }
+  
+  .footer-info {
+    @apply text-sm text-(--color-text-muted) mb-3 md:mb-0;
+  }
+  
+  .footer-info strong {
+    @apply text-(--color-text) font-semibold;
+  }
+  
+  .table-pagination {
+    @apply flex items-center gap-2;
+  }
+  
+  .pagination-btn {
+    @apply w-8 h-8 flex items-center justify-center rounded-lg border border-(--color-border)
+           bg-(--color-surface) text-(--color-text) hover:bg-(--color-primary) 
+           hover:text-white hover:border-(--color-primary) transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .pagination-btn.active {
+    @apply bg-(--color-primary) text-white border-(--color-primary);
+  }
+  
+  .pagination-ellipsis {
+    @apply px-2 text-(--color-text-muted);
+  }
+  
+  .rows-per-page {
+    @apply flex items-center gap-2 ml-4;
+  }
+  
+  .rows-per-page select {
+    @apply px-2 py-1 border border-(--color-border) rounded bg-(--color-surface) text-(--color-text) text-sm;
+  }
+
+  /* Summary Row - UNCHANGED */
+  .table-summary {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 95%);
+    @apply font-semibold;
+  }
+  
+  .table-summary td {
+    @apply py-4 border-t-2 border-(--color-primary);
+  }
+
+  /* ======================= */
+  /* 📱 MOBILE CARD LAYOUT - ORIGINAL INTACT */
+  /* ======================= */
+  @media (max-width: 768px) {
+    .table.mobile-cards {
+      @apply block bg-transparent shadow-none border-none rounded-none;
+    }
+    
+    .table.mobile-cards thead {
+      @apply hidden;
+    }
+    
+    .table.mobile-cards tbody {
+      @apply flex flex-col gap-4;
+    }
+    
+    .table.mobile-cards tr {
+      @apply flex flex-col bg-(--color-surface) rounded-xl p-4 shadow-md border border-(--color-border);
+    }
+    
+    .table.mobile-cards td {
+      @apply flex justify-between items-center p-3 border-b border-(--color-border) bg-transparent;
+    }
+    
+    .table.mobile-cards td:last-child {
+      @apply border-b-0;
+    }
+    
+    .table.mobile-cards td::before {
+      content: attr(data-label);
+      @apply font-semibold text-(--color-primary) text-sm uppercase tracking-wide min-w-24 mr-4;
+    }
+    
+    /* Mobile Filter - UNCHANGED */
+    .table-filter-header {
+      @apply flex-col items-stretch gap-3;
+    }
+    
+    .table-search {
+      @apply max-w-full;
+    }
+    
+    .table-filters {
+      @apply flex-col items-stretch;
+    }
+    
+    .filter-group {
+      @apply justify-between;
+    }
+    
+    .filter-group label {
+      @apply min-w-[80px];
+    }
+    
+    .filter-actions {
+      @apply w-full justify-between;
+    }
+    
+    /* Mobile Footer - UNCHANGED */
+    .table-footer {
+      @apply p-3;
+    }
+    
+    .footer-info {
+      @apply text-center mb-2;
+    }
+    
+    .table-pagination {
+      @apply flex-wrap justify-center;
+    }
+    
+    .rows-per-page {
+      @apply mt-2 ml-0 justify-center w-full;
+    }
+  }
+
+  /* ======================= */
+  /* 🎯 RESPONSIVE CONTAINER - UNCHANGED */
+  /* ======================= */
+  .table-responsive {
+    @apply overflow-x-auto w-full rounded-xl my-4;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+  
+  .table-responsive::-webkit-scrollbar {
+    @apply h-2;
+  }
+  
+  .table-responsive::-webkit-scrollbar-track {
+    @apply bg-(--color-surface) rounded-full;
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb {
+    @apply bg-(--color-border) rounded-full;
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 50%);
+  }
+
+  /* ======================= */
+  /* ✨ ANIMATIONS & EFFECTS - UNCHANGED */
+  /* ======================= */
+  .motion-smooth {
+    animation: tableAppear 0.6s ease-out;
+  }
+  
+  .row-highlight {
+    animation: rowHighlight 1.5s ease-out;
+  }
+  
+  .filter-transition {
+    transition: all 0.3s ease-out;
+  }
+
+  @keyframes tableAppear {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes sortHighlight {
+    0% {
+      background-color: color-mix(in oklch, var(--color-primary), transparent 95%);
+    }
+    70% {
+      background-color: color-mix(in oklch, var(--color-primary), transparent 80%);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  
+  @keyframes rowHighlight {
+    0% {
+      background-color: color-mix(in oklch, var(--color-primary), transparent 95%);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+
+  /* ======================= */
+  /* 🎨 COLOR VARIANTS - UPDATED SYNTAX ONLY */
+  /* ======================= */
+  .table.primary th { 
+    @apply bg-(--color-primary); 
+  }
+  
+  .table.primary th.sortable:hover {
+    background-color: color-mix(in oklch, var(--color-primary), black 15%);
+  }
+  
+  .table.success th { 
+    @apply bg-(--color-success); 
+  }
+  
+  .table.success th.sortable:hover {
+    background-color: color-mix(in oklch, var(--color-success), black 15%);
+  }
+  
+  .table.warning th { 
+    @apply bg-(--color-warning); 
+  }
+  
+  .table.warning th.sortable:hover {
+    background-color: color-mix(in oklch, var(--color-warning), black 15%);
+  }
+  
+  .table.danger th { 
+    @apply bg-(--color-danger); 
+  }
+  
+  .table.danger th.sortable:hover {
+    background-color: color-mix(in oklch, var(--color-danger), black 15%);
+  }
+  
+  .table.info th { 
+    @apply bg-(--color-info); 
+  }
+  
+  .table.info th.sortable:hover {
+    background-color: color-mix(in oklch, var(--color-info), black 15%);
+  }
+
+  /* ======================= */
+  /* 📏 SIZE VARIANTS - UPDATED SYNTAX ONLY */
+  /* ======================= */
+  .table.sm {
+    @apply text-xs;
+  }
+  
+  .table.sm th, 
+  .table.sm td { 
+    @apply px-3 py-2; 
+  }
+  
+  .table.sm th.sortable {
+    @apply pr-6;
+  }
+  
+  .table.sm .table-search input {
+    @apply py-2 text-xs;
+  }
+  
+  .table.md {
+    @apply text-sm;
+  }
+  
+  .table.md th, 
+  .table.md td { 
+    @apply px-4 py-3; 
+  }
+  
+  .table.lg {
+    @apply text-base;
+  }
+  
+  .table.lg th, 
+  .table.lg td { 
+    @apply px-5 py-4; 
+  }
+  
+  .table.lg th.sortable {
+    @apply pr-10;
+  }
+  
+  .table.lg .table-search input {
+    @apply py-3 text-base;
+  }
+
+  /* ======================= */
+  /* 🎭 INTERACTIVE STATES - UPDATED SYNTAX ONLY */
+  /* ======================= */
+  .table tbody tr {
+    @apply transition-all duration-200;
+  }
+  
+  .table tbody tr:hover td {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 95%);
+  }
+  
+  .table tbody tr.selected td {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 90%);
+    @apply border-l-4 border-l-(--color-primary);
+  }
+  
+  .table tbody tr.filtered-out {
+    @apply hidden opacity-0;
+  }
+  
+  .loading-skeleton td {
+    @apply animate-pulse bg-(--color-border) h-12;
+  }
+  
+  .loading-skeleton td:first-child {
+    @apply rounded-l-lg;
+  }
+  
+  .loading-skeleton td:last-child {
+    @apply rounded-r-lg;
+  }
+
+  /* ======================= */
+  /* 🏷️ BADGES & STATUS - UNCHANGED */
+  /* ======================= */
+  .table-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  
+  .badge-danger {
+    @apply bg-red-100 text-red-800;
+  }
+  
+  .badge-info {
+    @apply bg-blue-100 text-blue-800;
+  }
+
+  /* ======================= */
+  /* 📊 DATA VISUALIZATION - UNCHANGED */
+  /* ======================= */
+  .progress-cell {
+    @apply flex items-center gap-3;
+  }
+  
+  .progress-bar {
+    @apply flex-1 h-2 bg-(--color-border) rounded-full overflow-hidden;
+  }
+  
+  .progress-fill {
+    @apply h-full rounded-full bg-(--color-primary);
+    transition: width 0.5s ease-out;
+  }
+
+  /* ======================= */
+  /* 🎛️ UTILITY CLASSES - UNCHANGED */
+  /* ======================= */
+  .text-right td {
+    @apply text-right;
+  }
+  
+  .text-center td {
+    @apply text-center;
+  }
+  
+  .vertical-middle td {
+    @apply align-middle;
+  }
+  
+  .compact {
+    @apply border-separate border-spacing-0;
+  }
+  
+  .compact th,
+  .compact td {
+    @apply border-t-0 border-b-1;
+  }
+  
+  .striped tbody tr:nth-child(even) td {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 98%);
+  }
+  
+  .bordered {
+    @apply border border-(--color-border);
+  }
+  
+  .bordered th,
+  .bordered td {
+    @apply border border-(--color-border);
+  }
+}
+
+/* ======================= */
+/* 🆕 NEW ADDITIONAL STYLES (Doesn't affect existing classes) */
+/* ======================= */
+/* These are optional enhanced styles for mobile cards */
+@media (max-width: 768px) {
+  .table.mobile-cards tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .table.mobile-cards tr.selected {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 90%);
+    border-left: 4px solid var(--color-primary);
+  }
+  
+  .table.mobile-cards .card-checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: 0.75rem;
+  }
+  
+  .table.mobile-cards .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+/* ======================= */
+/* 📱 MOBILE-SPECIFIC ENHANCEMENTS (Optional) */
+/* ======================= */
+@media (max-width: 640px) {
+  .mobile-cards td::before {
+    min-width: 5rem !important;
+    font-size: 0.7rem !important;
+  }
+  
+  .mobile-cards td {
+    padding: 0.75rem !important;
+    font-size: 0.875rem;
+  }
+  
+  .mobile-cards tr {
+    padding: 1rem !important;
+  }
+}
+
+/* ======================= */
+/* 🎭 TOUCH DEVICE SUPPORT (Optional) */
+/* ======================= */
+@media (hover: none) and (pointer: coarse) {
+  .table th.sortable:active {
+    background-color: color-mix(in oklch, var(--color-primary), black 15%);
+  }
+  
+  .table tbody tr:active td {
+    background-color: color-mix(in oklch, var(--color-primary), transparent 95%);
+  }
+  
+  .pagination-btn:active {
+    background-color: var(--color-primary);
+    color: white;
+  }
+}

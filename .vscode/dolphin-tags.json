@@ -112,6 +112,50 @@
     {
       "name": "dolphin-theme-bar",
       "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-drawer",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-breadcrumbs",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-pagination",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-steps",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-hero",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-pricing",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-carousel",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-timeline",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-dropzone",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-chat",
+      "description": "Dolphin CLI Component"
+    },
+    {
+      "name": "dolphin-rating",
+      "description": "Dolphin CLI Component"
     }
   ],
   "globalAttributes": [
@@ -239,6 +283,50 @@
         {
           "name": "dolphin-theme-bar",
           "description": "Dolphin CLI Component (dolphin-theme-bar.html)"
+        },
+        {
+          "name": "dolphin-drawer",
+          "description": "Dolphin CLI Component (dolphin-drawer.html)"
+        },
+        {
+          "name": "dolphin-breadcrumbs",
+          "description": "Dolphin CLI Component (dolphin-breadcrumbs.html)"
+        },
+        {
+          "name": "dolphin-pagination",
+          "description": "Dolphin CLI Component (dolphin-pagination.html)"
+        },
+        {
+          "name": "dolphin-steps",
+          "description": "Dolphin CLI Component (dolphin-steps.html)"
+        },
+        {
+          "name": "dolphin-hero",
+          "description": "Dolphin CLI Component (dolphin-hero.html)"
+        },
+        {
+          "name": "dolphin-pricing",
+          "description": "Dolphin CLI Component (dolphin-pricing.html)"
+        },
+        {
+          "name": "dolphin-carousel",
+          "description": "Dolphin CLI Component (dolphin-carousel.html)"
+        },
+        {
+          "name": "dolphin-timeline",
+          "description": "Dolphin CLI Component (dolphin-timeline.html)"
+        },
+        {
+          "name": "dolphin-dropzone",
+          "description": "Dolphin CLI Component (dolphin-dropzone.html)"
+        },
+        {
+          "name": "dolphin-chat",
+          "description": "Dolphin CLI Component (dolphin-chat.html)"
+        },
+        {
+          "name": "dolphin-rating",
+          "description": "Dolphin CLI Component (dolphin-rating.html)"
         }
       ]
     }

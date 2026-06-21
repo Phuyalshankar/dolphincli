@@ -1,269 +1,333 @@
-import React, { useState } from 'react'
-import { Mail, Lock, Eye, Users, Menu, LayoutDashboard, BarChart2, ShoppingCart, Bell, Settings, Search, TrendingUp, Activity, ChevronRight } from 'lucide-react'
-import '../dolphin-css.css'
+import React, { useState, useEffect } from 'react';
+import '../dolphin-css.css';
+import { Mail, Eye, Lock, Cpu, RefreshCw, Zap, Layers, Database, HardDrive, Thermometer, BatteryCharging, Code, LayoutGrid } from 'lucide-react';
+import { ub, debugUB, oklch, clearUBCache, autoLayout, map } from './ub.js';
 
-function App() {
-  const [showModal, setShowModal] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+// Interactive Mixed Use Showcase component combining static classes, tailwind classes, and dynamic oklch
+function MixedUseShowcase({ mode }) {
+  const [cpuTemp, setCpuTemp] = useState(45);
+  const [battery, setBattery] = useState(80);
+  const [btnHoverText, setBtnHoverText] = useState('Hover over buttons to trigger dynamic fill transitions!');
+
+  // Sliders for dynamic oklch bg color inversion test
+  const [bgColor, setBgColor] = useState('purple');
+  const [bgShade, setBgShade] = useState(150);
+
+  const [diagnostics, setDiagnostics] = useState({
+    cacheHitRate: '100%',
+    styleCount: 0,
+    classCache: 0,
+    totalRequests: 0
+  });
+
+  // Calculate live stats periodically
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const stats = debugUB();
+      let hitRate = '100%';
+      if (stats.totalSegmentRequests > 0) {
+        hitRate = `${((stats.cacheHits / stats.totalSegmentRequests) * 100).toFixed(1)}%`;
+      }
+      setDiagnostics({
+        cacheHitRate: hitRate,
+        styleCount: stats.styleCount,
+        classCache: stats.classCache,
+        totalRequests: stats.totalRequests
+      });
+    }, 150);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className='bg-surface w-full min-h-screen h-full p-10 font-sans transition-colors duration-300 relative'>
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-secondary-500/10 pointer-events-none"></div>
-      
-      <div>
-<div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 glass bg-surface/60 backdrop-blur-2xl border border-border/50 p-1.5 rounded-full shadow-2xl flex items-center gap-2 transition-all hover:bg-surface/80">
-  
-  {/* Theme Selector (Dolphin / Danphe) */}
-  <div className="flex items-center bg-surface-dark/10 rounded-full p-1 border border-white/10 shadow-inner">
-    <button 
-      onClick={() => {
-        document.documentElement.setAttribute('data-theme', 'dolphin');
-        localStorage.setItem('theme', 'dolphin');
-      }} 
-      className="w-9 h-9 rounded-full flex items-center justify-center text-xl hover:bg-primary/20 hover:scale-110 transition-all focus:outline-none"
-      title="Dolphin Theme">
-      🐬
-    </button>
-    <button 
-      onClick={() => {
-        document.documentElement.setAttribute('data-theme', 'danphe');
-        localStorage.setItem('theme', 'danphe');
-      }} 
-      className="w-9 h-9 rounded-full flex items-center justify-center text-xl hover:bg-danphe/20 hover:scale-110 transition-all focus:outline-none"
-      title="Danphe Theme">
-      🦚
-    </button>
-  </div>
+    <div className={ub('auto-layout-col-6 w-full text-left bg-danphe')}>
+      {/* Introduction Card (Static class + Dynamic Auto-Layout) */}
+      <div className={ub('card glass p-6 border border-white/20 rounded-2xl auto-layout-col-3')}>
+        <h2 className="text-2xl font-bold flex items-center gap-2 text-white">
+          <LayoutGrid className="text-primary-400" size={24} />
+          🐬 DolphinCSS + ub.js Mixed-Use Showcase
+        </h2>
+        <p className="text-white/80 text-sm leading-relaxed">
+          यो Showcase ले <strong>DolphinCSS का पुराना Static Classes</strong>, <strong>Tailwind Utilities</strong>, 
+          र <strong>ub.js का dynamic OKLCH gradient / auto-layout classes</strong> लाई कसरी एकैसाथ 
+          मिसाएर (mixed-use) प्रयोग गरिन्छ भनी देखाउँछ।
+        </p>
+      </div>
 
-  <div className="w-px h-7 bg-border/50 mx-1"></div>
+      <div className="grid gap-6 w-full md:grid-col-2">
+        {/* Section 1: Dynamic OKLCH Shading & Auto-Contrast */}
+        <div className={ub('card glass p-6 border border-white/20 rounded-2xl auto-layout-col-4')}>
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <Zap className="text-warning-400" size={18} />
+            1. Dynamic OKLCH & Auto-Contrast
+          </h3>
+          <p className="text-xs text-white/70">
+            Slider चलाएर Background Shade परिवर्तन गर्नुहोस्। Shade अनुसार Text को Color (Light/Dark) स्वतः अनुकूल (Invert) हुन्छ।
+          </p>
 
-  {/* Mode Selector (Light / Dark) */}
-  <div className="flex items-center bg-surface-dark/10 rounded-full p-1 border border-white/10 shadow-inner">
-    <button 
-      onClick={() => {
-        document.documentElement.setAttribute('data-theme-mode', 'light');
-        localStorage.setItem('theme-mode', 'light');
-      }} 
-      className="w-9 h-9 rounded-full flex items-center justify-center text-text hover:bg-warning/20 hover:text-warning-500 hover:scale-110 transition-all focus:outline-none"
-      title="Light Mode">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-    </button>
-    <button 
-      onClick={() => {
-        document.documentElement.setAttribute('data-theme-mode', 'dark');
-        localStorage.setItem('theme-mode', 'dark');
-      }} 
-      className="w-9 h-9 rounded-full flex items-center justify-center text-text hover:bg-primary/20 hover:text-primary-400 hover:scale-110 transition-all focus:outline-none"
-      title="Dark Mode">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
-  </div>
-</div>
-
-</div>`n      <h2 className="text-4xl font-bold text-text mb-12 text-center relative z-10">All DolphinCSS Components</h2>
-      
-      <div className="grid grid-cols-1 gap-16 max-w-7xl mx-auto relative z-10">
-        
-        {/* Basic Elements */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">1. Basic Elements</h3>
-          <div className="flex flex-wrap gap-8 items-center p-6 rounded-2xl">
-            <div>
-<div className="flex-left gap-4 flex-wrap p-4 glass rounded-xl border border-white/10" style={{ backdropFilter: 'blur(10px)' }}> <button className="filled primary-500 text-white py-2 px-6 rounded-lg font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all glow"> Primary Action </button> <button className="filled secondary-500 text-white py-2 px-6 rounded-lg font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all glow"> Secondary </button> <button className="outlined plain py-2 px-6 rounded-lg font-bold border-2 border-white/30 hover:border-white hover:bg-white/10 transition-all"> Outlined </button> <button className="ghost py-2 px-6 rounded-lg font-bold hover:bg-white/10 transition-colors"> Ghost Button </button> </div>
-</div>
-            <div>
-<div className="flex gap-3 flex-wrap"> <span className="px-3 py-1 rounded-full bg-primary-500/20 text-primary-300 text-xs font-bold border border-primary-500/30">Primary</span> <span className="px-3 py-1 rounded-full bg-success-500/20 text-success-300 text-xs font-bold border border-success-500/30 flex-left gap-1"> <span className="w-1.5 h-1.5 rounded-full bg-success-400"></span> Active </span> <span className="px-3 py-1 rounded-full bg-warning-500/20 text-warning-300 text-xs font-bold border border-warning-500/30">Pending</span> <span className="px-3 py-1 rounded-full bg-danger-500/20 text-danger-300 text-xs font-bold border border-danger-500/30">Failed</span> <span className="px-3 py-1 rounded-full bg-white/10 text-white/80 text-xs font-bold border border-white/20">Neutral</span> </div>
-</div>
-            <div>
-<div className="relative inline-flex items-center justify-center w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 bg-white/10 shadow-lg shrink-0"> <img src="https://ui-avatars.com/api/?name=Dolphin+User&background=0D8ABC&color=fff" alt="Avatar" className="w-full h-full object-cover object-center" /> <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-success border-2 border-border"></span>
-</div>
-
-</div>
-          </div>
-        </section>
-
-        {/* Forms & Inputs */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">2. Forms & Inputs</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 rounded-2xl">
-            <div>
-<div className="glass card p-6 lg:p-8 border border-white/20 rounded-2xl" style={{ backdropFilter: 'blur(20px)' }}> <h3 className="text-xl font-bold text-white mb-6">Quick Actions</h3> <form className="flex-col-left w-full gap-5"> <div className="w-full"> <div className="floatinglabel input-icon-left w-full"> <Mail size={20} className="icon-left text-primary-500" style={{ left: '1rem' }} /> <input type="email" id="email-float" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-primary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem' }} placeholder=" " /> <label htmlFor="email-float" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Email Address</label> </div> </div> <div className="w-full"> <div className="floatinglabel input-icon-both w-full"> <Lock size={20} className="icon-left text-primary-500" style={{ left: '1rem' }} /> <input type="password" id="password-float" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-primary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem', paddingRight: '3.5rem' }} placeholder=" " /> <label htmlFor="password-float" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Password</label> <button type="button" className="icon-right text-white/50 hover:text-white transition-colors" style={{ zIndex: 20, right: '1rem' }}> <Eye size={20} /> </button> </div> </div> <button type="button" className="filled primary-600 w-full py-3 rounded-xl text-white font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 mt-2 glow"> Submit Data </button> </form> </div>
-</div>
-            <div>
-<div className="card p-6 lg:p-10 border border-border rounded-2xl bg-surface-alt shadow-lg"> <h3 className="text-2xl font-bold text-text mb-2">Welcome Back</h3> <p className="text-text-muted text-sm mb-8">Please enter your details to sign in.</p> <form className="flex-col-left w-full gap-8"> <div className="w-full mt-2"> <div className="standardlabel w-full"> <input type="email" id="email-std" className="standardlabel-input lg w-full text-text placeholder:text-transparent bg-transparent" placeholder=" " /> <label htmlFor="email-std" className="standardlabel-label text-text-muted font-medium bg-transparent! left-0! px-0!">Email Address</label> </div> </div> <div className="w-full"> <div className="standardlabel w-full"> <input type="password" id="password-std" className="standardlabel-input lg w-full text-text placeholder:text-transparent bg-transparent" placeholder=" " /> <label htmlFor="password-std" className="standardlabel-label text-text-muted font-medium bg-transparent! left-0! px-0!">Password</label> </div> </div> <div className="flex-between w-full"> <label className="radio-item flex-left gap-2 cursor-pointer"> <input type="checkbox" className="accent-primary-500 w-4 h-4 rounded border-border" /> <span className="text-sm font-medium text-text-muted">Remember me</span> </label> <a href="#" className="text-sm font-bold text-primary-500 hover:underline">Forgot password?</a> </div> <button type="button" className="filled primary-500 w-full py-3.5 rounded-xl text-white font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all mt-2 glow"> Sign In </button> </form> </div>
-</div>
-          </div>
-          <div className="flex flex-wrap gap-12 items-center mt-4 p-6 rounded-2xl">
-            <div>
-<label className="flex-left gap-3 cursor-pointer group w-fit"> <div className="relative flex-center"> <input type="checkbox" className="peer appearance-none w-5 h-5 rounded border border-white/30 bg-white/10 checked:bg-primary-500 checked:border-primary-500 transition-all cursor-pointer" /> <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="absolute text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none"><polyline points="20 6 9 17 4 12"/></svg> </div> <span className="text-sm font-medium text-white/80 group-hover:text-white transition-colors">Accept terms and conditions</span>
-</label>
-
-</div>
-            <div>
-<label className="flex-left gap-3 cursor-pointer group w-fit"> <div className="relative flex-center"> <input type="checkbox" className="peer sr-only" /> <div className="w-11 h-6 bg-white/20 rounded-full peer peer-checked:bg-primary-500 transition-colors border border-white/10 shadow-inner"></div> <div className="absolute left-1 top-1 bg-surface w-4 h-4 rounded-full transition-transform peer-checked:translate-x-5 shadow-sm"></div> </div> <span className="text-sm font-medium text-white/80 group-hover:text-white transition-colors">Toggle switch</span>
-</label>
-
-</div>
-            <div className="w-64">
-              <div>
-<div className="w-full max-w-sm flex-col-left gap-2"> <label className="text-sm font-medium text-white/80 flex-between w-full"> <span>Volume</span> <span className="text-xs text-white/50">50%</span> </label> <input type="range" min="0" max="100" value="50" className="w-full h-2 bg-white/20 rounded-lg cursor-pointer accent-primary-500" /> </div> 
-</div>
+          <div className="flex gap-4 w-full">
+            <div className="flex-1 flex flex-col gap-1.5">
+              <label className="text-xs text-white/60">Color Base:</label>
+              <select 
+                value={bgColor} 
+                onChange={(e) => setBgColor(e.target.value)}
+                className="p-2 bg-white/10 border border-white/10 rounded-xl text-sm outline-none text-white cursor-pointer"
+              >
+                {['red', 'blue', 'green', 'purple', 'orange', 'pink', 'teal', 'amber', 'gray'].map(c => (
+                  <option key={c} value={c} className="bg-slate-900 text-white">{c}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex-1 flex flex-col gap-1.5">
+              <label className="text-xs text-white/60">Shade: <span className="font-mono font-bold">{bgShade}</span></label>
+              <input 
+                type="range" min="0" max="255" value={bgShade} 
+                onChange={(e) => setBgShade(parseInt(e.target.value))} 
+                className="w-full accent-primary cursor-pointer mt-2" 
+              />
             </div>
           </div>
-        </section>
 
-        {/* Navigation & Interaction */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">3. Navigation & Interaction</h3>
-          <div className="p-6 rounded-2xl space-y-8">
-            <div>
-<nav className="glass w-full py-4 px-6 md:px-8 border-b border-white/10 flex-between sticky top-0 z-50 shadow-sm" style={{ backdropFilter: 'blur(24px)' }}> <div className="flex-left gap-2 cursor-pointer"> <div className="circle sm filled primary-500 text-white font-bold flex-center glow">🐬</div> <span className="text-xl font-bold text-white tracking-tight">Dolphin</span> </div> <div className="hidden md:flex gap-6"> <a href="#" className="text-white/80 hover:text-white font-medium transition-colors">Home</a> <a href="#" className="text-white/80 hover:text-white font-medium transition-colors">Features</a> <a href="#" className="text-white/80 hover:text-white font-medium transition-colors">Pricing</a> <a href="#" className="text-white/80 hover:text-white font-medium transition-colors">Docs</a> </div> <div className="flex-right gap-3"> <button className="hidden md:block outlined plain py-2 px-4 rounded-lg font-medium text-sm">Log In</button> <button className="filled primary-600 text-white py-2 px-4 rounded-lg font-medium text-sm hover:shadow-lg transition-all glow">Sign Up</button> </div> </nav>
-</div>
-            <div>
-<div className="w-full max-w-md"> {/* Tab Headers */} <div className="flex p-1 bg-white/5 glass rounded-xl mb-4 relative z-0"> <label className="flex-1 text-center cursor-pointer relative z-10"> <input type="radio" name="dolphin-tabs" className="peer sr-only" checked /> <div className="py-2 px-4 rounded-lg text-sm font-medium text-white/60 peer-checked:text-white peer-checked:bg-white/10 peer-checked:shadow-sm transition-all duration-300">Account</div> {/* Tab 1 Content */} <div className="absolute left-0 top-[100%] w-full mt-4 p-5 glass rounded-2xl border border-white/10 text-left opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300"> <h4 className="text-lg font-bold text-white mb-2">Account Settings</h4> <p className="text-sm text-white/60 mb-4">Make changes to your account here.</p> <div className="flex-col-left gap-4 w-full"> <input type="text" className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white" placeholder="Name" /> <button className="filled primary-600 px-4 py-2 rounded-lg text-white font-bold w-fit">Save changes</button> </div> </div> </label> <label className="flex-1 text-center cursor-pointer relative z-10"> <input type="radio" name="dolphin-tabs" className="peer sr-only" /> <div className="py-2 px-4 rounded-lg text-sm font-medium text-white/60 peer-checked:text-white peer-checked:bg-white/10 peer-checked:shadow-sm transition-all duration-300">Password</div> {/* Tab 2 Content */} <div className="absolute left-0 top-[100%] w-full mt-4 p-5 glass rounded-2xl border border-white/10 text-left opacity-0 pointer-events-none peer-checked:opacity-100 peer-checked:pointer-events-auto transition-opacity duration-300"> <h4 className="text-lg font-bold text-white mb-2">Change Password</h4> <p className="text-sm text-white/60 mb-4">Update your password to keep your account secure.</p> <div className="flex-col-left gap-4 w-full"> <input type="password" className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white" placeholder="New Password" /> <button className="filled primary-600 px-4 py-2 rounded-lg text-white font-bold w-fit">Update password</button> </div> </div> </label> </div> {/* Space placeholder for absolute contents */} <div className="h-64"></div>
-</div>
-
-</div>
-            <div>
-<div className="w-full flex-col-left gap-3"> <details className="glass rounded-xl w-full border border-white/10 overflow-hidden group"> <summary className="flex-between p-4 cursor-pointer text-white font-medium select-none list-none [&::-webkit-details-marker]:hidden"> <span>Is DolphinCSS easy to use?</span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50 group-open:rotate-180 transition-transform duration-300"><path d="m6 9 6 6 6-6"/></svg> </summary> <div className="p-4 pt-0 text-white/70 text-sm leading-relaxed border-t border-white/10 mt-1">  Yes! It provides ready-to-use premium UI components that work with both Vanilla HTML and React. </div> </details> <details className="glass rounded-xl w-full border border-white/10 overflow-hidden group"> <summary className="flex-between p-4 cursor-pointer text-white font-medium select-none list-none [&::-webkit-details-marker]:hidden"> <span>Can I customize the themes?</span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50 group-open:rotate-180 transition-transform duration-300"><path d="m6 9 6 6 6-6"/></svg> </summary> <div className="p-4 pt-0 text-white/70 text-sm leading-relaxed border-t border-white/10 mt-1"> Absolutely. DolphinCSS comes with built-in themes like Dolphin and Danphe, and you can easily override variables. </div> </details>
-</div>
-
-</div>
-            <div className="flex flex-wrap gap-8 items-center pt-4">
-              <div>
-<div className="relative inline-block w-fit text-left"> <details className="group [&_summary::-webkit-details-marker]:hidden"> <summary className="px-4 py-2 glass rounded-lg text-white font-medium border border-white/20 cursor-pointer flex-between gap-2 list-none hover:bg-white/10 transition-colors"> Options <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-open:rotate-180 transition-transform"><path d="m6 9 6 6 6-6"/></svg> </summary> <div className="absolute left-0 mt-2 w-48 glass rounded-xl border border-white/10 shadow-lg p-1 z-50 flex-col-left gap-1 origin-top-left group-open:opacity-100 opacity-0 pointer-events-none group-open:pointer-events-auto transition-opacity duration-200"> <a href="#" className="px-3 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white rounded-lg transition-colors w-full">Profile</a> <a href="#" className="px-3 py-2 text-sm text-white/80 hover:bg-white/10 hover:text-white rounded-lg transition-colors w-full">Settings</a> <div className="w-full h-px bg-white/10 my-1"></div> <a href="#" className="px-3 py-2 text-sm text-danger hover:bg-danger/20 rounded-lg transition-colors w-full">Logout</a> </div> </details>
-</div>
-
-</div>
-              <div>
-{/* Shadcn-like Popover (React/JSX Compatible) */}
-{/* Requires state management to toggle the open/close state.
-*/}
-<div className="relative inline-block text-left group"> {/* Trigger Button */} <button type="button" className="outlined plain py-2 px-4 rounded-lg inline-flex items-center gap-2" aria-expanded="false" aria-haspopup="true"> Open Popover <svg className="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"> <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /> </svg> </button> {/* Popover Content Panel (Conditionally render or toggle display via state) */} <div className="absolute z-[100] mt-2 w-72 rounded-xl border border-border bg-surface shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-left" role="menu" aria-orientation="vertical"> <div className="p-4"> <div className="space-y-2"> <h4 className="font-medium text-text ">Dimensions</h4> <p className="text-sm text-text-muted ">Set the dimensions for the layer.</p> </div> <div className="mt-4 space-y-3"> <div className="flex items-center gap-4"> <label className="text-sm w-16 text-text-muted" htmlFor="width">Width</label> <input type="text" id="width" defaultValue="100%" className="w-full px-2 py-1 border border-border rounded bg-transparent" /> </div> <div className="flex items-center gap-4"> <label className="text-sm w-16 text-text-muted" htmlFor="height">Height</label> <input type="text" id="height" defaultValue="25px" className="w-full px-2 py-1 border border-border rounded bg-transparent" /> </div> </div> </div> </div>
-</div>
-
-</div>
-              <div>
-<div className="relative inline-block group w-fit"> <button className="px-4 py-2 bg-white/10 glass rounded-lg text-white font-medium border border-white/20 hover:bg-white/20 transition-all"> Hover me </button> <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-surface-dark/80 glass backdrop-blur-md border border-border/20 text-white text-xs rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50"> This is a tooltip <svg className="absolute text-text h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve"><polygon className="fill-current" points="0,0 127.5,127.5 255,0"/></svg> </div>
-</div>
-
-</div>
-            </div>
+          {/* Mixed Class Card */}
+          <div className={ub(`card p-6 rounded-2xl bg-${bgColor}-${bgShade} auto-layout-col-center-2 border border-white/15 transition-all duration-300`)}>
+            <span className="text-lg font-bold">Auto-Contrast Text</span>
+            <span className="text-xs opacity-80 font-mono text-center">bg-{bgColor}-{bgShade}</span>
           </div>
-        </section>
 
-        {/* Feedback & Loading */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">4. Feedback & Loading</h3>
-          <div className="p-6 rounded-2xl space-y-8">
-            <div>
-<div className="flex flex-col gap-3"> <div className="w-full p-4 rounded-xl border border-info-500/30 bg-info-500/10 flex-left gap-3 text-info-100"> <Activity size={20} className="text-info-400 shrink-0" /> <div> <h4 className="font-bold text-info-300 text-sm">System Update</h4> <p className="text-xs opacity-80 mt-1">A new version of DolphinCSS is available with magical features.</p> </div> </div> <div className="w-full p-4 rounded-xl border border-warning-500/30 bg-warning-500/10 flex-left gap-3 text-warning-100"> <Bell size={20} className="text-warning-400 shrink-0" /> <div> <h4 className="font-bold text-warning-300 text-sm">Action Needed</h4> <p className="text-xs opacity-80 mt-1">Please verify your email address to continue using all features.</p> </div> </div> </div>
-</div>
-            <div>
-{/* Shadcn-like Progress Bars (React/JSX Compatible) */}
-<div className="flex flex-col gap-8 w-full max-w-md"> {/* Determinate Linear Progress */} <div> <div className="flex justify-between mb-1"> <span className="text-sm font-medium text-text ">Uploading...</span> <span className="text-sm font-medium text-text ">65%</span> </div> <div className="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"> <div className="progress-fill" style={{ width: "65%" }}></div> </div> </div> {/* Indeterminate Linear Progress */} <div> <div className="flex justify-between mb-1"> <span className="text-sm font-medium text-text ">Processing data</span> </div> <div className="progress-bar indeterminate" role="progressbar"> <div className="progress-fill"></div> </div> </div> <div className="flex gap-8 items-center"> {/* Circular Progress Determinate */} <div className="progress-circle" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"> <svg viewBox="0 0 100 100"> <circle className="progress-circle-track" cx="50" cy="50" r="45"></circle> <circle className="progress-circle-fill" cx="50" cy="50" r="45" style={{ strokeDasharray: "283", strokeDashoffset: "70.75" }}></circle> </svg> <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold"> 75% </div> </div> {/* Circular Progress Indeterminate */} <div className="progress-circle indeterminate" role="progressbar"> <svg viewBox="0 0 100 100"> <circle className="progress-circle-track" cx="50" cy="50" r="45"></circle> <circle className="progress-circle-fill" cx="50" cy="50" r="45"></circle> </svg> </div> </div>
-</div>
+          <div className="bg-black/35 p-3 rounded-xl border border-white/10 font-mono text-[11px] text-white/90">
+            <div className="text-primary-300 font-bold mb-1">// Mixed Classes Used:</div>
+            <code className="break-all">{`className={ub("card p-6 rounded-2xl bg-${bgColor}-${bgShade} auto-layout-col-center-2")}`}</code>
+          </div>
+        </div>
 
-</div>
-            <div>
-{/* Shadcn-like Skeleton (React/JSX Compatible) */}
-<div className="flex flex-col gap-4 w-full"> {/* Header with avatar skeleton */} <div className="flex items-center gap-4"> <div className="skeleton skeleton-circle w-12 h-12"></div> <div className="flex flex-col gap-2"> <div className="skeleton w-32 h-4"></div> <div className="skeleton w-24 h-3"></div> </div> </div> {/* Content skeleton */} <div className="skeleton w-full h-24 mt-4"></div> {/* Text lines skeleton */} <div className="flex flex-col gap-2 mt-2"> <div className="skeleton w-[90%] h-4"></div> <div className="skeleton w-[80%] h-4"></div> <div className="skeleton w-[70%] h-4"></div> </div>
-</div>
+        {/* Section 2: IoT Sensor Live Mapping (map.heat / map.fuel) */}
+        <div className={ub('card glass p-6 border border-white/20 rounded-2xl auto-layout-col-4')}>
+          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <Thermometer className="text-danger-400" size={18} />
+            2. IoT Live Sensor Mapping
+          </h3>
+          <p className="text-xs text-white/70">
+            Numeric values लाई automatic visual indicator मा map preset (`map.heat` वा `map.fuel`) मार्फत direct color shade मा परिवर्तन गरिन्छ।
+          </p>
 
-</div>
-            
-            <div className="p-6 border border-dashed border-border rounded-xl relative min-h-[300px]">
-              <p className="text-text-muted text-sm mb-4">Click below to trigger modal or toast:</p>
-              <div className="flex gap-4 mb-4">
-                <button onClick={() => setShowModal(true)} className="filled primary-500 text-white px-4 py-2 rounded-lg">Open Modal</button>
-                <button onClick={() => setShowToast(true)} className="filled secondary-500 text-white px-4 py-2 rounded-lg">Show Toast</button>
+          <div className="flex flex-col gap-4 w-full">
+            {/* CPU Temp Slider */}
+            <div className="flex flex-col gap-1.5">
+              <div className="flex justify-between text-xs text-white/70">
+                <span>CPU Temperature:</span>
+                <span className="font-bold font-mono">{cpuTemp}°C</span>
               </div>
-              
-              {showModal && (
-                <div onClick={(e) => {
-                  // Close if clicking the backdrop or the close button
-                  if (e.target.classList.contains('absolute') || e.target.tagName === 'BUTTON') {
-                    setShowModal(false);
-                  }
-                }}>
-                  <div>
-{/* Shadcn-like Accessible Modal (React/JSX Compatible) */}
-{/* To use this modal with React state: 1. Add a state: const [isOpen, setIsOpen] = useState(false) 2. Conditionally render the modal-container based on `isOpen` 3. Attach `onClick={() => setIsOpen(false)}` to the backdrop and close buttons
-*/}
-<div className="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc"> <div className="modal-wrapper"> {/* The backdrop */} <div className="absolute inset-0 bg-surface-dark/60 backdrop-blur-sm cursor-pointer" aria-hidden="true"></div> {/* The Modal Panel */} <div className="modal-panel md glass bg-surface/80 border-border/50 flex flex-col max-h-[90vh]"> <div className="modal-header"> <h3 id="modal-title">Edit Profile</h3> <button aria-label="Close modal">✕</button> </div> <div className="modal-body overflow-y-auto flex-1" id="modal-desc"> <p className="mb-4">Make changes to your profile here. Click save when you're done.</p> <div className="mb-3">
-<div className="card p-6 lg:p-10 border border-border rounded-2xl bg-surface-alt shadow-lg"> <h3 className="text-2xl font-bold text-text mb-2">Welcome Back</h3> <p className="text-text-muted text-sm mb-8">Please enter your details to sign in.</p> <form className="flex-col-left w-full gap-8"> <div className="w-full mt-2"> <div className="standardlabel w-full"> <input type="email" id="email-std" className="standardlabel-input lg w-full text-text placeholder:text-transparent bg-transparent" placeholder=" " /> <label htmlFor="email-std" className="standardlabel-label text-text-muted font-medium bg-transparent! left-0! px-0!">Email Address</label> </div> </div> <div className="w-full"> <div className="standardlabel w-full"> <input type="password" id="password-std" className="standardlabel-input lg w-full text-text placeholder:text-transparent bg-transparent" placeholder=" " /> <label htmlFor="password-std" className="standardlabel-label text-text-muted font-medium bg-transparent! left-0! px-0!">Password</label> </div> </div> <div className="flex-between w-full"> <label className="radio-item flex-left gap-2 cursor-pointer"> <input type="checkbox" className="accent-primary-500 w-4 h-4 rounded border-border" /> <span className="text-sm font-medium text-text-muted">Remember me</span> </label> <a href="#" className="text-sm font-bold text-primary-500 hover:underline">Forgot password?</a> </div> <button type="button" className="filled primary-500 w-full py-3.5 rounded-xl text-white font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all mt-2 glow"> Sign In </button> </form> </div>
-</div> <div>
-<div className="card p-6 lg:p-10 border border-border rounded-2xl bg-surface-alt shadow-lg"> <h3 className="text-2xl font-bold text-text mb-2">Welcome Back</h3> <p className="text-text-muted text-sm mb-8">Please enter your details to sign in.</p> <form className="flex-col-left w-full gap-8"> <div className="w-full mt-2"> <div className="standardlabel w-full"> <input type="email" id="email-std" className="standardlabel-input lg w-full text-text placeholder:text-transparent bg-transparent" placeholder=" " /> <label htmlFor="email-std" className="standardlabel-label text-text-muted font-medium bg-transparent! left-0! px-0!">Email Address</label> </div> </div> <div className="w-full"> <div className="standardlabel w-full"> <input type="password" id="password-std" className="standardlabel-input lg w-full text-text placeholder:text-transparent bg-transparent" placeholder=" " /> <label htmlFor="password-std" className="standardlabel-label text-text-muted font-medium bg-transparent! left-0! px-0!">Password</label> </div> </div> <div className="flex-between w-full"> <label className="radio-item flex-left gap-2 cursor-pointer"> <input type="checkbox" className="accent-primary-500 w-4 h-4 rounded border-border" /> <span className="text-sm font-medium text-text-muted">Remember me</span> </label> <a href="#" className="text-sm font-bold text-primary-500 hover:underline">Forgot password?</a> </div> <button type="button" className="filled primary-500 w-full py-3.5 rounded-xl text-white font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all mt-2 glow"> Sign In </button> </form> </div>
-</div> </div> <div className="modal-footer"> <button className="outlined plain py-2 px-4 rounded-lg">Cancel</button> <button className="filled primary py-2 px-4 rounded-lg glow">Save Changes</button> </div> </div> </div>
-</div>
+              <input 
+                type="range" min="0" max="100" value={cpuTemp} 
+                onChange={(e) => setCpuTemp(parseInt(e.target.value))} 
+                className="w-full accent-danger cursor-pointer" 
+              />
+              <div className={ub(`p-3 rounded-xl border border-white/10 bg-${map.heat(cpuTemp, 0, 100)} auto-layout-row-between-2 transition-all`)}>
+                <span className="font-bold text-sm">CPU Sensor</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-black/20">{map.heat(cpuTemp, 0, 100)}</span>
+              </div>
+            </div>
 
-</div>
-                </div>
-              )}
-              
-              {showToast && (
-                <div onClick={() => setShowToast(false)}>
-                  <div>
-{/* Shadcn-like Toast Notification (React/JSX Compatible) */}
-{/* To use this toast with React state: 1. Wrap it in a state map: {toasts.map(toast => ( <div className="toast...">...</div> ))} 2. Implement an auto-dismiss timeout 3. Ensure it sits inside a `.toast-container` */}
-<div className="toast-container bottom-right"> {/* Success Toast Example */} <div className="toast glass bg-surface/70 border border-border/50 backdrop-blur-xl toast-success blur-bg" role="alert" aria-live="assertive" aria-atomic="true"> <div className="toast-icon toast-icon-success"> <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"> <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /> </svg> </div> <div className="toast-content"> <span className="toast-title">Settings saved</span> <span className="toast-description block">Your profile has been updated successfully.</span> </div> <button className="toast-close" aria-label="Close"> <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"> <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg> </button> <div className="toast-progress"> <div className="toast-progress-bar" style={{ animationDuration: "3s" }}></div> </div> </div> {/* Error Toast Example */} <div className="toast glass bg-surface/70 border border-border/50 backdrop-blur-xl toast-error blur-bg" role="alert" aria-live="assertive" aria-atomic="true"> <div className="toast-icon toast-icon-error"> <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"> <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /> </svg> </div> <div className="toast-content"> <span className="toast-title">Connection Error</span> <span className="toast-description block">Could not connect to the server. Please try again.</span> </div> <button className="toast-close" aria-label="Close"> <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"> <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /> </svg> </button> </div>
-</div>
-</div>
-                </div>
-              )}
+            {/* Battery Slider */}
+            <div className="flex flex-col gap-1.5">
+              <div className="flex justify-between text-xs text-white/70">
+                <span>Battery Level:</span>
+                <span className="font-bold font-mono">{battery}%</span>
+              </div>
+              <input 
+                type="range" min="0" max="100" value={battery} 
+                onChange={(e) => setBattery(parseInt(e.target.value))} 
+                className="w-full accent-success cursor-pointer" 
+              />
+              <div className={ub(`p-3 rounded-xl border border-white/10 bg-${map.fuel(battery, 0, 100)} auto-layout-row-between-2 transition-all`)}>
+                <span className="font-bold text-sm flex items-center gap-1">
+                  <BatteryCharging size={16} />
+                  Battery Status
+                </span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-black/20">{map.fuel(battery, 0, 100)}</span>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* Layout & Data */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">5. Layout & Data</h3>
-          <div className="p-6 rounded-2xl space-y-8">
-            <div>
-<div className="glass card p-6 border border-white/20 rounded-2xl max-w-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden" style={{ backdropFilter: 'blur(20px)' }}> <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/20 rounded-full blur-2xl"></div> <div className="flex-left gap-4 mb-4 relative z-10"> <div className="w-16 h-16 rounded-full border-2 border-primary-400 overflow-hidden shadow-lg p-0.5"> <img src="https://i.pravatar.cc/150?img=11" alt="Profile" className="w-full h-full rounded-full object-cover" /> </div> <div> <h3 className="text-xl font-bold text-white m-0">Alex Developer</h3> <p className="text-primary-300 text-sm font-medium">Software Engineer</p> </div> </div> <p className="text-white/70 text-sm leading-relaxed mb-6 relative z-10"> Passionate about building magical user experiences and world-class design systems using DolphinCSS. </p> <div className="flex-between relative z-10"> <div className="flex gap-2"> <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-white/90">React</span> <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-white/90">Tailwind</span> </div> <button className="circle filled primary-500 text-white p-2 hover:shadow-lg hover:scale-110 transition-all flex-center"> <ChevronRight size={16} /> </button> </div> </div>
-</div>
-            <div>
-<div className="glass card p-6 border border-white/20 rounded-2xl overflow-hidden" style={{ backdropFilter: 'blur(20px)' }}> <div className="flex-between mb-6"> <h3 className="text-xl font-bold text-white m-0">Recent Transactions</h3> <button className="text-primary-300 text-sm font-medium hover:underline bg-transparent border-none cursor-pointer flex-center"> View All <ChevronRight size={16} /> </button> </div> <div className="w-full overflow-x-auto"> <table className="w-full text-left border-collapse"> <thead> <tr className="border-b border-white/10 text-white/60 text-sm uppercase tracking-wider"> <th className="pb-3 font-medium">Customer</th> <th className="pb-3 font-medium">Date</th> <th className="pb-3 font-medium">Amount</th> <th className="pb-3 font-medium">Status</th> </tr> </thead> <tbody className="text-white"> <tr className="border-b border-white/5 hover:bg-white/5 transition-colors"> <td className="py-4 flex-left gap-3"> <div className="circle sm filled primary-500 text-white font-bold text-xs flex-center">JD</div> <span className="font-medium">John Doe</span> </td> <td className="py-4 text-white/70">Oct 24, 2025</td> <td className="py-4 font-bold">$120.50</td> <td className="py-4"><span className="px-2 py-1 rounded-md bg-success-500/20 text-success-300 text-xs font-bold">Completed</span></td> </tr> <tr className="hover:bg-white/5 transition-colors"> <td className="py-4 flex-left gap-3"> <div className="circle sm filled secondary-500 text-white font-bold text-xs flex-center">SS</div> <span className="font-medium">Sarah Smith</span> </td> <td className="py-4 text-white/70">Oct 23, 2025</td> <td className="py-4 font-bold">$340.00</td> <td className="py-4"><span className="px-2 py-1 rounded-md bg-warning-500/20 text-warning-300 text-xs font-bold">Pending</span></td> </tr> </tbody> </table> </div> </div>
-</div>
-            <div>
-<div className="w-full"> <div className="flex-between mb-8"> <div> <h2 className="text-2xl font-bold text-text mb-1">Featured Collections</h2> <p className="text-text-muted text-sm">Discover our magical products and items.</p> </div> <button className="outlined plain text-sm py-2 px-4 rounded-lg flex-center gap-2 border-border text-text hover:bg-surface transition-colors cursor-pointer"> View All <ChevronRight size={16} /> </button> </div> <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"> {/* Product Card 1 */} <div className="card glass p-4 rounded-2xl group hover:-translate-y-1 transition-all duration-300"> <div className="w-full aspect-[4/3] bg-surface-dark rounded-xl mb-4 overflow-hidden relative"> <div className="absolute top-2 right-2 badge primary sm z-10 shadow-lg">New</div> <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" alt="Product" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> </div> <h3 className="font-bold text-text mb-1">Premium Headphones</h3> <p className="text-text-muted text-sm mb-4 line-clamp-2">High fidelity audio with magical active noise cancellation.</p> <div className="flex-between"> <span className="text-lg font-bold text-primary-500">$299.00</span> <button className="circle sm filled primary-500 text-white glow cursor-pointer hover:scale-110 transition-transform"><ShoppingCart size={16} /></button> </div> </div> {/* Product Card 2 */} <div className="card glass p-4 rounded-2xl group hover:-translate-y-1 transition-all duration-300"> <div className="w-full aspect-[4/3] bg-surface-dark rounded-xl mb-4 overflow-hidden relative"> <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80" alt="Product" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> </div> <h3 className="font-bold text-text mb-1">Smart Watch Pro</h3> <p className="text-text-muted text-sm mb-4 line-clamp-2">Track your fitness with the ultimate smart companion.</p> <div className="flex-between"> <span className="text-lg font-bold text-primary-500">$199.00</span> <button className="circle sm filled primary-500 text-white glow cursor-pointer hover:scale-110 transition-transform"><ShoppingCart size={16} /></button> </div> </div> {/* Product Card 3 */} <div className="card glass p-4 rounded-2xl group hover:-translate-y-1 transition-all duration-300"> <div className="w-full aspect-[4/3] bg-surface-dark rounded-xl mb-4 overflow-hidden relative"> <div className="absolute top-2 right-2 badge danger sm z-10 shadow-lg">-20%</div> <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=500&q=80" alt="Product" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> </div> <h3 className="font-bold text-text mb-1">Polaroid Camera</h3> <p className="text-text-muted text-sm mb-4 line-clamp-2">Capture your magical moments instantly with retro style.</p> <div className="flex-between"> <span className="text-lg font-bold text-primary-500">$89.00</span> <button className="circle sm filled primary-500 text-white glow cursor-pointer hover:scale-110 transition-transform"><ShoppingCart size={16} /></button> </div> </div> {/* Product Card 4 */} <div className="card glass p-4 rounded-2xl group hover:-translate-y-1 transition-all duration-300"> <div className="w-full aspect-[4/3] bg-surface-dark rounded-xl mb-4 overflow-hidden relative"> <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=80" alt="Product" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" /> </div> <h3 className="font-bold text-text mb-1">Neon Kicks</h3> <p className="text-text-muted text-sm mb-4 line-clamp-2">Step into the future with glowing soles and comfort.</p> <div className="flex-between"> <span className="text-lg font-bold text-primary-500">$120.00</span> <button className="circle sm filled primary-500 text-white glow cursor-pointer hover:scale-110 transition-transform"><ShoppingCart size={16} /></button> </div> </div> </div> </div>
-</div>
+      {/* Section 3: Dynamic Buttons & Animations */}
+      <div className={ub('card glass p-6 border border-white/20 rounded-2xl auto-layout-col-3')}>
+        <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <Code className="text-info-400" size={18} />
+          3. Dynamic Buttons & Animations
+        </h3>
+        <p className="text-xs text-white/70">
+          DolphinCSS का static buttons सँग dynamic scale-hover र dynamic transitions (`bg-fill-*`) लाई एकैसाथ मिसाउनुहोस्।
+        </p>
+
+        <div className={ub('auto-layout-wrap-center-3 py-2')}>
+          {/* Button 1: static filled primary + dynamic scale */}
+          <button 
+            onMouseEnter={() => setBtnHoverText("Used: className={ub('filled primary btn-lg hover:scale-105 transition-all')}")}
+            className={ub('filled primary btn-lg hover:scale-105 transition-all')}
+          >
+            Scale Hover Button
+          </button>
+
+          {/* Button 2: static outlined + dynamic background fill */}
+          <button 
+            onMouseEnter={() => setBtnHoverText("Used: className={ub('btn btn-outline border-blue-150 bg-fill-left-blue-150-500ms')}")}
+            className={ub('btn btn-outline border-blue-150 bg-fill-left-blue-150-500ms')}
+          >
+            Background Fill Transition
+          </button>
+
+          {/* Button 3: static glow-pulse + oklch dynamic border */}
+          <button 
+            onMouseEnter={() => setBtnHoverText("Used: className={ub('filled success glow glow-pulse border-2 border-green-250')}")}
+            className={ub('filled success glow glow-pulse border-2 border-green-250')}
+          >
+            Glowing Pulsing Button
+          </button>
+        </div>
+
+        <div className="bg-black/35 p-3 rounded-xl border border-white/10 font-mono text-[11px] text-white/90 w-full min-h-[50px] flex items-center">
+          <span className="text-info-300 font-semibold">{btnHoverText}</span>
+        </div>
+      </div>
+
+      {/* Section 4: Engine Analysis & How it works */}
+      <div className={ub('card glass p-6 border border-white/20 rounded-2xl auto-layout-col-3')}>
+        <h3 className="text-lg font-bold text-white flex items-center gap-2">
+          <Database className="text-success-400" size={18} />
+          4. How does the Engine process Mixed Classes?
+        </h3>
+        
+        <div className="grid gap-4 w-full md:grid-col-2 text-xs">
+          <div className="bg-black/25 p-4 rounded-xl border border-white/10">
+            <span className="font-bold text-primary-300 block mb-2">// Input mixed string passed to ub():</span>
+            <code className="text-white/80 select-all block break-all">
+              ub("card glass glow hover:scale-105 gradient-blue-120-purple-240 auto-layout-col-center-3")
+            </code>
           </div>
-        </section>
-
-        {/* Complex Views */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">6. Complex Views</h3>
-          <div className="space-y-12 p-6 rounded-2xl">
-            <div>
-<div className="glass card p-6 lg:p-8 border border-white/20 rounded-2xl" style={{ backdropFilter: 'blur(20px)' }}> <h3 className="text-xl font-bold text-white mb-1">Welcome Back 👋</h3> <p className="text-white/50 text-sm mb-6">Sign in to your account</p> <form className="flex-col-left w-full gap-5"> <div className="w-full"> <div className="floatinglabel input-icon-left w-full"> <Mail size={20} className="icon-left text-primary-500" style={{ left: '1rem' }} /> <input type="email" id="login-email" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-primary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem' }} placeholder=" " /> <label htmlFor="login-email" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Email Address</label> </div> </div> <div className="w-full"> <div className="floatinglabel input-icon-both w-full"> <Lock size={20} className="icon-left text-primary-500" style={{ left: '1rem' }} /> <input type="password" id="login-password" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-primary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem', paddingRight: '3.5rem' }} placeholder=" " /> <label htmlFor="login-password" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Password</label> <button type="button" className="icon-right text-white/50 hover:text-white transition-colors" style={{ zIndex: 20, right: '1rem' }}> <Eye size={20} /> </button> </div> </div> <div className="flex-between w-full"> <label className="flex-left gap-2 cursor-pointer"> <input type="checkbox" id="remember-me" className="accent-primary-500 w-4 h-4 rounded border-white/30 bg-white/10" /> <span className="text-sm font-medium text-white/80">Remember me</span> </label> <a href="#" className="text-sm text-primary-300 hover:text-primary-200 transition-colors font-medium">Forgot password?</a> </div> <button type="button" className="filled primary-600 w-full py-3 rounded-xl text-white font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 glow"> Sign In </button> <p className="text-center text-white/50 text-sm w-full"> Don't have an account? <a href="#" className="text-primary-300 hover:text-primary-200 font-semibold transition-colors">Sign up</a> </p> </form> </div>
-</div>
-            <div>
-<div className="glass card p-6 lg:p-8 border border-white/20 rounded-2xl" style={{ backdropFilter: 'blur(20px)' }}> <h3 className="text-xl font-bold text-white mb-1">Create Account 🚀</h3> <p className="text-white/50 text-sm mb-6">Join thousands of users today</p> <form className="flex-col-left w-full gap-5"> <div className="w-full"> <div className="floatinglabel input-icon-left w-full"> <Users size={20} className="icon-left text-secondary-400" style={{ left: '1rem' }} /> <input type="text" id="reg-name" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-secondary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem' }} placeholder=" " /> <label htmlFor="reg-name" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Full Name</label> </div> </div> <div className="w-full"> <div className="floatinglabel input-icon-left w-full"> <Mail size={20} className="icon-left text-secondary-400" style={{ left: '1rem' }} /> <input type="email" id="reg-email" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-secondary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem' }} placeholder=" " /> <label htmlFor="reg-email" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Email Address</label> </div> </div> <div className="w-full"> <div className="floatinglabel input-icon-both w-full"> <Lock size={20} className="icon-left text-secondary-400" style={{ left: '1rem' }} /> <input type="password" id="reg-password" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-secondary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem', paddingRight: '3.5rem' }} placeholder=" " /> <label htmlFor="reg-password" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Password</label> <button type="button" className="icon-right text-white/50 hover:text-white transition-colors" style={{ zIndex: 20, right: '1rem' }}> <Eye size={20} /> </button> </div> </div> <div className="w-full"> <div className="floatinglabel input-icon-left w-full"> <Lock size={20} className="icon-left text-secondary-400" style={{ left: '1rem' }} /> <input type="password" id="reg-confirm" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-secondary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem' }} placeholder=" " /> <label htmlFor="reg-confirm" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Confirm Password</label> </div> </div> <label className="flex-left gap-2 cursor-pointer w-full"> <input type="checkbox" id="agree-terms" className="accent-secondary-500 w-4 h-4 rounded border-white/30 bg-white/10" /> <span className="text-sm font-medium text-white/80">I agree to the <a href="#" className="text-secondary-300 hover:text-secondary-200 transition-colors">Terms &amp; Privacy</a></span> </label> <button type="button" className="filled secondary-600 w-full py-3 rounded-xl text-white font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 glow"> Create Account </button> <p className="text-center text-white/50 text-sm w-full"> Already have an account? <a href="#" className="text-secondary-300 hover:text-secondary-200 font-semibold transition-colors">Sign in</a> </p> </form> </div>
-</div>
-            <div>
-<div className="w-full rounded-2xl overflow-hidden border border-white/20 shadow-2xl" style={{ minHeight: '680px' }}> <div className="flex h-full" style={{ minHeight: '680px' }}> {/* ── Collapsible Sidenav ── */} <aside id="dsh-sidebar" className="glass border-r border-white/10 flex flex-col transition-all duration-300" style={{ backdropFilter: 'blur(24px)', width: '240px', minHeight: '680px', flexShrink: 0 }}> {/* Brand + Toggle */} <div className="flex-between p-4 border-b border-white/10"> <div id="dsh-brand" className="flex-left gap-2"> <div className="circle sm filled primary-500 text-white font-bold flex-center glow" style={{ fontSize: '14px' }}>🐬</div> <span className="text-white font-bold text-sm tracking-tight">DolphinApp</span> </div> <button onClick={() => { const sb = document.getElementById('dsh-sidebar'); const brand = document.getElementById('dsh-brand'); const labels = document.querySelectorAll('.dsh-label'); const user = document.getElementById('dsh-user-info'); const isOpen = sb.style.width === '240px'; sb.style.width = isOpen ? '60px' : '240px'; brand.style.display = isOpen ? 'none' : 'flex'; user.style.display = isOpen ? 'none' : 'block'; labels.forEach(l => { l.style.display = isOpen ? 'none' : 'block'; }); }} className="text-white/60 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10 cursor-pointer" style={{ border: 'none', background: 'transparent', flexShrink: 0 }} > <Menu size={16} /> </button> </div> {/* Nav Items */} <nav className="flex flex-col gap-1 p-3 flex-1"> {[ { icon: LayoutDashboard, label: 'Dashboard', active: true }, { icon: BarChart2, label: 'Analytics', active: false }, { icon: ShoppingCart, label: 'Orders', active: false }, { icon: Users, label: 'Users', active: false }, { icon: Bell, label: 'Notifications', active: false }, { icon: Settings, label: 'Settings', active: false }, ].map(({ icon: Icon, label, active }) => ( <button key={label} onClick={e => { document.querySelectorAll('.dsh-nav-btn').forEach(b => { b.style.background = 'transparent'; b.style.border = 'none'; b.style.color = 'rgba(255,255,255,0.6)'; }); e.currentTarget.style.background = 'rgba(var(--color-primary-rgb, 99,102,241),0.2)'; e.currentTarget.style.border = '1px solid rgba(var(--color-primary-rgb, 99,102,241),0.3)'; e.currentTarget.style.color = 'white'; }} className="dsh-nav-btn flex-left gap-3 p-2.5 rounded-xl transition-all w-full text-left cursor-pointer" style={{ background: active ? 'rgba(99,102,241,0.2)' : 'transparent', border: active ? '1px solid rgba(99,102,241,0.3)' : '1px solid transparent', color: active ? 'white' : 'rgba(255,255,255,0.6)', }} > <Icon size={18} style={{ flexShrink: 0 }} /> <span className="dsh-label text-sm font-medium">{label}</span> </button> ))} </nav> {/* User Profile */} <div className="p-3 border-t border-white/10"> <div className="flex-left gap-3 p-2 rounded-xl hover:bg-white/10 transition-colors cursor-pointer"> <img src="https://i.pravatar.cc/150?img=5" alt="User" className="w-8 h-8 rounded-full border border-primary-400" style={{ flexShrink: 0 }} /> <div id="dsh-user-info" className="min-w-0"> <p className="text-white text-xs font-bold truncate">Alex Developer</p> <p className="text-white/50 text-xs">Super Admin</p> </div> </div> </div> </aside> {/* ── Main Content ── */} <main className="flex-1 flex flex-col gap-5 overflow-y-auto p-6" style={{ background: 'rgba(0,0,0,0.18)', minWidth: 0 }}> {/* Topbar */} <div className="flex-between flex-wrap gap-3"> <div> <h2 className="text-xl font-bold text-white">Good morning, Alex 👋</h2> <p className="text-white/50 text-sm">Thursday, 29 May 2026 · Here's your overview</p> </div> <div className="flex-right gap-2"> <div className="flex-left gap-2 glass px-3 py-2 rounded-xl border border-white/10" style={{ cursor: 'text' }}> <Search size={14} className="text-white/40" /> <span className="text-white/30 text-sm">Search anything...</span> </div> <button className="relative p-2 glass rounded-xl border border-white/10 text-white/70 hover:text-white transition-colors cursor-pointer" style={{ background: 'transparent' }}> <Bell size={18} /> <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-danger-500 animate-pulse"></span> </button> <img src="https://i.pravatar.cc/150?img=5" alt="u" className="w-9 h-9 rounded-full border-2 border-primary-400 cursor-pointer" /> </div> </div> {/* KPI Stats */} <div className="grid grid-cols-2 lg:grid-cols-4 gap-3"> {[ { label: 'Total Revenue', value: '$48,295', change: '+12.5%', up: true, icon: TrendingUp, color: 'primary', prog: 72 }, { label: 'Active Users', value: '3,842', change: '+8.1%', up: true, icon: Users, color: 'success', prog: 58 }, { label: 'New Orders', value: '1,274', change: '-3.2%', up: false, icon: ShoppingCart,color: 'warning', prog: 41 }, { label: 'Satisfaction', value: '94.6%', change: '+2.1%', up: true, icon: Activity, color: 'info', prog: 94 }, ].map(({ label, value, change, up, icon: Icon, color, prog }) => ( <div key={label} className="glass p-4 rounded-2xl border border-white/10 hover:border-white/20 hover:-translate-y-0.5 transition-all" style={{ cursor: 'default' }}> <div className="flex-between mb-2"> <span className="text-white/50 text-xs font-medium">{label}</span> <div className="p-1.5 rounded-lg" style={{ background: `rgba(var(--color-${color}-rgb,99,102,241),0.2)` }}> <Icon size={13} className={`text-${color}-400`} /> </div> </div> <p className="text-white text-xl font-bold mb-1">{value}</p> <div className="flex-between mb-2"> <span className={`text-xs font-semibold ${up ? 'text-success-400' : 'text-danger-400'}`}>{up ? '↑' : '↓'} {change}</span> <span className="text-white/30 text-xs">vs last mo.</span> </div> {/* Mini Progress Bar */} <div className="w-full h-1 rounded-full bg-white/10 overflow-hidden"> <div className={`h-full rounded-full bg-${color}-500`} style={{ width: `${prog}%`, transition: 'width 1s ease' }}></div> </div> </div> ))} </div> {/* Chart + Activity Row */} <div className="grid gap-4" style={{ gridTemplateColumns: '1fr 280px' }}> {/* Revenue Chart */} <div className="glass p-5 rounded-2xl border border-white/10"> <div className="flex-between mb-4"> <div> <h4 className="text-white font-bold text-sm">Revenue Overview</h4> <p className="text-white/40 text-xs">Jan – Dec 2026</p> </div> {/* Chart Toggle */} <div className="flex gap-1 glass p-1 rounded-lg border border-white/10"> <button id="dsh-btn-area" onClick={() => { document.getElementById('dsh-chart-area').style.display = 'block'; document.getElementById('dsh-chart-bar').style.display = 'none'; document.getElementById('dsh-btn-area').style.background = 'rgba(99,102,241,0.4)'; document.getElementById('dsh-btn-area').style.color = 'white'; document.getElementById('dsh-btn-bar').style.background = 'transparent'; document.getElementById('dsh-btn-bar').style.color = 'rgba(255,255,255,0.5)'; }} className="text-xs px-3 py-1 rounded-md font-medium cursor-pointer transition-all" style={{ background: 'rgba(99,102,241,0.4)', color: 'white', border: 'none' }} >Area</button> <button id="dsh-btn-bar" onClick={() => { document.getElementById('dsh-chart-area').style.display = 'none'; document.getElementById('dsh-chart-bar').style.display = 'flex'; document.getElementById('dsh-btn-bar').style.background = 'rgba(99,102,241,0.4)'; document.getElementById('dsh-btn-bar').style.color = 'white'; document.getElementById('dsh-btn-area').style.background = 'transparent'; document.getElementById('dsh-btn-area').style.color = 'rgba(255,255,255,0.5)'; }} className="text-xs px-3 py-1 rounded-md font-medium cursor-pointer transition-all" style={{ background: 'transparent', color: 'rgba(255,255,255,0.5)', border: 'none' }} >Bar</button> </div> </div> {/* SVG Area Chart */} <div id="dsh-chart-area" style={{ display: 'block' }}> <svg viewBox="0 0 460 130" className="w-full" style={{ height: '130px', overflow: 'visible' }}> <defs> <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"> <stop offset="0%" stopColor="rgba(99,102,241,0.5)" /> <stop offset="100%" stopColor="rgba(99,102,241,0)" /> </linearGradient> <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0"> <stop offset="0%" stopColor="#818cf8" /> <stop offset="100%" stopColor="#34d399" /> </linearGradient> </defs> {/* Grid lines */} {[0,32,65,97,130].map(y => ( <line key={y} x1="0" y1={y} x2="460" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" /> ))} {/* Area fill */} <path d="M0,98 L38,82 L77,90 L115,60 L154,72 L192,42 L231,55 L269,28 L308,40 L346,15 L385,25 L423,8 L460,5 L460,130 L0,130 Z" fill="url(#areaGrad)" /> {/* Line */} <polyline points="0,98 38,82 77,90 115,60 154,72 192,42 231,55 269,28 308,40 346,15 385,25 423,8 460,5" fill="none" stroke="url(#lineGrad)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /> {/* Dots */} {[[0,98],[38,82],[77,90],[115,60],[154,72],[192,42],[231,55],[269,28],[308,40],[346,15],[385,25],[423,8],[460,5]].map(([x,y],i) => ( <circle key={i} cx={x} cy={y} r="3.5" fill="#818cf8" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" /> ))} </svg> {/* X-axis labels */} <div className="flex justify-between mt-1"> {['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'].map(m => ( <span key={m} className="text-white/30 text-xs">{m}</span> ))} </div> </div> {/* CSS Bar Chart */} <div id="dsh-chart-bar" style={{ display: 'none' }} className="items-end gap-2 h-32"> {[ { m:'Jan', v:38 },{ m:'Feb', v:55 },{ m:'Mar', v:42 },{ m:'Apr', v:68 }, { m:'May', v:52 },{ m:'Jun', v:80 },{ m:'Jul', v:65 },{ m:'Aug', v:90 }, { m:'Sep', v:72 },{ m:'Oct', v:95 },{ m:'Nov', v:78 },{ m:'Dec', v:100 }, ].map(({ m, v }, i) => ( <div key={m} className="flex-1 flex flex-col items-center gap-1"> <div className="w-full rounded-t-lg transition-all duration-700 hover:opacity-80 cursor-pointer" style={{ height: `${v}%`, background: i === 11 ? 'linear-gradient(to top, #6366f1, #818cf8)' : 'rgba(255,255,255,0.15)', boxShadow: i === 11 ? '0 0 12px rgba(99,102,241,0.6)' : 'none', }} ></div> <span className="text-white/30 text-xs">{m}</span> </div> ))} </div> </div> {/* Activity Feed */} <div className="glass p-5 rounded-2xl border border-white/10 flex flex-col gap-3"> <div className="flex-between"> <h4 className="text-white font-bold text-sm">Live Activity</h4> <span className="flex-left gap-1 text-xs text-success-400"> <span className="w-1.5 h-1.5 rounded-full bg-success-400 animate-pulse inline-block"></span> Live </span> </div> {[ { u:'JD', n:'John Doe', a:'placed an order', t:'2m', c:'primary' }, { u:'SS', n:'Sarah Smith', a:'registered', t:'8m', c:'success' }, { u:'MK', n:'Mike King', a:'cancelled order', t:'22m', c:'danger' }, { u:'AL', n:'Amy Lee', a:'upgraded to Pro', t:'1h', c:'info' }, { u:'RJ', n:'Raj Joshi', a:'left a ⭐ review', t:'2h', c:'warning' }, { u:'NK', n:'Nina K.', a:'submitted ticket', t:'3h', c:'secondary'}, ].map(({ u, n, a, t, c }) => ( <div key={u+t} className="flex-left gap-3 py-1 border-b border-white/5 last:border-0"> <div className={`circle sm filled ${c}-500 text-white font-bold text-xs flex-center`} style={{ width:30, height:30, flexShrink:0 }}>{u}</div> <div className="flex-1 min-w-0"> <p className="text-white text-xs font-semibold truncate">{n}</p> <p className="text-white/40 text-xs truncate">{a}</p> </div> <span className="text-white/25 text-xs">{t}</span> </div> ))} </div> </div> {/* Orders Table */} <div className="glass p-5 rounded-2xl border border-white/10"> <div className="flex-between mb-4"> <h4 className="text-white font-bold text-sm">Recent Orders</h4> <div className="flex-right gap-2"> <span className="px-2 py-1 rounded-lg bg-primary-500/20 text-primary-300 text-xs font-bold border border-primary-500/20">4 new</span> <button className="text-primary-300 text-xs font-medium hover:underline flex-center gap-1 cursor-pointer" style={{ background:'none', border:'none' }}> View All <ChevronRight size={12} /> </button> </div> </div> <div className="overflow-x-auto"> <table className="w-full text-left border-collapse"> <thead> <tr className="border-b border-white/10 text-white/40 text-xs uppercase tracking-wider"> <th className="pb-3 font-medium">Customer</th> <th className="pb-3 font-medium">Product</th> <th className="pb-3 font-medium">Amount</th> <th className="pb-3 font-medium">Status</th> <th className="pb-3 font-medium">Date</th> </tr> </thead> <tbody className="text-white"> {[ { i:'JD', n:'John Doe', p:'Pro Plan', a:'$120.00', s:'Completed', sc:'success', d:'May 29' }, { i:'SS', n:'Sarah Smith', p:'Team Plan', a:'$340.00', s:'Pending', sc:'warning', d:'May 28' }, { i:'MK', n:'Mike King', p:'Starter', a:'$49.00', s:'Failed', sc:'danger', d:'May 27' }, { i:'AL', n:'Amy Lee', p:'Enterprise', a:'$999.00', s:'Completed', sc:'success', d:'May 26' }, { i:'RJ', n:'Raj Joshi', p:'Pro Plan', a:'$120.00', s:'Processing',sc:'info', d:'May 25' }, ].map(({ i, n, p, a, s, sc, d }) => ( <tr key={n} className="border-b border-white/5 hover:bg-white/5 transition-colors"> <td className="py-3"> <div className="flex-left gap-2"> <div className="circle sm filled primary-500 text-white font-bold text-xs flex-center" style={{ width:28, height:28 }}>{i}</div> <span className="text-sm font-medium">{n}</span> </div> </td> <td className="py-3 text-white/60 text-sm">{p}</td> <td className="py-3 font-bold text-sm">{a}</td> <td className="py-3"> <span className={`px-2 py-0.5 rounded-md bg-${sc}-500/20 text-${sc}-300 text-xs font-bold`}>{s}</span> </td> <td className="py-3 text-white/30 text-xs">{d}</td> </tr> ))} </tbody> </table> </div> </div> </main> </div> </div>
-</div>
+          
+          <div className="bg-black/25 p-4 rounded-xl border border-white/10 auto-layout-col-2">
+            <span className="font-bold text-success-300 block mb-2">// Engine Resolution Process:</span>
+            <ul className="list-disc pl-4 space-y-1.5 text-white/80 text-left">
+              <li><strong>card, glass, glow:</strong> Bypass evaluation. Returned as-is.</li>
+              <li><strong>hover:scale-105:</strong> Evaluates scale(1.05) on hover state. Injects dynamic CSS rules.</li>
+              <li><strong>gradient-blue-120-purple-240:</strong> Generates dynamic oklch gradient. Injects style rules.</li>
+              <li><strong>auto-layout-col-center-3:</strong> Generates dynamic vertical flex layout, center alignment, and 12px gap. Injects rules.</li>
+            </ul>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* Structure */}
-        <section className="space-y-6">
-          <h3 className="text-2xl font-bold text-text border-b border-border pb-2">7. Structure</h3>
-          <div className="space-y-8 p-6 rounded-2xl">
-            <div>
-<nav className="glass w-full py-4 px-6 md:px-8 border-b border-border flex-between sticky top-0 z-50 shadow-sm" style={{ backdropFilter: 'blur(24px)' }}> <div className="flex-left gap-2 cursor-pointer"> <div className="circle sm filled primary-500 text-white font-bold flex-center glow">🐬</div> <span className="text-xl font-bold text-text tracking-tight">Dolphin</span> </div> <div className="hidden md:flex gap-6"> <a href="#" className="text-text-muted hover:text-primary-500 font-medium transition-colors">Home</a> <a href="#" className="text-text-muted hover:text-primary-500 font-medium transition-colors">Features</a> <a href="#" className="text-text-muted hover:text-primary-500 font-medium transition-colors">Pricing</a> <a href="#" className="text-text-muted hover:text-primary-500 font-medium transition-colors">Docs</a> </div> <div className="flex-right gap-3"> <button className="hidden md:block outlined plain py-2 px-4 rounded-lg font-medium text-sm border-border text-text hover:bg-surface">Log In</button> <button className="filled primary-600 text-white py-2 px-4 rounded-lg font-medium text-sm hover:shadow-lg transition-all glow">Sign Up</button> </div> </nav>
-</div>
-            <div>
-<footer className="w-full bg-surface-dark py-12 px-6 border-t border-border mt-auto"> <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8"> <div className="col-span-1 md:col-span-2"> <div className="flex-left gap-2 mb-4"> <div className="circle sm filled primary-500 text-white font-bold flex-center glow">🐬</div> <span className="text-2xl font-bold text-text-light tracking-tight">DolphinCSS</span> </div> <p className="text-text-muted max-w-sm mb-6 leading-relaxed"> The next-generation UI library that combines the magic of auto-generation with breathtaking aesthetics. </p> <div className="flex-left gap-4"> <button className="circle sm bg-white/5 hover:bg-primary-500 hover:text-white transition-all text-text-muted border border-border">𝕏</button> <button className="circle sm bg-white/5 hover:bg-primary-500 hover:text-white transition-all text-text-muted border border-border">in</button> <button className="circle sm bg-white/5 hover:bg-primary-500 hover:text-white transition-all text-text-muted border border-border">GH</button> </div> </div> <div> <h4 className="font-bold text-lg mb-4 text-text-light">Resources</h4> <ul className="flex-col-left gap-3 text-text-muted"> <li><a href="#" className="hover:text-primary-500 transition-colors">Documentation</a></li> <li><a href="#" className="hover:text-primary-500 transition-colors">Components</a></li> <li><a href="#" className="hover:text-primary-500 transition-colors">Themes</a></li> <li><a href="#" className="hover:text-primary-500 transition-colors">Showcase</a></li> </ul> </div> <div> <h4 className="font-bold text-lg mb-4 text-text-light">Legal</h4> <ul className="flex-col-left gap-3 text-text-muted"> <li><a href="#" className="hover:text-primary-500 transition-colors">Privacy Policy</a></li> <li><a href="#" className="hover:text-primary-500 transition-colors">Terms of Service</a></li> <li><a href="#" className="hover:text-primary-500 transition-colors">License</a></li> </ul> </div> </div> <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-border/20 flex-between flex-wrap gap-4 text-sm text-text-muted"> <p>© 2026 DolphinCSS. All rights reserved.</p> <p className="flex-center gap-1">Made with <span className="text-danger-500 animate-pulse">❤️</span> in Nepal</p> </div> </footer>
-</div>
-          </div>
-        </section>
-
+      {/* Live Engine Diagnostics */}
+      <div className="grid gap-4 w-full md:grid-col-4 text-xs mt-2">
+        <div className="p-3 bg-white/5 rounded-xl border border-white/10 flex flex-col">
+          <span className="text-white/60">Cache Hit Rate</span>
+          <span className="text-lg font-bold text-success mt-0.5">{diagnostics.cacheHitRate}</span>
+        </div>
+        <div className="p-3 bg-white/5 rounded-xl border border-white/10 flex flex-col">
+          <span className="text-white/60">CSS Rules Injected</span>
+          <span className="text-lg font-bold text-primary mt-0.5">{diagnostics.styleCount} rules</span>
+        </div>
+        <div className="p-3 bg-white/5 rounded-xl border border-white/10 flex flex-col">
+          <span className="text-white/60">LRU Class Cache</span>
+          <span className="text-lg font-bold text-warning mt-0.5">{diagnostics.classCache} classes</span>
+        </div>
+        <div className="p-3 bg-white/5 rounded-xl border border-white/10 flex flex-col">
+          <span className="text-white/60">Total Class Evaluations</span>
+          <span className="text-lg font-bold text-info mt-0.5">{diagnostics.totalRequests}</span>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+function App() {
+  const [activeTab, setActiveTab] = useState('cards');
+  const [mode, setMode] = useState('light');
+  
+  const toggleMode = () => {
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    document.documentElement.setAttribute('data-theme-mode', newMode);
+  };
 
+  return (
+    <div className="bg-surface min-h-screen pb-16">
+      {/* Tab Switcher Navigation (showcasing auto-layout-row-center-4) */}
+      <div className={ub('auto-layout-row-center-4 py-4 border-b border-border bg-surface/80 backdrop-blur sticky top-0 z-[90] w-full')}>
+        <button
+          onClick={() => setActiveTab('login')}
+          className={`px-5 py-2 rounded-xl font-bold transition-all ${
+            activeTab === 'login'
+              ? 'filled primary text-white shadow-lg'
+              : 'glass outlined primary hover:bg-surface-alt'
+          }`}
+        >
+          Login Form Showcase
+        </button>
+        <button
+          onClick={() => setActiveTab('cards')}
+          className={`px-5 py-2 rounded-xl font-bold transition-all ${
+            activeTab === 'cards'
+              ? 'filled primary text-white shadow-lg'
+              : 'glass outlined primary hover:bg-surface-alt'
+          }`}
+        >
+          Mixed-Use Showcase (ub.js)
+        </button>
+        <button
+          onClick={toggleMode}
+          className="glass outlined primary px-4 py-2 rounded-xl font-bold"
+        >
+          {mode === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
+      </div>
+
+      <div className="p-8">
+        {activeTab === 'login' ? (
+          <div className="max-w-md mx-auto">
+            <div className="glass card p-6 lg:p-8 border border-white/20 rounded-2xl" style={{ backdropFilter: 'blur(20px)' }}>
+              <h3 className="text-xl font-bold text-white mb-1">Welcome Back 👋</h3>
+              <p className="text-white/50 text-sm mb-6">Sign in to your account</p>
+              <form className="flex-col-left w-full gap-5">
+                <div className="w-full">
+                  <div className="floatinglabel input-icon-left w-full">
+                    <Mail size={20} className="icon-left text-primary-500" style={{ left: '1rem' }} />
+                    <input type="email" id="login-email" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-primary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem' }} placeholder=" " />
+                    <label htmlFor="login-email" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Email Address</label>
+                  </div>
+                </div>
+                <div className="w-full">
+                  <div className="floatinglabel input-icon-both w-full">
+                    <Lock size={20} className="icon-left text-primary-500" style={{ left: '1rem' }} />
+                    <input type="password" id="login-password" className="floatinglabel-input lg w-full bg-white/10 border-white/20 focus:border-primary-400 transition-colors rounded-xl text-white placeholder:text-transparent" style={{ paddingLeft: '3.5rem', paddingRight: '3.5rem' }} placeholder=" " />
+                    <label htmlFor="login-password" className="floatinglabel-label text-white/70 font-medium" style={{ zIndex: 10 }}>Password</label>
+                    <button type="button" className="icon-right text-white/50 hover:text-white transition-colors" style={{ zIndex: 20, right: '1rem' }}>
+                      <Eye size={20} />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex-between w-full">
+                  <label className={ub('auto-layout-row-left-2 cursor-pointer')}>
+                    <input type="checkbox" id="remember-me" className="accent-primary-500 w-4 h-4 rounded border-white/30 bg-white/10" />
+                    <span className="text-sm font-medium text-white/80">Remember me</span>
+                  </label>
+                  <a href="#" className="text-sm text-primary-300 hover:text-primary-200 transition-colors font-medium">Forgot password?</a>
+                </div>
+                <button type="button" className="filled primary-600 w-full py-3 rounded-xl text-white font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 glow"> Sign In </button>
+                <p className="text-center text-white/50 text-sm w-full"> Don't have an account? <a href="#" className="text-primary-300 hover:text-primary-200 font-semibold transition-colors">Sign up</a>
+                </p>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full max-w-7xl mx-auto">
+            <MixedUseShowcase mode={mode} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;

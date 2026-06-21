@@ -1,0 +1,282 @@
+/* ===== GLOBAL DESIGN SYSTEM - OPTIMIZED ===== */
+/* Using your existing color variables from the first code block */
+
+@layer components {
+  /* ===== ORIGINAL BUTTON SYSTEM (Perfectly Preserved) ===== */
+  .filled {
+    @apply font-medium rounded-md inline-flex items-center justify-center select-none transition-all duration-200;
+    background-color: var(--current-bg, var(--color-surface));
+    color: var(--current-text, var(--color-text)) !important;
+  }
+  .outlined {
+    @apply rounded-md bg-transparent inline-flex items-center justify-center select-none transition-all duration-200;
+    border: 2px solid var(--current-border, var(--color-border));
+    color: var(--current-color, var(--color-text)) !important;
+  }
+  .plain {
+    @apply bg-transparent inline-flex items-center justify-center select-none transition-all duration-200;
+    color: var(--current-color, var(--color-text)) !important;
+  }
+
+  /* ===== Button Colors (Using YOUR Existing Variables) ===== */
+
+  /* Button Hover/Focus/Disabled (EXACTLY Same) */
+  .filled:hover, .outlined:hover, .plain:hover { opacity: 0.9; }
+  .filled:focus-visible,
+  .outlined:focus-visible,
+  .plain:focus-visible {
+    outline: 2px solid var(--color-border);
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+  .filled:disabled,
+  .outlined:disabled,
+  .plain:disabled {
+    @apply opacity-50 cursor-not-allowed pointer-events-none;
+  }
+
+  /* ===== Circle Buttons (EXACTLY Same as Original) ===== */
+  .circle {
+    @apply rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center select-none transition-shadow duration-200 cursor-pointer;
+    background-color: var(--current-bg, transparent);
+    color: var(--current-text, var(--color-text));
+  }
+  .circle.sm { @apply w-8 h-8 text-sm; }
+  .circle.md { @apply w-12 h-12 text-base; }
+  .circle.lg { @apply w-16 h-16 text-lg; }
+
+  .circle
+  .circle
+  .circle
+  .circle
+  .circle
+  .circle
+
+  .circle
+  .circle
+  .circle
+  .circle
+  .circle
+  .circle
+
+  .circle:disabled { @apply opacity-50 cursor-not-allowed pointer-events-none; }
+
+  /* ===== COLOR PROPAGATION SYSTEM ===== */
+  .primary { 
+    --current-color: var(--color-primary);
+    --current-bg: var(--color-primary);
+    --current-text: var(--color-text);
+    --current-glow: var(--glow-primary);
+  }
+
+  .secondary { 
+    --current-color: var(--color-secondary);
+    --current-bg: var(--color-secondary);
+    --current-text: var(--color-text);
+    --current-glow: var(--glow-secondary);
+  }
+
+  .success { 
+    --current-color: var(--color-success);
+    --current-bg: var(--color-success);
+    --current-text: var(--color-text);
+    --current-glow: var(--glow-success);
+  }
+
+  .warning { 
+    --current-color: var(--color-warning);
+    --current-bg: var(--color-warning);
+    --current-text: var(--color-text);
+    --current-glow: var(--glow-warning);
+  }
+
+  .danger { 
+    --current-color: var(--color-danger);
+    --current-bg: var(--color-danger);
+    --current-text: var(--color-text);
+    --current-glow: var(--glow-danger);
+  }
+
+  .info { 
+    --current-color: var(--color-info);
+    --current-bg: var(--color-info);
+  }
+  /* ===== GLOBAL VARIANTS (Using YOUR Color Variables) ===== */
+
+  /* 🌊 Original 5 Variants (With Legacy Support) */
+  .fx-glass, .glass-wave {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    @apply rounded-xl transition-all duration-300;
+  }
+
+  .fx-neon, .neon-flow {
+    background: color-mix(in oklch, var(--color-surface), black 10%);
+    border: 1px solid color-mix(in oklch, var(--color-primary), transparent 50%);
+    box-shadow: var(--glow-primary);
+    @apply rounded-xl transition-all duration-300;
+  }
+
+  .fx-holo, .holo-matrix {
+    background: 
+      radial-gradient(circle at 0% 0%, color-mix(in oklch, var(--color-primary), transparent 90%) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, color-mix(in oklch, var(--color-info), transparent 90%) 0%, transparent 50%),
+      var(--color-surface);
+    @apply rounded-xl;
+  }
+
+  .fx-float, .quantum-float {
+    box-shadow: var(--glass-shadow);
+    border: 1px solid color-mix(in oklch, var(--color-border), transparent 50%);
+    @apply rounded-xl transition-all duration-300;
+  }
+
+  .fx-float:hover, .quantum-float:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow-lg);
+  }
+
+  .fx-aqua, .aqua-depth {
+    background: linear-gradient(160deg, 
+      color-mix(in oklch, var(--color-surface), transparent 10%),
+      color-mix(in oklch, var(--color-info), transparent 95%),
+      color-mix(in oklch, var(--color-surface), transparent 10%));
+    border: 1px solid color-mix(in oklch, var(--color-info), transparent 60%);
+    @apply rounded-xl;
+  }
+
+  /* 🚀 7 New World-Class Effects (With Legacy Support) */
+  .fx-flare, .solar-flare {
+    background: linear-gradient(135deg, 
+      color-mix(in oklch, var(--color-primary), transparent 10%) 0%,
+      color-mix(in oklch, var(--color-warning), transparent 30%) 50%,
+      color-mix(in oklch, var(--color-danger), transparent 10%) 100%);
+    box-shadow: var(--glow-primary);
+    @apply rounded-xl transition-all duration-500;
+  }
+
+  .fx-cyber, .cyber-neon {
+    background: linear-gradient(45deg,
+      color-mix(in oklch, var(--color-primary), black 20%) 0%,
+      color-mix(in oklch, var(--color-info), black 20%) 50%,
+      color-mix(in oklch, var(--color-primary), black 20%) 100%);
+    border: 1px solid color-mix(in oklch, var(--color-primary), transparent 40%);
+    box-shadow: 
+      inset 0 0 20px color-mix(in oklch, var(--color-primary), transparent 80%),
+      var(--glow-primary);
+    @apply rounded-xl backdrop-blur-sm transition-all duration-300;
+  }
+
+  .fx-crystal, .crystal-glass {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    @apply rounded-xl transition-all duration-500;
+  }
+
+  .fx-nebula, .galactic-nebula {
+    background: 
+      radial-gradient(circle at 20% 80%, color-mix(in oklch, var(--color-primary), transparent 30%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, color-mix(in oklch, var(--color-info), transparent 30%) 0%, transparent 50%),
+      var(--color-surface);
+    @apply rounded-xl transition-all duration-700;
+  }
+
+  .fx-metal, .liquid-mercury {
+    background: linear-gradient(125deg,
+      color-mix(in oklch, var(--color-secondary), transparent 20%) 0%,
+      color-mix(in oklch, var(--color-surface), transparent 10%) 30%,
+      color-mix(in oklch, var(--color-secondary), transparent 40%) 70%,
+      color-mix(in oklch, var(--color-surface), transparent 5%) 100%);
+    box-shadow: 
+      inset 0 2px 4px color-mix(in oklch, white, transparent 60%),
+      inset 0 -2px 4px color-mix(in oklch, black, transparent 20%),
+      0 4px 20px color-mix(in oklch, var(--color-secondary), transparent 30%);
+    @apply rounded-xl transition-all duration-400;
+  }
+
+  .fx-rainbow, .psychedelic-dream {
+    background: linear-gradient(45deg,
+      color-mix(in oklch, var(--color-primary), transparent 20%) 0%,
+      color-mix(in oklch, var(--color-success), transparent 20%) 25%,
+      color-mix(in oklch, var(--color-warning), transparent 20%) 50%,
+      color-mix(in oklch, var(--color-danger), transparent 20%) 75%,
+      color-mix(in oklch, var(--color-info), transparent 20%) 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    @apply rounded-xl transition-all duration-300;
+  }
+
+  .fx-aurora, .frosted-aurora {
+    background: 
+      linear-gradient(135deg, color-mix(in oklch, var(--color-surface), transparent 85%) 0%, 
+      color-mix(in oklch, var(--color-surface), transparent 95%) 100%),
+      radial-gradient(circle at 0% 0%, color-mix(in oklch, var(--color-primary), transparent 10%) 0%, transparent 50%);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid color-mix(in oklch, var(--color-border), transparent 60%);
+    box-shadow: var(--glass-shadow);
+    @apply rounded-xl transition-all duration-500;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+}
+
+/* ===== GLOBAL GLOW EFFECTS (Using YOUR Existing Glow Variables) ===== */
+.glow {
+  @apply transition-all duration-300;
+}
+.glow:hover { box-shadow: var(--current-glow, var(--glow-primary)); }
+
+/* Pulsing glow */
+.glow.pulse {
+  animation: dolphin-glow-pulse 3s ease-in-out infinite;
+}
+@keyframes dolphin-glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 5px 2px color-mix(in oklch, var(--current-color, var(--color-primary)) 15%, transparent);
+  }
+  50% { 
+    box-shadow: 0 0 20px 8px color-mix(in oklch, var(--current-color, var(--color-primary)) 25%, transparent);
+  }
+}
+
+/* Wave glow */
+.glow.wave {
+  animation: ocean-wave 4s ease-in-out infinite;
+}
+@keyframes ocean-wave {
+  0%, 100% { 
+    box-shadow: 
+      0 0 10px 3px color-mix(in oklch, var(--color-primary) 20%, transparent),
+      0 0 20px 6px color-mix(in oklch, var(--color-info) 15%, transparent);
+  }
+  50% { 
+    box-shadow: 
+      0 0 15px 5px color-mix(in oklch, var(--color-primary) 25%, transparent),
+      0 0 25px 8px color-mix(in oklch, var(--color-info) 20%, transparent);
+  }
+}
+
+/* Remove any conflicting shadows */
+.chart-card,
+.card {
+  box-shadow: none !important;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .fx-glass, .glass-wave,
+  .fx-crystal, .crystal-glass,
+  .fx-aurora, .frosted-aurora {
+    backdrop-filter: var(--glass-blur-sm);
+  }
+
+  .fx-float:hover, .quantum-float:hover {
+    transform: none;
+  }
+}

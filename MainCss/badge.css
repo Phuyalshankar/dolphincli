@@ -1,0 +1,22 @@
+@layer components {
+/* ===== Badge System ===== */
+  .badge {
+    @apply inline-flex items-center justify-center font-medium select-none rounded-full transition-all duration-200;
+  }
+  .badge.filled { @apply text-(--color-text); }
+  .badge.outlined { @apply border-2 border-current bg-transparent text-(--color-text); }
+  .badge.primary { @apply bg-(--color-primary) text-(--color-text); }
+  .badge.secondary { @apply bg-(--color-secondary) text-(--color-text); }
+  .badge.success { @apply bg-(--color-success) text-(--color-text); }
+  .badge.warning { @apply bg-(--color-warning) text-(--color-text); }
+  .badge.danger { @apply bg-(--color-danger) text-(--color-text); }
+  .badge.primary.outlined { @apply border-(--color-primary) text-(--color-text); }
+  .badge.secondary.outlined { @apply border-(--color-secondary) text-(--color-text); }
+  .badge.success.outlined { @apply border-(--color-success) text-(--color-text); }
+  .badge.warning.outlined { @apply border-(--color-warning) text-(--color-text); }
+  .badge.danger.outlined { @apply border-(--color-danger) text-(--color-text); }
+  .badge.sm { @apply text-xs px-2 py-1; }
+  .badge.md { @apply text-sm px-3 py-1.5; }
+  .badge.lg { @apply text-base px-4 py-2; }
+  .badge-corner { @apply absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2; }
+}

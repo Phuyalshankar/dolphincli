@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>DolphinCSS 🐬 - Modern Component Library</title>
+  <meta name="description" content="DolphinCSS is a zero-dependency CSS component library with Glassmorphism, gradients, and beautiful pre-built components." />
+  
+  <!-- DolphinCSS Core: Prefer local, fallback to CDN -->
+  <link rel="stylesheet" href="../dolphin-css.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/dolphincss@1.2.5/dolphin-css.min.css'" />
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Override & docs-specific variables (keeping dolphin defaults but enhancing) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --docs-bg: #f8fafc;
+      --docs-surface: #ffffff;
+      --docs-text: #0f172a;
+      --docs-muted: #475569;
+      --docs-border: #e2e8f0;
+      --docs-code-bg: #0f172a;
+      --sidebar-width: 280px;
+    }
+
+    [data-theme="dark"] {
+      --docs-bg: #0a0c15;
+      --docs-surface: #111827;
+      --docs-text: #eef2ff;
+      --docs-muted: #9ca3af;
+      --docs-border: #1f2937;
+      --docs-code-bg: #030712;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--docs-bg);
+      color: var(--docs-text);
+      transition: background 0.25s ease, color 0.2s ease;
+      line-height: 1.5;
+    }
+
+    /* ===== Layout ===== */
+    .docs-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: var(--docs-surface);
+      backdrop-filter: blur(0px);
+      border-bottom: 1px solid var(--docs-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .docs-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0ea5e9, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .docs-header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .theme-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 40px;
+      background: var(--docs-bg);
+      color: var(--docs-text);
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .theme-btn:hover {
+      transform: scale(1.05);
+      background: var(--docs-border);
+    }
+
+    .github-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      border-radius: 100px;
+      background: #0f172a;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    [data-theme="dark"] .github-btn {
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+    .github-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* Sidebar */
+    .docs-sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: var(--sidebar-width);
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      background: var(--docs-surface);
+      border-right: 1px solid var(--docs-border);
+      padding: 2rem 1rem;
+      z-index: 90;
+    }
+
+    .sidebar-section {
+      margin-bottom: 2rem;
+    }
+
+    .sidebar-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--docs-muted);
+      margin-bottom: 0.75rem;
+      padding-left: 0.5rem;
+    }
+
+    .sidebar-link {
+      display: block;
+      padding: 0.45rem 0.85rem;
+      border-radius: 0.6rem;
+      color: var(--docs-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.15s;
+      margin-bottom: 3px;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+      background: #0ea5e9;
+      color: white;
+    }
+    [data-theme="dark"] .sidebar-link.active {
+      background: #0ea5e9;
+      color: #fff;
+    }
+
+    /* Main */
+    .docs-main {
+      margin-left: var(--sidebar-width);
+      margin-top: 70px;
+      padding: 2.5rem 3rem;
+      max-width: 1200px;
+    }
+
+    /* Hero */
+    .docs-hero {
+      text-align: center;
+      padding: 3.5rem 2rem;
+      background: linear-gradient(125deg, #0ea5e9, #8b5cf6, #ec489a);
+      border-radius: 2rem;
+      margin-bottom: 4rem;
+      color: white;
+      position: relative;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+    }
+    .docs-hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .docs-hero p {
+      font-size: 1.1rem;
+      opacity: 0.92;
+      max-width: 550px;
+      margin: 0 auto 1.8rem;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-btn-primary {
+      padding: 0.7rem 1.8rem;
+      background: white;
+      color: #0ea5e9;
+      border-radius: 40px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
+    .hero-btn-ghost {
+      padding: 0.7rem 1.8rem;
+      border: 2px solid rgba(255,255,255,0.6);
+      color: white;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      background: rgba(255,255,255,0.05);
+      transition: 0.2s;
+    }
+    .hero-btn-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* Section styling */
+    .docs-section {
+      margin-bottom: 4rem;
+      scroll-margin-top: 90px;
+    }
+    .docs-section h2 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.3px;
+      border-left: 4px solid #0ea5e9;
+      padding-left: 1rem;
+    }
+    .docs-section h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 1.8rem 0 0.8rem;
+    }
+    .lead {
+      color: var(--docs-muted);
+      margin-bottom: 1.6rem;
+    }
+
+    /* Preview blocks */
+    .preview-box {
+      border: 1px solid var(--docs-border);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      margin: 1.2rem 0 1.5rem;
+      background: var(--docs-surface);
+      transition: box-shadow 0.2s;
+    }
+    .preview-content {
+      padding: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: var(--docs-bg);
+      min-height: 100px;
+    }
+    .preview-code {
+      background: var(--docs-code-bg);
+      color: #cbd5e6;
+      padding: 1rem 1.5rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .preview-code .tag { color: #7dd3fc; }
+    .preview-code .attr { color: #c4b5fd; }
+    .preview-code .str { color: #bef264; }
+
+    /* Install box */
+    .install-box {
+      background: var(--docs-code-bg);
+      color: #e2e8f0;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      margin: 0.75rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .copy-btn {
+      background: rgba(255,255,255,0.12);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.3rem 0.9rem;
+      color: white;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: 0.2s;
+    }
+    .copy-btn:hover { background: #0ea5e9; }
+
+    /* Feature grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0 2rem;
+    }
+    .feature-card {
+      background: var(--docs-surface);
+      border: 1px solid var(--docs-border);
+      border-radius: 1.2rem;
+      padding: 1.5rem;
+      transition: all 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 25px -12px rgba(0,0,0,0.2);}
+    .feature-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+    .feature-card h4 { font-weight: 800; margin-bottom: 0.3rem; }
+
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin: 1rem 0;
+    }
+    .version-badge {
+      background: #0ea5e9;
+      padding: 0.2rem 0.7rem;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .footer {
+      margin-left: var(--sidebar-width);
+      text-align: center;
+      padding: 2.5rem;
+      border-top: 1px solid var(--docs-border);
+      color: var(--docs-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 780px) {
+      .docs-sidebar { display: none; }
+      .docs-main { margin-left: 0; padding: 1.5rem; }
+      .footer { margin-left: 0; }
+      .docs-hero h1 { font-size: 2.2rem; }
+    }
+
+    /* add extra inline style for glass/demo */
+    .tooltip-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .tooltip {
+      visibility: hidden;
+      background-color: #1e293b;
+      color: #fff;
+      text-align: center;
+      border-radius: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.75rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+    .tooltip-wrapper:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    [data-theme="dark"] .tooltip { background: #334155; }
+  </style>
+</head>
+<body>
+
+<header class="docs-header">
+  <div class="docs-logo">🐬 DolphinCSS <span class="version-badge" style="margin-left:8px;">v1.1.0</span></div>
+  <div class="docs-header-right">
+    <button class="theme-btn" id="themeToggleBtn" aria-label="Toggle theme">🌙</button>
+    <a href="https://github.com/Phuyalshankar/dolphincss" class="github-btn" target="_blank">⭐ GitHub</a>
+  </div>
+</header>
+
+<aside class="docs-sidebar">
+  <div class="sidebar-section"><div class="sidebar-label">Start</div>
+    <a href="#installation" class="sidebar-link">Installation</a>
+    <a href="#theming" class="sidebar-link">Theming</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-label">Components</div>
+    <a href="#buttons" class="sidebar-link">Buttons</a>
+    <a href="#cards" class="sidebar-link">Cards</a>
+    <a href="#glassmorphism" class="sidebar-link">Glassmorphism</a>
+    <a href="#modal" class="sidebar-link">Modal</a>
+    <a href="#accordion" class="sidebar-link">Accordion</a>
+    <a href="#tooltip" class="sidebar-link">Tooltip</a>
+    <a href="#grid" class="sidebar-link">Grid</a>
+    <a href="#animations" class="sidebar-link">Animations</a>
+  </div>
+  <div class="sidebar-section"><div class="sidebar-label">Extras</div>
+    <a href="#gradients" class="sidebar-link">Gradients</a>
+    <a href="#badges" class="sidebar-link">Badges & Chips</a>
+  </div>
+</aside>
+
+<main class="docs-main">
+  <div class="docs-hero">
+    <h1>🐬 DolphinCSS</h1>
+    <p>Zero-dependency, modern CSS library with glassmorphism, gradients, and accessible components. Built for developers who love beauty & speed.</p>
+    <div class="hero-btns">
+      <a href="#installation" class="hero-btn-primary">Start Building</a>
+      <a href="https://github.com/Phuyalshankar/dolphincss" class="hero-btn-ghost" target="_blank">Documentation</a>
+    </div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-icon">⚡</div><h4>Zero JS</h4><p>Pure CSS, no runtime overhead.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎨</div><h4>Dark mode ready</h4><p>data-theme toggle built-in.</p></div>
+    <div class="feature-card"><div class="feature-icon">🧊</div><h4>Glass & Gradients</h4><p>Modern aesthetic out of the box.</p></div>
+    <div class="feature-card"><div class="feature-icon">📱</div><h4>Responsive grid</h4><p>Flexible 12-col layout.</p></div>
+  </div>
+
+  <!-- Installation -->
+  <section class="docs-section" id="installation">
+    <h2>Installation</h2>
+    <p class="lead">Add DolphinCSS to your project via NPM or CDN.</p>
+    <div class="install-box"><span>npm install dolphincss@latest</span><button class="copy-btn" onclick="copyText('npm install dolphincss@latest')">Copy</button></div>
+    <div class="install-box"><span>import 'dolphincss/dist/dolphin-css.css'</span><button class="copy-btn" onclick="copyText('import \'dolphincss/dist/dolphin-css.css\'')">Copy</button></div>
+    <div class="install-box" style="display:block;"><span>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dolphincss/dist/dolphin-css.css"&gt;</span></div>
+  </section>
+
+  <!-- Theming -->
+  <section class="docs-section" id="theming">
+    <h2>Theming</h2>
+    <p class="lead">Switch between light and dark modes with a single attribute.</p>
+    <div class="preview-box"><div class="preview-content" style="gap:1rem;">
+      <button class="filled primary md" id="lightModeBtn">☀️ Light mode</button>
+      <button class="filled primary md" id="darkModeBtn">🌙 Dark mode</button>
+    </div><div class="preview-code">document.documentElement.setAttribute('data-theme', 'dark');</div></div>
+  </section>
+
+  <!-- Buttons -->
+  <section class="docs-section" id="buttons">
+    <h2>Buttons</h2>
+    <p class="lead">Composable classes: variant + color + size (sm, md, lg).</p>
+    <div class="preview-box"><div class="preview-content">
+      <button class="filled primary xs">XS</button>
+      <button class="filled primary sm">SM</button>
+      <button class="filled primary md">MD</button>
+      <button class="filled primary lg">LG</button>
+      <button class="filled primary xl">XL</button>
+      <button class="filled success md">Success</button>
+      <button class="filled warning md">Warning</button>
+      <button class="filled danger md">Danger</button>
+      <button class="outlined secondary md">Outline</button>
+      <button class="plain primary md">Plain</button>
+    </div><div class="preview-code"><span class="tag">&lt;button</span> <span class="attr">class=</span><span class="str">"filled primary md"</span><span class="tag">&gt;</span>Click<span class="tag">&lt;/button&gt;</span></div></div>
+  </section>
+
+  <!-- Cards -->
+  <section class="docs-section" id="cards">
+    <h2>Cards</h2>
+    <div class="preview-box"><div class="preview-content" style="gap:1.2rem; align-items: stretch;">
+      <div class="card" style="flex:1;"><h4 style="font-weight:700;">Standard</h4><p style="font-size:0.8rem;">Hover lift effect.</p></div>
+      <div class="card primary" style="flex:1;"><h4>Primary card</h4><p>Colorful accent</p></div>
+      <div class="card gradient" style="flex:1;"><h4>Gradient</h4><p>Vibrant background</p></div>
+    </div><div class="preview-code">&lt;div class="card primary"&gt; ... &lt;/div&gt;</div></div>
+  </section>
+
+  <!-- Glassmorphism -->
+  <section class="docs-section" id="glassmorphism">
+    <h2>Glassmorphism <span style="background:#0ea5e9; font-size:0.65rem; padding:2px 10px; border-radius:50px; margin-left:10px;">✨ New</span></h2>
+    <div class="preview-box"><div class="preview-content" style="background: linear-gradient(125deg, #0f2b3d, #7c3aed); gap:1.5rem;">
+      <div class="glass-light" style="padding:1.2rem; border-radius:1.2rem; text-align:center;"><strong>Glass Light</strong><br>Frosted blur</div>
+      <div class="glass-dark" style="padding:1.2rem; border-radius:1.2rem; text-align:center;"><strong>Glass Dark</strong><br>Deep glass</div>
+    </div><div class="preview-code"><span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"glass-light"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span></div></div>
+  </section>
+
+  <!-- Modal Demo (interactive) -->
+  <section class="docs-section" id="modal">
+    <h2>Modal</h2>
+    <p class="lead">Built-in overlay & content. Click to open.</p>
+    <div class="preview-box"><div class="preview-content">
+      <button class="filled primary md" id="openModalBtn">Launch Modal</button>
+    </div><div class="preview-code">&lt;div class="modal-overlay"&gt;&lt;div class="modal-content"&gt;...&lt;/div&gt;&lt;/div&gt;</div></div>
+  </section>
+
+  <!-- Accordion (interactive via JS class toggle) -->
+  <section class="docs-section" id="accordion">
+    <h2>Accordion</h2>
+    <div class="preview-box"><div class="preview-content" style="flex-direction:column; padding:0;">
+      <div class="accordion-item" id="acc1" style="width:100%; border-bottom:1px solid var(--docs-border);">
+        <div class="accordion-header" style="display:flex; justify-content:space-between; cursor:pointer; padding:1rem;">What makes DolphinCSS unique? <span>▼</span></div>
+        <div class="accordion-content" style="padding:0 1rem 1rem 1rem;">It's built on Tailwind principles but fully standalone, with glassmorphic utilities and no JS dependencies.</div>
+      </div>
+      <div class="accordion-item" id="acc2" style="width:100%;">
+        <div class="accordion-header" style="display:flex; justify-content:space-between; cursor:pointer; padding:1rem;">Can I customize colors? <span>▼</span></div>
+        <div class="accordion-content" style="padding:0 1rem 1rem 1rem;">Yes! All variables are CSS custom properties – override --color-primary, etc.</div>
+      </div>
+    </div><div class="preview-code">Toggle .open class on .accordion-item</div></div>
+  </section>
+
+  <!-- Tooltip demo -->
+  <section class="docs-section" id="tooltip">
+    <h2>Tooltip (CSS only)</h2>
+    <div class="preview-box"><div class="preview-content" style="gap:2rem;">
+      <div class="tooltip-wrapper"><button class="filled secondary md">Hover me</button><span class="tooltip">🐬 Dolphin tooltip!</span></div>
+      <div class="tooltip-wrapper"><button class="outlined success md">Info tip</button><span class="tooltip">Pure CSS on hover</span></div>
+    </div><div class="preview-code">&lt;div class="tooltip-wrapper"&gt; ... &lt;span class="tooltip"&gt;text&lt;/span&gt;&lt;/div&gt;</div></div>
+  </section>
+
+  <!-- Grid System -->
+  <section class="docs-section" id="grid">
+    <h2>Grid System</h2>
+    <div class="preview-box"><div class="preview-content" style="flex-direction:column; gap:0.8rem;">
+      <div class="row" style="width:100%; gap:0.5rem;"><div class="col-6" style="background:#0ea5e9; padding:0.6rem; border-radius:0.8rem; text-align:center;">col-6</div><div class="col-6" style="background:#a855f7; border-radius:0.8rem; text-align:center;">col-6</div></div>
+      <div class="row" style="width:100%; gap:0.5rem;"><div class="col-4" style="background:#22c55e; border-radius:0.6rem;">col-4</div><div class="col-4" style="background:#f97316;">col-4</div><div class="col-4" style="background:#ef4444;">col-4</div></div>
+    </div><div class="preview-code">&lt;div class="row"&gt;&lt;div class="col-6"&gt;&lt;/div&gt;&lt;div class="col-6"&gt;&lt;/div&gt;&lt;/div&gt;</div></div>
+  </section>
+
+  <!-- Advanced Gradients -->
+  <section class="docs-section" id="gradients">
+    <h2>Gradient Utilities</h2>
+    <div class="preview-box"><div class="preview-content" style="gap:1rem; justify-content:space-between;">
+      <div class="card" style="background:var(--gradient-primary); color:white; text-align:center; flex:1;">Primary gradient</div>
+      <div class="card" style="background:var(--gradient-mesh); color:white; text-align:center; flex:1;">Mesh</div>
+      <div class="card" style="background:var(--gradient-aurora); color:white; text-align:center; flex:1;">Aurora</div>
+    </div><div class="preview-code">background: var(--gradient-aurora);</div></div>
+  </section>
+
+  <!-- Badges & Chips showcase -->
+  <section class="docs-section" id="badges">
+    <h2>Badges & Tags</h2>
+    <div class="chip-grid">
+      <span class="badge primary">New</span>
+      <span class="badge success">Stable</span>
+      <span class="badge warning">Beta</span>
+      <span class="badge danger">Deprecated</span>
+    </div>
+    <div class="preview-code"><span class="tag">&lt;span</span> <span class="attr">class=</span><span class="str">"badge primary"</span><span class="tag">&gt;</span>New<span class="tag">&lt;/span&gt;</span></div>
+  </section>
+
+  <!-- Animations section -->
+  <section class="docs-section" id="animations">
+    <h2>Animations</h2>
+    <div class="preview-box"><div class="preview-content">
+      <div class="card animate-fade-in" style="padding:0.8rem;">fade-in</div>
+      <div class="card animate-slide-up" style="padding:0.8rem;">slide-up</div>
+      <div class="card animate-pulse-slow" style="padding:0.8rem;">pulse-slow</div>
+    </div><div class="preview-code">.animate-fade-in .animate-slide-up .animate-pulse-slow</div></div>
+  </section>
+</main>
+
+<!-- Modal Structure -->
+<div class="modal-overlay" id="globalModal" style="display: none;" onclick="if(event.target===this) closeModal()">
+  <div class="modal-content">
+    <h3 style="font-weight:800; margin-bottom:0.5rem;">🐬 Welcome to DolphinCSS</h3>
+    <p style="margin-bottom:1rem;">This modal uses .modal-overlay + .modal-content. Click outside or confirm to close.</p>
+    <div style="display:flex; gap:0.8rem; justify-content:flex-end;">
+      <button class="outlined secondary sm" onclick="closeModal()">Cancel</button>
+      <button class="filled primary sm" onclick="closeModal()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>Made with 🐬 by <a href="https://github.com/Phuyalshankar" target="_blank" style="color: #0ea5e9;">Shankar Phuyal</a> · MIT Licensed · 
+  <a href="https://github.com/Phuyalshankar/dolphincss" target="_blank" style="color:#0ea5e9;">GitHub</a> · 
+  <a href="#" style="color:#0ea5e9;">NPM</a></p>
+</footer>
+
+<script>
+  // Theme toggle
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('themeToggleBtn');
+  function setTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  }
+  themeBtn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(current);
+  });
+  document.getElementById('lightModeBtn')?.addEventListener('click', () => setTheme('light'));
+  document.getElementById('darkModeBtn')?.addEventListener('click', () => setTheme('dark'));
+
+  // Modal handling
+  const modal = document.getElementById('globalModal');
+  function openModal() { modal.style.display = 'flex'; }
+  function closeModal() { modal.style.display = 'none'; }
+  document.getElementById('openModalBtn')?.addEventListener('click', openModal);
+
+  // Accordion interactive (toggle open class)
+  const accordionItems = document.querySelectorAll('.accordion-item');
+  accordionItems.forEach(item => {
+    const header = item.querySelector('.accordion-header');
+    if(header) {
+      header.addEventListener('click', (e) => {
+        e.stopPropagation();
+        item.classList.toggle('open');
+      });
+    }
+  });
+
+  // Copy function
+  window.copyText = function(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('✅ Copied to clipboard!');
+    }).catch(() => alert('Could not copy'));
+  };
+
+  // Active sidebar highlight on scroll
+  const sections = document.querySelectorAll('.docs-section');
+  const navLinks = document.querySelectorAll('.sidebar-link');
+  function setActiveLink() {
+    let currentId = '';
+    const scrollPos = window.scrollY + 100;
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionBottom = sectionTop + section.offsetHeight;
+      if(scrollPos >= sectionTop && scrollPos < sectionBottom) {
+        currentId = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      const href = link.getAttribute('href');
+      if(href === `#${currentId}`) {
+        link.classList.add('active');
+      }
+    });
+  }
+  window.addEventListener('scroll', setActiveLink);
+  window.addEventListener('load', setActiveLink);
+  // default theme init
+  if(root.getAttribute('data-theme') !== 'dark') setTheme('light');
+</script>
+</body>
+</html>

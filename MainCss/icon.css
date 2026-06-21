@@ -1,0 +1,41 @@
+/* Inputs with left icon */
+@layer components {
+.input-icon-left {
+  @apply relative w-full;
+}
+.input-icon-left > svg {
+  @apply absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-(--color-text-muted);
+}
+.input-icon-left > input,
+.input-icon-left > select {
+  @apply w-full pl-10 pr-3 py-2 rounded-md transition-all duration-200;
+}
+
+/* Inputs with right icon */
+.input-icon-right {
+  @apply relative w-full;
+}
+.input-icon-right > svg {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-(--color-text-muted);
+}
+.input-icon-right > input,
+.input-icon-right > select {
+  @apply w-full pl-3 pr-10 py-2 rounded-md transition-all duration-200;
+}
+
+/* Buttons with left icon */
+.button-icon-left {
+  @apply relative inline-flex items-center justify-center gap-2;
+}
+.button-icon-left > svg {
+  @apply w-5 h-5;
+}
+
+/* Buttons with right icon */
+.button-icon-right {
+  @apply relative inline-flex items-center justify-center gap-2;
+}
+.button-icon-right > svg {
+  @apply w-5 h-5 order-last;
+}
+}

@@ -1,0 +1,51 @@
+/* === SKELETON LOADING STATES === */
+@layer components {
+  /* The base skeleton class */
+  .skeleton {
+    @apply relative overflow-hidden bg-gray-200 dark:bg-gray-700/50 rounded;
+  }
+
+  /* Shimmer animation */
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
+  }
+
+  .dark .skeleton::after {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Pulse animation variant */
+  .skeleton-pulse {
+    @apply bg-gray-200 dark:bg-gray-700/50 rounded;
+    animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes skeleton-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+  }
+
+  /* Shapes */
+  .skeleton-circle {
+    @apply rounded-full;
+  }
+}

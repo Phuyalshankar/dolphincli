@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" data-theme-mode="dark" data-theme="dolphin">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DolphinCSS — UB Engine Vanilla JS Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dolphin-css.css">
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+      --text: #f1f5f9;
+      --font-outfit: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-outfit);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background orbs */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: -1;
+      background:
+        radial-gradient(circle 500px at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 80%),
+        radial-gradient(circle 450px at 85% 80%, rgba(34, 211, 238, 0.08) 0%, transparent 80%);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    /* Glassmorphic Header */
+    .header {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      border-radius: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      animation: slideDown 0.5s ease;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--primary), #22d3ee);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 8px 24px var(--primary-glow);
+    }
+
+    .header-title h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2px;
+    }
+
+    .header-title p {
+      font-size: 0.9rem;
+      color: rgba(241, 245, 249, 0.45);
+    }
+
+    .badge-vanilla {
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: #34d399;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Grid Layout */
+    .grid-dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Card Panels */
+    .panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.5s ease 0.1s both;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.8rem;
+    }
+
+    .panel-title span.icon {
+      font-size: 1.5rem;
+    }
+
+    /* Demos */
+    .demo-container {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 1.5rem;
+      min-height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dynamic-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      height: 100%;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      border-radius: 14px;
+      font-weight: 600;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Controls */
+    .controls-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .control-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(241, 245, 249, 0.6);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .control-label span.value {
+      color: var(--primary);
+      font-family: var(--font-mono);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--primary-glow);
+      transition: transform 0.1s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Code & Logs */
+    .code-preview {
+      background: #06090f;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .cache-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(241, 245, 249, 0.4);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Simulator Button */
+    .btn-action {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      color: #ffffff;
+      font-family: var(--font-outfit);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .btn-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-action:active {
+      transform: translateY(1px);
+    }
+
+    .btn-action.stop {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+    }
+
+    .btn-action.stop:hover {
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    }
+
+    /* Keyframes */
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <script src="./dolphin-client.js" data-debug="true"></script>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-logo">
+        <div class="logo-icon">🐬</div>
+        <div class="header-title">
+          <h1>DolphinCSS UB Engine</h1>
+          <p>Vanilla JavaScript Style Compiler & IoT-CSS Runtime</p>
+        </div>
+      </div>
+      <span class="badge-vanilla">React-Free (Vanilla JS)</span>
+    </header>
+
+    <!-- Grid Panels -->
+    <div class="grid-dashboard">
+      
+      <!-- Panel 1: Dynamic OKLCH Generator -->
+      <section class="panel">
+        <h2 class="panel-title">
+          <span class="icon">🎨</span> Dynamic OKLCH & Contrast
+        </h2>
+        <p style="font-size:0.88rem; color:rgba(241,245,249,0.5);">
+          Slide the controls below. The `ub` compiler mathematically calculates OKLCH values at runtime and automatically adjusts the text color (White or Black) to ensure optimal reading contrast!
+        </p>
+
+        <!-- Live Demo Card -->
+        <div class="demo-container">
+          <div id="oklch-card" class="dynamic-card">
+            <span id="oklch-text" style="font-size:1.2rem;">Live OKLCH Background</span>
+            <span id="oklch-val-label" style="font-size:0.8rem; font-family:var(--font-mono); opacity:0.75;"></span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-wrapper">
+          <div class="control-row">
+            <label class="control-label">Hue (H) <span class="value" id="val-hue">160</span></label>
+            <input type="range" id="range-hue" min="0" max="360" value="160">
+          </div>
+          <div class="control-row">
+            <label class="control-label">Lightness (L) <span class="value" id="val-light">128</span></label>
+            <input type="range" id="range-light" min="0" max="255" value="128">
+          </div>
+          <div class="control-row">
+            <label class="control-label">Chroma (C) <span class="value" id="val-chroma">180</span></label>
+            <input type="range" id="range-chroma" min="0" max="255" value="180">
+          </div>
+        </div>
+
+        <!-- Generated Code -->
+        <div class="code-preview" id="oklch-code">
+          element.className = ub("card bg-blue-128");
+        </div>
+      </section>
+
+      <!-- Panel 2: IoT Sensor Heatmap Simulation -->
+      <section class="panel">
+        <h2 class="panel-title">
+          <span class="icon">🌡️</span> IoT Heatmap Simulation
+        </h2>
+        <p style="font-size:0.88rem; color:rgba(241,245,249,0.5);">
+          Map real-time sensor streams directly to colors. Using `map.heat(val, min, max)`, the color automatically transitions from Green (cool) to Red (overheat) without writing custom CSS classes.
+        </p>
+
+        <!-- Live Sensor Card -->
+        <div class="demo-container">
+          <div id="sensor-card" class="dynamic-card">
+            <span style="font-size:0.8rem; letter-spacing:0.5px; opacity:0.6;">CPU SENSOR #1</span>
+            <span id="sensor-val" style="font-size:2.2rem; font-weight:800; font-family:var(--font-mono);">45°C</span>
+            <span id="sensor-status" style="font-size:0.8rem; font-weight:500;">Status: Normal</span>
+          </div>
+        </div>
+
+        <!-- Simulator Controls -->
+        <div class="flex-center" style="display:flex; justify-content:space-between; align-items:center;">
+          <button id="btn-simulate" class="btn-action">Start Temperature Stream</button>
+          <div style="font-size:0.85rem; font-family:var(--font-mono); color:rgba(241,245,249,0.4);">
+            Stream update: <span style="color:var(--primary)">1000ms</span>
+          </div>
+        </div>
+
+        <!-- Generated Code -->
+        <div class="code-preview" id="sensor-code">
+          element.className = ub(`card ${map.heat(temp, 0, 100)}`);
+        </div>
+      </section>
+
+      <!-- Panel 3: O(1) Cache Stats Logger -->
+      <section class="panel">
+        <h2 class="panel-title">
+          <span class="icon">⚡</span> Double-layer LRU Cache Logs
+        </h2>
+        <p style="font-size:0.88rem; color:rgba(241,245,249,0.5);">
+          WebStyleEngine utilizes browser-native constructable stylesheets (`adoptedStyleSheets`) and caches compiled classes. All repeating utility classes are returned in O(1) time with 0ms latency.
+        </p>
+
+        <!-- Cache Stats Grid -->
+        <div class="cache-stats-grid">
+          <div class="stat-box">
+            <div class="stat-val" id="stat-requests">0</div>
+            <div class="stat-label">Total Requests</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="stat-hits">0</div>
+            <div class="stat-label">Cache Hits</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="stat-styles">0</div>
+            <div class="stat-label">Injected Styles</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="stat-latency" style="color:#34d399;">0ms</div>
+            <div class="stat-label">Evaluation Latency</div>
+          </div>
+        </div>
+
+        <button id="btn-clear-cache" class="btn-action stop" style="width:100%;">Clear Compile Cache</button>
+      </section>
+
+      <!-- Panel 4: Interactive Style Playground -->
+      <section class="panel">
+        <h2 class="panel-title">
+          <span class="icon">🪄</span> Dynamic Transitions & Utilities
+        </h2>
+        <p style="font-size:0.88rem; color:rgba(241,245,249,0.5);">
+          Apply inline transition fills and dynamic classes. Click any action below to trigger compiled styling injections instantly on this live sandbox card.
+        </p>
+
+        <!-- Playground Card -->
+        <div class="demo-container">
+          <div id="play-card" class="dynamic-card" style="background:rgba(255,255,255,0.02); border: 1px solid var(--border);">
+            <span id="play-text" style="font-size:1.1rem; text-align:center;">Sandbox Sandbox Sandbox</span>
+          </div>
+        </div>
+
+        <!-- Buttons Grid -->
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;">
+          <button class="btn-action" onclick="applyPlayClass('bg-fill-left-red-128-500ms')">Fill Left Red</button>
+          <button class="btn-action" onclick="applyPlayClass('bg-fill-top-blue-160-300ms')">Fill Top Blue</button>
+          <button class="btn-action" onclick="applyPlayClass('gradient-purple-100-pink-220')">Gradient Purple-Pink</button>
+          <button class="btn-action" onclick="applyPlayClass('rounded-25 shadow-8')">Curved & Shadowed</button>
+        </div>
+      </section>
+
+      <!-- Panel 5: VS Code Windows File System Explorer -->
+      <section class="panel" style="grid-column: span 2;">
+        <h2 class="panel-title">
+          <span class="icon">📁</span> Project File Explorer & VS Code VFS
+        </h2>
+        <p style="font-size:0.88rem; color:rgba(241,245,249,0.5);">
+          Mount a local Windows folder directly into the browser or play with the Mock Virtual File System. Select, edit, create, and delete files on your disk. Powered by the declarative VFS engine in Dolphin Client.
+        </p>
+        <div>
+<div class="dolphin-file-explorer" data-dolphin-vfs="root" style="
+  display: flex;
+  height: 600px;
+  background: #1e1e1e;
+  color: #cccccc;
+  font-family: Consolas, 'Courier New', monospace;
+  border-radius: 12px;
+  border: 1px solid #333;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+">
+  <!-- Sidebar (File Tree) -->
+  <div class="sidebar" style="
+    width: 260px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  ">
+    <!-- Header -->
+    <div style="
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #858585;
+      border-bottom: 1px solid #3c3c3c;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    ">
+      <span>EXPLORER</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="cursor:pointer; font-weight: bold; font-size:12px; color: #007acc;" data-vfs-new-file title="New File">+File</span>
+        <span style="cursor:pointer; font-weight: bold; font-size:12px; color: #007acc;" data-vfs-new-folder title="New Folder">+Folder</span>
+      </div>
+    </div>
+
+    <!-- Mount local windows directory button -->
+    <div style="padding: 10px 14px; border-bottom: 1px solid #3c3c3c; display: flex; flex-direction: column; gap: 6px;">
+      <button data-vfs-mount style="
+        background: #0e639c;
+        color: #ffffff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-family: var(--font-outfit), sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.15s;
+        text-align: center;
+      " onmouseover="this.style.backgroundColor='#1177bb'" onmouseout="this.style.backgroundColor='#0e639c'">
+        📁 Mount Local Directory
+      </button>
+      <span style="font-size: 9px; color: #858585; text-align: center; line-height: 1.3;">
+        Mount any folder on your Windows computer directly to view and edit files.
+      </span>
+    </div>
+
+    <!-- Tree View Container -->
+    <div id="file-tree-container" data-vfs-tree class="dolphin-scrollbar" style="
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    ">
+      <!-- Generated dynamically by dolphin-client VFS engine -->
+    </div>
+  </div>
+
+  <!-- Main Content (Editor Area) -->
+  <div class="editor-area" style="
+    flex: 1;
+    background: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  ">
+    <!-- Tab / Breadcrumb -->
+    <div style="
+      height: 38px;
+      background: #2d2d2d;
+      border-bottom: 1px solid #3c3c3c;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      font-size: 13px;
+      color: #969696;
+    ">
+      <span id="active-file-crumb" data-vfs-breadcrumbs>No file open</span>
+      
+      <!-- Save Button -->
+      <button data-vfs-save style="
+        background: #007acc;
+        color: #ffffff;
+        border: none;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 11px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-outfit), sans-serif;
+        font-weight: 500;
+        transition: background 0.15s;
+      " onmouseover="this.style.backgroundColor='#0098ff'" onmouseout="this.style.backgroundColor='#007acc'">
+        💾 Save File
+      </button>
+    </div>
+
+    <!-- Code Display / Textarea -->
+    <div style="
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    ">
+      <textarea id="editor-textarea" data-vfs-editor class="dolphin-scrollbar" placeholder="// Mount a folder or click a file to start editing..." style="
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #d4d4d4;
+        padding: 16px;
+        font-family: Consolas, 'Courier New', monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: none;
+      " disabled></textarea>
+    </div>
+
+    <!-- Footer Status Bar -->
+    <div style="
+      height: 22px;
+      background: #007acc;
+      color: #ffffff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    ">
+      <span>Dolphin VFS Client</span>
+      <span id="editor-status" data-vfs-status>Ready</span>
+    </div>
+  </div>
+</div>
+
+</div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Load Vanilla Style Engine -->
+  <script type="module">
+    import { ub, map, debugUB, clearUBCache } from './src/ub-vanilla.js';
+
+    // Global variables for live interaction
+    const rangeHue = document.getElementById('range-hue');
+    const rangeLight = document.getElementById('range-light');
+    const rangeChroma = document.getElementById('range-chroma');
+    const oklchCard = document.getElementById('oklch-card');
+    const oklchValLabel = document.getElementById('oklch-val-label');
+    const oklchCode = document.getElementById('oklch-code');
+
+    const valHue = document.getElementById('val-hue');
+    const valLight = document.getElementById('val-light');
+    const valChroma = document.getElementById('val-chroma');
+
+    // 1. Update OKLCH Demo
+    function updateOKLCH() {
+      const h = rangeHue.value;
+      const l = rangeLight.value;
+      const c = rangeChroma.value;
+
+      valHue.textContent = h;
+      valLight.textContent = l;
+      valChroma.textContent = c;
+
+      // Compile custom color classes dynamically via ub
+      const classStr = `dynamic-card bg-custom-${h}-${l}-${c}`;
+      
+      const startTime = performance.now();
+      const compiledClasses = ub(classStr);
+      const latency = (performance.now() - startTime).toFixed(3);
+
+      oklchCard.className = compiledClasses;
+      oklchValLabel.textContent = `H:${h} L:${l} C:${c}`;
+
+      oklchCode.textContent = `oklchCard.className = ub("dynamic-card bg-custom-${h}-${l}-${c}");`;
+      
+      updateCacheStats(latency);
+    }
+
+    // Bind inputs
+    [rangeHue, rangeLight, rangeChroma].forEach(input => {
+      input.addEventListener('input', updateOKLCH);
+    });
+
+    // 2. IoT Temperature Simulator
+    let isSimulating = false;
+    let simInterval = null;
+    const btnSimulate = document.getElementById('btn-simulate');
+    const sensorCard = document.getElementById('sensor-card');
+    const sensorVal = document.getElementById('sensor-val');
+    const sensorStatus = document.getElementById('sensor-status');
+    const sensorCode = document.getElementById('sensor-code');
+
+    function simulateStream() {
+      const temp = Math.floor(Math.random() * 80) + 20; // 20 - 100 deg C
+      sensorVal.textContent = `${temp}°C`;
+
+      let status = 'Status: Normal';
+      if (temp >= 85) status = 'Status: OVERHEAT ⚠️';
+      else if (temp >= 65) status = 'Status: Warning';
+      sensorStatus.textContent = status;
+
+      // Map temperature to color shade via map.heat
+      const heatClass = map.heat(temp, 0, 100);
+      
+      const startTime = performance.now();
+      sensorCard.className = ub(`dynamic-card ${heatClass}`);
+      const latency = (performance.now() - startTime).toFixed(3);
+
+      sensorCode.textContent = `sensorCard.className = ub("dynamic-card ${heatClass}");`;
+      
+      updateCacheStats(latency);
+    }
+
+    btnSimulate.addEventListener('click', () => {
+      if (isSimulating) {
+        clearInterval(simInterval);
+        btnSimulate.textContent = 'Start Temperature Stream';
+        btnSimulate.classList.remove('stop');
+        isSimulating = false;
+      } else {
+        simulateStream();
+        simInterval = setInterval(simulateStream, 1000);
+        btnSimulate.textContent = 'Stop Temperature Stream';
+        btnSimulate.classList.add('stop');
+        isSimulating = true;
+      }
+    });
+
+    // 3. Cache Logging
+    const statRequests = document.getElementById('stat-requests');
+    const statHits = document.getElementById('stat-hits');
+    const statStyles = document.getElementById('stat-styles');
+    const statLatency = document.getElementById('stat-latency');
+    const btnClearCache = document.getElementById('btn-clear-cache');
+
+    function updateCacheStats(latencyMs = 0) {
+      const dbg = debugUB();
+      statRequests.textContent = dbg.totalRequests || 0;
+      statHits.textContent = dbg.cacheHits || 0;
+      statStyles.textContent = dbg.styleCount || 0;
+      statLatency.textContent = `${latencyMs}ms`;
+    }
+
+    btnClearCache.addEventListener('click', () => {
+      clearUBCache();
+      updateCacheStats(0);
+      alert('Compile cache cleared successfully!');
+    });
+
+    // 4. Style Playground Hook
+    const playCard = document.getElementById('play-card');
+    const playText = document.getElementById('play-text');
+
+    window.applyPlayClass = function(customClass) {
+      playText.textContent = `Applied: ${customClass}`;
+      const startTime = performance.now();
+      playCard.className = ub(`dynamic-card ${customClass}`);
+      const latency = (performance.now() - startTime).toFixed(3);
+      updateCacheStats(latency);
+    };
+
+    // Initial load
+    updateOKLCH();
+  </script>
+</body>
+</html>

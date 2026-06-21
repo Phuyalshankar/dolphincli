@@ -1,0 +1,256 @@
+/* ===== Card System with Filled & Outlined ===== */
+@layer components {
+  /* Base Card - Modern AI Style */
+  .card {
+    @apply rounded-2xl p-6 transition-all duration-300;
+    background-color: color-mix(in srgb, var(--color-surface) 95%, transparent);
+    color: var(--color-text);
+    border: 1px solid color-mix(in srgb, var(--color-border) 40%, transparent);
+    box-shadow: 0 4px 20px -5px color-mix(in srgb, var(--color-text) 5%, transparent),
+                inset 0 1px 0px color-mix(in srgb, white 10%, transparent);
+  }
+
+  /* ===== FILLED VARIANTS (Solid Colors) ===== */
+  .card.filled.primary,
+  .card.primary.filled {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+  }
+
+  .card.filled.secondary,
+  .card.secondary.filled {
+    background-color: var(--color-secondary);
+    color: var(--color-text-light);
+  }
+
+  .card.filled.success,
+  .card.success.filled {
+    background-color: var(--color-success);
+    color: var(--color-text-light);
+  }
+
+  .card.filled.warning,
+  .card.warning.filled {
+    background-color: var(--color-warning);
+    color: var(--color-text-light);
+  }
+
+  .card.filled.danger,
+  .card.danger.filled {
+    background-color: var(--color-danger);
+    color: var(--color-text-light);
+  }
+
+  .card.filled.info,
+  .card.info.filled {
+    background-color: var(--color-info);
+    color: var(--color-text-light);
+  }
+
+  /* ===== OUTLINED VARIANTS (Border Only) ===== */
+  .card.outlined {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    box-shadow: inset 0 1px 0px color-mix(in srgb, white 5%, transparent);
+  }
+
+  .card.outlined.primary,
+  .card.primary.outlined {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .card.outlined.secondary,
+  .card.secondary.outlined {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  .card.outlined.success,
+  .card.success.outlined {
+    border-color: var(--color-success);
+    color: var(--color-success);
+  }
+
+  .card.outlined.warning,
+  .card.warning.outlined {
+    border-color: var(--color-warning);
+    color: var(--color-warning);
+  }
+
+  .card.outlined.danger,
+  .card.danger.outlined {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+  }
+
+  .card.outlined.info,
+  .card.info.outlined {
+    border-color: var(--color-info);
+    color: var(--color-info);
+  }
+
+  /* ===== GRADIENT VARIANTS ===== */
+  .card.gradient.primary,
+  .card.primary.gradient,
+  .card.filled.gradient.primary,
+  .card.gradient.filled.primary {
+    background-image: var(--gradient-primary);
+    background-color: transparent;
+    color: var(--color-text-light);
+  }
+
+  .card.gradient.secondary,
+  .card.secondary.gradient,
+  .card.filled.gradient.secondary,
+  .card.gradient.filled.secondary {
+    background-image: var(--gradient-secondary);
+    background-color: transparent;
+    color: var(--color-text-light);
+  }
+
+  .card.gradient.success,
+  .card.success.gradient,
+  .card.filled.gradient.success,
+  .card.gradient.filled.success {
+    background-image: var(--gradient-success);
+    background-color: transparent;
+    color: var(--color-text-light);
+  }
+
+  .card.gradient.warning,
+  .card.warning.gradient,
+  .card.filled.gradient.warning,
+  .card.gradient.filled.warning {
+    background-image: var(--gradient-warning);
+    background-color: transparent;
+    color: var(--color-text-light);
+  }
+
+  .card.gradient.danger,
+  .card.danger.gradient,
+  .card.filled.gradient.danger,
+  .card.gradient.filled.danger {
+    background-image: var(--gradient-danger);
+    background-color: transparent;
+    color: var(--color-text-light);
+  }
+
+  .card.gradient.info,
+  .card.info.gradient,
+  .card.filled.gradient.info,
+  .card.gradient.filled.info {
+    background-image: var(--gradient-info);
+    background-color: transparent;
+    color: var(--color-text-light);
+  }
+
+  /* ===== OUTLINED GRADIENT VARIANTS ===== */
+  .card.outlined.gradient.primary,
+  .card.gradient.outlined.primary {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-primary);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 2px solid transparent;
+    color: var(--color-text);
+    background-color: transparent;
+  }
+
+  .card.outlined.gradient.secondary,
+  .card.gradient.outlined.secondary {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-secondary);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 2px solid transparent;
+    color: var(--color-text);
+  }
+
+  .card.outlined.gradient.success,
+  .card.gradient.outlined.success {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-success);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 2px solid transparent;
+    color: var(--color-text);
+  }
+
+  .card.outlined.gradient.warning,
+  .card.gradient.outlined.warning {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-warning);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 2px solid transparent;
+    color: var(--color-text);
+  }
+
+  .card.outlined.gradient.danger,
+  .card.gradient.outlined.danger {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-danger);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 2px solid transparent;
+    color: var(--color-text);
+  }
+
+  .card.outlined.gradient.info,
+  .card.gradient.outlined.info {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-info);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border: 2px solid transparent;
+    color: var(--color-text);
+  }
+
+  /* ===== CARD HOVER EFFECTS ===== */
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -5px color-mix(in srgb, var(--color-primary) 10%, transparent),
+                inset 0 1px 0px color-mix(in srgb, white 20%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+
+  .card.outlined:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 3%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  }
+
+  .card.gradient:hover {
+    filter: brightness(1.05);
+  }
+
+  /* ===== CARD WITH GLOW ===== */
+  .card.glow {
+    transition: all 0.3s ease;
+  }
+
+  .card.glow:hover {
+    box-shadow: var(--glow-primary);
+  }
+
+  /* ===== CARD WITH PULSE ===== */
+  .card.pulse {
+    animation: card-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes card-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  /* ===== DARK MODE ADJUSTMENTS ===== */
+  [data-theme-mode="dark"] .card.outlined {
+    background-color: transparent;
+  }
+
+  [data-theme-mode="dark"] .card.outlined.gradient.primary,
+  [data-theme-mode="dark"] .card.gradient.outlined.primary {
+    background-image: linear-gradient(var(--color-surface-dark), var(--color-surface-dark)), 
+                      var(--gradient-primary);
+  }
+}

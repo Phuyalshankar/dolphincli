@@ -1,0 +1,72 @@
+/* === PROGRESS BARS === */
+@layer components {
+  /* Linear Progress Container */
+  .progress-bar {
+    @apply relative w-full h-2 bg-gray-200 dark:bg-gray-700 overflow-hidden rounded-full;
+  }
+
+  /* Linear Progress Fill */
+  .progress-fill {
+    @apply absolute top-0 left-0 h-full transition-all duration-300 ease-out rounded-full;
+    background-color: var(--color-primary, #3b82f6);
+  }
+
+  /* Indeterminate state */
+  .progress-bar.indeterminate .progress-fill {
+    width: 50%;
+    animation: progress-indeterminate 1.5s infinite linear;
+    transform-origin: 0% 50%;
+  }
+
+  @keyframes progress-indeterminate {
+    0% { transform: translateX(-100%) scaleX(0.2); }
+    50% { transform: translateX(0) scaleX(0.5); }
+    100% { transform: translateX(200%) scaleX(0.2); }
+  }
+
+  /* Circular Progress */
+  .progress-circle {
+    @apply relative inline-flex items-center justify-center;
+    --progress-size: 64px;
+    --progress-thickness: 6px;
+    width: var(--progress-size);
+    height: var(--progress-size);
+  }
+
+  .progress-circle svg {
+    @apply absolute inset-0 w-full h-full;
+    transform: rotate(-90deg);
+  }
+
+  .progress-circle-track {
+    fill: none;
+    stroke: currentColor;
+    @apply text-gray-200 dark:text-gray-700;
+    stroke-width: var(--progress-thickness);
+  }
+
+  .progress-circle-fill {
+    fill: none;
+    stroke: var(--color-primary, #3b82f6);
+    stroke-width: var(--progress-thickness);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+  }
+
+  /* Indeterminate Circular */
+  .progress-circle.indeterminate svg {
+    animation: spin 2s linear infinite;
+  }
+
+  .progress-circle.indeterminate .progress-circle-fill {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+
+  @keyframes dash {
+    0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+    50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35; }
+    100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124; }
+  }
+}

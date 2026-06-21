@@ -1,0 +1,108 @@
+/* ===== Global Glowing Effects ===== */
+.glow {
+  --glow-color: var(--color-primary);
+  --glow-intensity: 0.2;
+  --glow-spread: 15px;
+  --glow-blur: 8px;
+  @apply transition-all duration-300;
+}
+
+/* Glow on hover */
+.glow:hover {
+  box-shadow: 0 0 var(--glow-spread) var(--glow-blur) color-mix(in oklch, var(--glow-color) calc(var(--glow-intensity) * 100%), transparent);
+}
+
+/* Glow on focus */
+.glow:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--glow-color) 20%, transparent);
+}
+
+/* Color variants */
+.glow.primary {
+  --glow-color: var(--color-primary);
+}
+
+.glow.secondary {
+  --glow-color: var(--color-secondary);
+}
+
+.glow.success {
+  --glow-color: var(--color-success);
+}
+
+.glow.warning {
+  --glow-color: var(--color-warning);
+}
+
+.glow.danger {
+  --glow-color: var(--color-danger);
+}
+
+.glow.info {
+  --glow-color: var(--color-info);
+}
+
+/* Intensity variants */
+.glow.strong {
+  --glow-intensity: 0.4;
+  --glow-spread: 25px;
+}
+
+.glow.subtle {
+  --glow-intensity: 0.15;
+  --glow-spread: 10px;
+}
+
+/* Pulsing glow */
+.glow.pulse {
+  animation: dolphin-glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes dolphin-glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 5px 2px color-mix(in oklch, var(--glow-color) 15%, transparent);
+  }
+  50% { 
+    box-shadow: 0 0 20px 8px color-mix(in oklch, var(--glow-color) 25%, transparent);
+  }
+}
+
+/* Wave glow */
+.glow.wave {
+  animation: ocean-wave 4s ease-in-out infinite;
+}
+
+@keyframes ocean-wave {
+  0%, 100% { 
+    box-shadow: 
+      0 0 10px 3px color-mix(in oklch, var(--color-primary) 20%, transparent),
+      0 0 20px 6px color-mix(in oklch, var(--color-info) 15%, transparent);
+  }
+  50% { 
+    box-shadow: 
+      0 0 15px 5px color-mix(in oklch, var(--color-primary) 25%, transparent),
+      0 0 25px 8px color-mix(in oklch, var(--color-info) 20%, transparent);
+  }
+}
+
+/* For inputs, we want to override the focus glow if the input has the glow class */
+.floatinglabel-input.glow:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--glow-color) 20%, transparent);
+}
+
+/* Ensure that the glow effect is not applied to disabled elements */
+.glow:disabled {
+  box-shadow: none !important;
+}
+
+/* Responsive glow - reduce on mobile */
+@media (max-width: 768px) {
+  .glow:hover {
+    --glow-spread: 12px;
+    --glow-blur: 6px;
+  }
+  
+  .glow:focus {
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--glow-color) 20%, transparent);
+  }
+}

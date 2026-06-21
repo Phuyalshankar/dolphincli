@@ -1,0 +1,300 @@
+/* ===== GLOBAL SIZE SYSTEM ===== */
+@layer base {
+  /* Size Variables - Consistent across all components */
+  :root {
+    /* Padding variables */
+    --size-xs-px: 0.25rem;
+    --size-xs-py: 0.5rem;
+    --size-sm-px: 0.5rem;
+    --size-sm-py: 0.75rem;
+    --size-md-px: 0.75rem;
+    --size-md-py: 1rem;
+    --size-lg-px: 1rem;
+    --size-lg-py: 1.25rem;
+    --size-xl-px: 1.25rem;
+    --size-xl-py: 1.5rem;
+    
+    /* Font size variables */
+    --size-xs-text: 0.75rem;    /* 12px */
+    --size-sm-text: 0.875rem;   /* 14px */
+    --size-md-text: 0.875rem;   /* 14px (MD default) */
+    --size-lg-text: 1rem;       /* 16px */
+    --size-xl-text: 1.125rem;   /* 18px */
+    
+    /* Line height */
+    --size-xs-leading: 1rem;
+    --size-sm-leading: 1.25rem;
+    --size-md-leading: 1.25rem;
+    --size-lg-leading: 1.5rem;
+    --size-xl-leading: 1.5rem;
+    
+    /* Border radius */
+    --size-xs-radius: 0.25rem;
+    --size-sm-radius: 0.375rem;
+    --size-md-radius: 0.5rem;
+    --size-lg-radius: 0.625rem;
+    --size-xl-radius: 0.75rem;
+  }
+}
+
+/* ===== GLOBAL SIZE UTILITY CLASSES ===== */
+@layer utilities {
+  /* Size classes - apply to any component */
+  .xs {
+    padding: var(--size-xs-px) var(--size-xs-py);
+    font-size: var(--size-xs-text);
+    line-height: var(--size-xs-leading);
+    border-radius: var(--size-xs-radius);
+  }
+  
+  .sm {
+    padding: var(--size-sm-px) var(--size-sm-py);
+    font-size: var(--size-sm-text);
+    line-height: var(--size-sm-leading);
+    border-radius: var(--size-sm-radius);
+  }
+  
+  .md {
+    padding: var(--size-md-px) var(--size-md-py);
+    font-size: var(--size-md-text);
+    line-height: var(--size-md-leading);
+    border-radius: var(--size-md-radius);
+  }
+  
+  .lg {
+    padding: var(--size-lg-px) var(--size-lg-py);
+    font-size: var(--size-lg-text);
+    line-height: var(--size-lg-leading);
+    border-radius: var(--size-lg-radius);
+  }
+  
+  .xl {
+    padding: var(--size-xl-px) var(--size-xl-py);
+    font-size: var(--size-xl-text);
+    line-height: var(--size-xl-leading);
+    border-radius: var(--size-xl-radius);
+  }
+  
+  /* Width/height utilities for circles, icons, etc. */
+  .size-xs {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .size-sm {
+    width: 2rem;
+    height: 2rem;
+  }
+  .size-md {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .size-lg {
+    width: 3rem;
+    height: 3rem;
+  }
+  .size-xl {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+/* ===== UPDATE BUTTON SIZES ===== */
+@layer components {
+  /* Button sizes - using global classes or keep btn-* for compatibility */
+  .btn-xs, .xs {
+    padding: var(--size-xs-px) var(--size-xs-py);
+    font-size: var(--size-xs-text);
+    line-height: var(--size-xs-leading);
+  }
+  
+  .btn-sm, .sm {
+    padding: var(--size-sm-px) var(--size-sm-py);
+    font-size: var(--size-sm-text);
+    line-height: var(--size-sm-leading);
+  }
+  
+  .btn-md, .md {
+    padding: var(--size-md-px) var(--size-md-py);
+    font-size: var(--size-md-text);
+    line-height: var(--size-md-leading);
+  }
+  
+  .btn-lg, .lg {
+    padding: var(--size-lg-px) var(--size-lg-py);
+    font-size: var(--size-lg-text);
+    line-height: var(--size-lg-leading);
+  }
+  
+  .btn-xl, .xl {
+    padding: var(--size-xl-px) var(--size-xl-py);
+    font-size: var(--size-xl-text);
+    line-height: var(--size-xl-leading);
+  }
+}
+
+/* ===== INPUT SIZES (Global) ===== */
+@layer components {
+  input.xs, select.xs, textarea.xs {
+    padding: var(--size-xs-px) var(--size-xs-py);
+    font-size: var(--size-xs-text);
+  }
+  
+  input.sm, select.sm, textarea.sm {
+    padding: var(--size-sm-px) var(--size-sm-py);
+    font-size: var(--size-sm-text);
+  }
+  
+  input.md, select.md, textarea.md {
+    padding: var(--size-md-px) var(--size-md-py);
+    font-size: var(--size-md-text);
+  }
+  
+  input.lg, select.lg, textarea.lg {
+    padding: var(--size-lg-px) var(--size-lg-py);
+    font-size: var(--size-lg-text);
+  }
+  
+  input.xl, select.xl, textarea.xl {
+    padding: var(--size-xl-px) var(--size-xl-py);
+    font-size: var(--size-xl-text);
+  }
+}
+
+/* ===== CARD SIZES ===== */
+@layer components {
+  .card.xs { padding: var(--size-xs-px) var(--size-xs-py); }
+  .card.sm { padding: var(--size-sm-px) var(--size-sm-py); }
+  .card.md { padding: var(--size-md-px) var(--size-md-py); }
+  .card.lg { padding: var(--size-lg-px) var(--size-lg-py); }
+  .card.xl { padding: var(--size-xl-px) var(--size-xl-py); }
+}
+
+/* ===== BADGE SIZES ===== */
+@layer components {
+  .badge.xs { 
+    padding: 0.125rem 0.375rem; 
+    font-size: 0.625rem;
+  }
+  .badge.sm { 
+    padding: 0.25rem 0.5rem; 
+    font-size: 0.75rem;
+  }
+  .badge.md { 
+    padding: 0.375rem 0.75rem; 
+    font-size: 0.875rem;
+  }
+  .badge.lg { 
+    padding: 0.5rem 1rem; 
+    font-size: 1rem;
+  }
+}
+
+/* ===== UPDATE CIRCLE BUTTON SIZES ===== */
+@layer components {
+  /* Base circle properties */
+  .circle {
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  /* Keep both .circle.sm and .circle.xs for backward compatibility */
+  .circle.xs { 
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+  }
+  .circle.sm { 
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+  }
+  .circle.md { 
+    width: 3rem;
+    height: 3rem;
+    font-size: 1rem;
+  }
+  .circle.lg { 
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.125rem;
+  }
+  .circle.xl { 
+    width: 5rem;
+    height: 5rem;
+    font-size: 1.25rem;
+  }
+}
+
+/* ===== UPDATE LOADING SPINNERS ===== */
+@layer components {
+  /* Update loading spinners to use global size variables */
+  .xs.loading::after,
+  .xs .loading-spinner,
+  .btn-xs.loading::after,
+  .btn-xs .loading-spinner {
+    width: 0.875em;
+    height: 0.875em;
+    border-width: 1.5px;
+  }
+
+  .sm.loading::after,
+  .sm .loading-spinner,
+  .btn-sm.loading::after,
+  .btn-sm .loading-spinner {
+    width: 1em;
+    height: 1em;
+    border-width: 1.75px;
+  }
+
+  .md.loading::after,
+  .md .loading-spinner,
+  .btn-md.loading::after,
+  .btn-md .loading-spinner {
+    width: 1.25em;
+    height: 1.25em;
+    border-width: 2px;
+  }
+
+  .lg.loading::after,
+  .lg .loading-spinner,
+  .btn-lg.loading::after,
+  .btn-lg .loading-spinner {
+    width: 1.5em;
+    height: 1.5em;
+    border-width: 2.5px;
+  }
+
+  .xl.loading::after,
+  .xl .loading-spinner,
+  .btn-xl.loading::after,
+  .btn-xl .loading-spinner {
+    width: 1.75em;
+    height: 1.75em;
+    border-width: 3px;
+  }
+}
+
+/* ===== CUSTOM SCROLLBARS ===== */
+@layer utilities {
+  .dolphin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+  .dolphin-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .dolphin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .dolphin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 99px;
+    border: 1px solid transparent;
+  }
+  .dolphin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}

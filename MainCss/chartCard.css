@@ -1,0 +1,146 @@
+/* ===== Chart Card System ===== */
+.chart-card {
+  @apply relative bg-(--color-surface) rounded-lg shadow-sm border border-(--color-border) transition-all duration-300 hover:shadow-md;
+}
+
+.chart-card-header {
+  @apply flex items-center justify-between p-4 pb-2;
+}
+
+.chart-card-title {
+  @apply text-lg font-semibold text-(--color-text);
+}
+
+.chart-card-subtitle {
+  @apply text-sm text-(--color-text-muted) mt-1;
+}
+
+.chart-card-actions {
+  @apply flex items-center gap-1;
+}
+
+.chart-card-content {
+  @apply p-4 pt-2;
+}
+
+.chart-card-footer {
+  @apply flex items-center justify-between p-4 pt-2 border-t border-(--color-border);
+}
+
+.chart-card-stats {
+  @apply flex items-center gap-4;
+}
+
+.chart-card-stat {
+  @apply flex flex-col;
+}
+
+.chart-card-stat-value {
+  @apply text-lg font-semibold text-(--color-text);
+}
+
+.chart-card-stat-label {
+  @apply text-xs text-(--color-text-muted);
+}
+
+.chart-card-trend {
+  @apply flex items-center gap-1 text-sm;
+}
+
+.chart-card-trend.positive {
+  @apply text-(--color-success);
+}
+
+.chart-card-trend.negative {
+  @apply text-(--color-danger);
+}
+
+/* Chart Card Variants */
+.chart-card.primary {
+  @apply border-(--color-primary)/20;
+}
+
+.chart-card.secondary {
+  @apply border-(--color-secondary)/20;
+}
+
+.chart-card.success {
+  @apply border-(--color-success)/20;
+}
+
+.chart-card.warning {
+  @apply border-(--color-warning)/20;
+}
+
+.chart-card.danger {
+  @apply border-(--color-danger)/20;
+}
+
+.chart-card.info {
+  @apply border-(--color-info)/20;
+}
+
+/* Gradient Variants */
+.chart-card.gradient.primary {
+  background-image: var(--gradient-primary);
+  @apply border-none text-(--color-text);
+}
+
+.chart-card.gradient.secondary {
+  background-image: var(--gradient-secondary);
+  @apply border-none text-(--color-text);
+}
+
+/* Chart Card Sizes */
+.chart-card.small {
+  @apply max-w-sm;
+}
+
+.chart-card.medium {
+  @apply max-w-md;
+}
+
+.chart-card.large {
+  @apply max-w-lg;
+}
+
+.chart-card.full {
+  @apply w-full;
+}
+
+/* Chart Container */
+.chart-container {
+  @apply w-full h-48 flex items-center justify-center;
+}
+
+/* Loading State */
+.chart-card.loading .chart-container {
+  @apply animate-pulse bg-(--color-border) rounded;
+}
+
+/* No Data State */
+.chart-card .no-data {
+  @apply flex flex-col items-center justify-center h-48 text-(--color-text-muted);
+}
+
+/* Legend */
+.chart-legend {
+  @apply flex flex-wrap gap-3 mt-3;
+}
+
+.chart-legend-item {
+  @apply flex items-center gap-2 text-sm;
+}
+
+.chart-legend-color {
+  @apply w-3 h-3 rounded-full;
+}
+
+/* Tooltip (for chart interactions) */
+.chart-tooltip {
+  @apply absolute bg-(--color-surface) border border-(--color-border) rounded-lg shadow-lg p-3 text-sm pointer-events-none opacity-0 transition-opacity duration-200;
+}
+
+.chart-card:hover .chart-tooltip {
+  @apply opacity-100;
+}

@@ -1,0 +1,356 @@
+/* ===== GLOBAL GRADIENT SYSTEM (components/gradient.css) ===== */
+@layer components {
+  /* ===== BASE GRADIENT CLASS ===== */
+  .gradient {
+    /* Default to theme gradient */
+    background-image: var(--theme-gradient, var(--gradient-primary));
+    
+    /* Base gradient properties */
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.3s var(--bounce-effect, cubic-bezier(0.68, -0.55, 0.265, 1.55));
+  }
+
+  /* ===== GRADIENT TYPES (Single class for all) ===== */
+  
+  /* Background Gradient (Filled) */
+  .gradient:where(.filled, [class*="filled"]) {
+    color: var(--color-text-light);
+    border: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Border Gradient (Outlined) */
+  .gradient:where(.outlined, [class*="outlined"]) {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--theme-gradient, var(--gradient-primary)) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+    border: 2px solid transparent !important;
+    color: var(--color-text) !important;
+  }
+
+  /* Text Gradient (Plain) */
+  .gradient:where(.plain, [class*="plain"], .text-gradient) {
+    background-image: var(--theme-gradient, var(--gradient-primary)) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    background-color: transparent !important;
+  }
+
+  /* ===== GRADIENT COLORS (Theme-based) ===== */
+  
+  /* Primary Gradient */
+  .gradient.primary {
+    --gradient-current: var(--gradient-primary, linear-gradient(var(--gradient-angle, 135deg), var(--color-primary-light), var(--color-primary), var(--color-primary-dark)));
+    background-image: var(--gradient-current);
+  }
+  .gradient.primary.outlined {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-primary) !important;
+  }
+  .gradient.primary.plain {
+    background-image: var(--gradient-primary) !important;
+  }
+
+  /* Secondary Gradient */
+  .gradient.secondary {
+    --gradient-current: var(--gradient-secondary, linear-gradient(var(--gradient-angle, 135deg), var(--color-secondary-light), var(--color-secondary), var(--color-secondary-dark)));
+    background-image: var(--gradient-current);
+  }
+  .gradient.secondary.outlined {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-secondary) !important;
+  }
+  .gradient.secondary.plain {
+    background-image: var(--gradient-secondary) !important;
+  }
+
+  /* Success Gradient */
+  .gradient.success {
+    --gradient-current: var(--gradient-success, linear-gradient(var(--gradient-angle, 135deg), var(--color-success-light), var(--color-success), var(--color-success-dark)));
+    background-image: var(--gradient-current);
+  }
+  .gradient.success.outlined {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-success) !important;
+  }
+  .gradient.success.plain {
+    background-image: var(--gradient-success) !important;
+  }
+
+  /* Warning Gradient */
+  .gradient.warning {
+    --gradient-current: var(--gradient-warning, linear-gradient(var(--gradient-angle, 135deg), var(--color-warning-light), var(--color-warning), var(--color-warning-dark)));
+    background-image: var(--gradient-current);
+  }
+  .gradient.warning.outlined {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-warning) !important;
+  }
+  .gradient.warning.plain {
+    background-image: var(--gradient-warning) !important;
+  }
+
+  /* Danger Gradient */
+  .gradient.danger {
+    --gradient-current: var(--gradient-danger, linear-gradient(var(--gradient-angle, 135deg), var(--color-danger-light), var(--color-danger), var(--color-danger-dark)));
+    background-image: var(--gradient-current);
+  }
+  .gradient.danger.outlined {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-danger) !important;
+  }
+  .gradient.danger.plain {
+    background-image: var(--gradient-danger) !important;
+  }
+
+  /* Info Gradient */
+  .gradient.info {
+    --gradient-current: var(--gradient-info, linear-gradient(var(--gradient-angle, 135deg), var(--color-info-light), var(--color-info), var(--color-info-dark)));
+    background-image: var(--gradient-current);
+  }
+  .gradient.info.outlined {
+    background-image: linear-gradient(var(--color-surface), var(--color-surface)), 
+                      var(--gradient-info) !important;
+  }
+  .gradient.info.plain {
+    background-image: var(--gradient-info) !important;
+  }
+
+  /* Danphe Theme Special Gradients */
+  .gradient.danphe {
+    background-image: var(--gradient-danphe, linear-gradient(var(--gradient-angle, 135deg), var(--color-primary), var(--color-secondary), var(--color-accent)));
+  }
+  .gradient.danphe-sunset {
+    background-image: var(--gradient-danphe-sunset, linear-gradient(var(--gradient-angle, 135deg), var(--color-warning), var(--color-danger), var(--color-primary)));
+  }
+  .gradient.danphe-forest {
+    background-image: var(--gradient-danphe-forest, linear-gradient(var(--gradient-angle, 135deg), var(--color-success), var(--color-secondary), var(--color-info)));
+  }
+
+  /* ===== GRADIENT WITH GLOW ===== */
+  .gradient.glow {
+    position: relative;
+  }
+  
+  .gradient.glow::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: inherit;
+    filter: blur(12px);
+    opacity: 0;
+    z-index: -1;
+    border-radius: inherit;
+    transition: opacity 0.3s ease;
+  }
+  
+  .gradient.glow:hover::after {
+    opacity: 0.6;
+  }
+  
+  .gradient.glow.pulse::after {
+    animation: gradient-pulse 3s ease-in-out infinite;
+  }
+
+  /* ===== GRADIENT WITH PULSE ===== */
+  .gradient.pulse {
+    animation: gradient-pulse-bg 3s ease-in-out infinite;
+  }
+
+  /* ===== GRADIENT ANIMATIONS ===== */
+  @keyframes gradient-pulse {
+    0%, 100% {
+      opacity: 0.3;
+      filter: blur(8px);
+    }
+    50% {
+      opacity: 0.7;
+      filter: blur(16px);
+    }
+  }
+
+  @keyframes gradient-pulse-bg {
+    0%, 100% {
+      background-size: 100% 100%;
+    }
+    50% {
+      background-size: 120% 120%;
+    }
+  }
+
+  /* ===== GRADIENT SIZES ===== */
+  .gradient.gradient-xs {
+    background-size: 100% 100%;
+  }
+  .gradient.gradient-sm {
+    background-size: 110% 110%;
+  }
+  .gradient.gradient-md {
+    background-size: 120% 120%;
+  }
+  .gradient.gradient-lg {
+    background-size: 130% 130%;
+  }
+  .gradient.gradient-xl {
+    background-size: 150% 150%;
+  }
+
+  /* ===== GRADIENT ANGLES ===== */
+  .gradient.angle-0 { --gradient-angle: 0deg; }
+  .gradient.angle-45 { --gradient-angle: 45deg; }
+  .gradient.angle-90 { --gradient-angle: 90deg; }
+  .gradient.angle-135 { --gradient-angle: 135deg; }
+  .gradient.angle-180 { --gradient-angle: 180deg; }
+  .gradient.angle-225 { --gradient-angle: 225deg; }
+  .gradient.angle-270 { --gradient-angle: 270deg; }
+  .gradient.angle-315 { --gradient-angle: 315deg; }
+
+  /* ===== GRADIENT RADIAL ===== */
+  .gradient.radial {
+    background-image: radial-gradient(circle at center, var(--gradient-current, var(--gradient-primary)));
+  }
+  .gradient.radial-top {
+    background-image: radial-gradient(circle at top, var(--gradient-current, var(--gradient-primary)));
+  }
+  .gradient.radial-bottom {
+    background-image: radial-gradient(circle at bottom, var(--gradient-current, var(--gradient-primary)));
+  }
+  .gradient.radial-left {
+    background-image: radial-gradient(circle at left, var(--gradient-current, var(--gradient-primary)));
+  }
+  .gradient.radial-right {
+    background-image: radial-gradient(circle at right, var(--gradient-current, var(--gradient-primary)));
+  }
+
+  /* ===== GRADIENT CONIC ===== */
+  .gradient.conic {
+    background-image: conic-gradient(from 0deg, var(--gradient-current, var(--gradient-primary)));
+  }
+  .gradient.conic-45 {
+    background-image: conic-gradient(from 45deg, var(--gradient-current, var(--gradient-primary)));
+  }
+  .gradient.conic-90 {
+    background-image: conic-gradient(from 90deg, var(--gradient-current, var(--gradient-primary)));
+  }
+
+  /* ===== GLASS GRADIENT (Glassmorphism + Gradient) ===== */
+  .gradient.glass {
+    background: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-primary) 20%, transparent), 
+      color-mix(in oklch, var(--color-secondary) 20%, transparent)
+    );
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* ===== LOADING STATE FOR GRADIENT ===== */
+  .gradient.loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+  }
+  
+  .gradient.loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    opacity: 0.5;
+    border-radius: inherit;
+  }
+  
+  .gradient.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1.5em;
+    height: 1.5em;
+    border: 2px solid var(--color-text-light);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: gradient-spin 0.75s linear infinite;
+  }
+
+  @keyframes gradient-spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* ===== DISABLED STATE ===== */
+  .gradient:disabled,
+  .gradient.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.3);
+  }
+
+  /* ===== THEME-SPECIFIC GRADIENTS ===== */
+  [data-theme="dolphin"] .gradient.theme {
+    background-image: var(--gradient-primary);
+  }
+  
+  [data-theme="danphe"] .gradient.theme {
+    background-image: var(--gradient-danphe);
+  }
+
+  /* ===== DARK MODE ADJUSTMENTS ===== */
+  [data-theme-mode="dark"] .gradient:not(.plain, .outlined, .glass) { filter: brightness(0.7) contrast(1.2); }
+  [data-theme-mode="dark"] .gradient.outlined {
+    background-image: linear-gradient(var(--color-surface-dark), var(--color-surface-dark)), 
+                      var(--gradient-current, var(--gradient-primary)) !important;
+  }
+  
+  [data-theme-mode="dark"] .gradient.glass {
+    background: linear-gradient(var(--gradient-angle, 135deg), 
+      color-mix(in oklch, var(--color-primary) 30%, transparent), 
+      color-mix(in oklch, var(--color-secondary) 30%, transparent)
+    );
+  }
+}
+
+/* ===== RESPONSIVE GRADIENTS ===== */
+@media (max-width: 640px) {
+  .gradient.responsive {
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .gradient.responsive {
+    background-size: 150% 150%;
+    background-position: 10% 10%;
+  }
+}
+
+@media (min-width: 1025px) {
+  .gradient.responsive {
+    background-size: 100% 100%;
+    background-position: center;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .gradient {
+    background: none !important;
+    color: black !important;
+    border: 1px solid #ccc !important;
+    -webkit-text-fill-color: black !important;
+  }
+  
+  .gradient.glow::after {
+    display: none !important;
+  }
+}
+
+

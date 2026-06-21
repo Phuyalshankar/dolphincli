@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+/* ===== WORLD-CLASS ICON SYSTEM ===== */
+/* Perfectly integrated with form system using same classes */
+
+@layer components {
+  /* ===== BASE ICON STYLES ===== */
+  .input-icon {
+    @apply w-5 h-5 transition-all duration-200 ease-out flex-shrink-0;
+  }
+
+  .input-icon-sm {
+    @apply w-4 h-4;
+  }
+
+  .input-icon-md {
+    @apply w-5 h-5;
+  }
+
+  .input-icon-lg {
+    @apply w-6 h-6;
+  }
+
+  /* ===== INPUT ICON SYSTEM ===== */
+  
+  /* Input with Left Icon - Using same classes as form.css */
+  .input-icon-left {
+    @apply relative w-full;
+  }
+
+  .input-icon-left > .input-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-(--color-text-muted) 
+           transition-all duration-200 ease-out z-10;
+  }
+
+  .input-icon-left > input,
+  .input-icon-left > select,
+  .input-icon-left > textarea {
+    @apply w-full pl-10 pr-3 py-2 rounded-md border-2 border-(--color-border)
+           bg-(--color-surface) text-(--color-text)
+           transition-all duration-200 ease-out
+           focus:outline-none focus:border-(--color-primary);
+  }
+
+  /* Input with Right Icon - Using same classes as form.css */
+  .input-icon-right {
+    @apply relative w-full;
+  }
+
+  .input-icon-right > .input-icon {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-(--color-text-muted)
+           transition-all duration-200 ease-out z-10;
+  }
+
+  .input-icon-right > input,
+  .input-icon-right > select,
+  .input-icon-right > textarea {
+    @apply w-full pl-3 pr-10 py-2 rounded-md border-2 border-(--color-border)
+           bg-(--color-surface) text-(--color-text)
+           transition-all duration-200 ease-out
+           focus:outline-none focus:border-(--color-primary);
+  }
+
+  /* ===== ENHANCED HOVER EFFECTS ===== */
+  
+  /* Input Icon Hover Effects */
+  .input-icon-left:hover > .input-icon,
+  .input-icon-right:hover > .input-icon {
+    @apply text-(--color-primary) transform scale-110;
+  }
+
+  .input-icon-left:focus-within > .input-icon,
+  .input-icon-right:focus-within > .input-icon {
+    @apply text-(--color-primary) transform scale-110;
+  }
+
+  /* ===== GLOBAL VARIANTS INTEGRATION ===== */
+  
+  /* Glass Wave Variant */
+  .input-icon-left.glass-wave > input,
+  .input-icon-left.glass-wave > select,
+  .input-icon-left.glass-wave > textarea,
+  .input-icon-right.glass-wave > input,
+  .input-icon-right.glass-wave > select,
+  .input-icon-right.glass-wave > textarea {
+    @apply bg-[color-mix(in_oklch,var(--color-surface),transparent_40%)] 
+           border-[color-mix(in_oklch,var(--color-border),transparent_60%)];
+  }
+
+  /* Neon Flow Variant */
+  .input-icon-left.neon-flow > input,
+  .input-icon-left.neon-flow > select,
+  .input-icon-left.neon-flow > textarea,
+  .input-icon-right.neon-flow > input,
+  .input-icon-right.neon-flow > select,
+  .input-icon-right.neon-flow > textarea {
+    @apply bg-[color-mix(in_oklch,var(--color-surface),black_10%)] 
+           border-[color-mix(in_oklch,var(--color-primary),transparent_50%)];
+  }
+
+  .input-icon-left.neon-flow:focus-within > .input-icon,
+  .input-icon-right.neon-flow:focus-within > .input-icon {
+    @apply text-(--color-primary);
+  }
+
+  /* ===== ICON COLOR VARIANTS ===== */
+  
+  .input-icon.primary {
+    @apply text-(--color-primary);
+  }
+
+  .input-icon.success {
+    @apply text-(--color-success);
+  }
+
+  .input-icon.warning {
+    @apply text-(--color-warning);
+  }
+
+  .input-icon.danger {
+    @apply text-(--color-danger);
+  }
+
+  .input-icon.info {
+    @apply text-(--color-info);
+  }
+
+  .input-icon.muted {
+    @apply text-(--color-text-muted);
+  }
+
+  /* ===== FLOATING LABEL ICON INTEGRATION ===== */
+  
+  /* Floating Label with Left Icon - Same as form.css */
+  .floatinglabel.input-icon-left {
+    @apply relative;
+  }
+
+  .floatinglabel.input-icon-left > .input-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-(--color-text-muted)
+           transition-all duration-200 ease-out z-10;
+  }
+
+  .floatinglabel.input-icon-left .floatinglabel-input {
+    @apply pl-10;
+  }
+
+  .floatinglabel.input-icon-left .floatinglabel-label {
+    left: 2.75rem;
+  }
+
+  /* Floating Label with Right Icon - Same as form.css */
+  .floatinglabel.input-icon-right {
+    @apply relative;
+  }
+
+  .floatinglabel.input-icon-right > .input-icon {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-(--color-text-muted)
+           transition-all duration-200 ease-out z-10;
+  }
+
+  .floatinglabel.input-icon-right .floatinglabel-input {
+    @apply pr-10;
+  }
+
+  /* ===== STANDARD LABEL ICON INTEGRATION ===== */
+  
+  /* Standard Label with Left Icon - Same as form.css */
+  .standardlabel.input-icon-left {
+    @apply relative;
+  }
+
+  .standardlabel.input-icon-left > .input-icon {
+    @apply absolute left-0 top-1/2 -translate-y-1/2 text-(--color-text-muted)
+           transition-all duration-200 ease-out z-10;
+  }
+
+  .standardlabel.input-icon-left .standardlabel-input {
+    @apply pl-10;
+  }
+
+  .standardlabel.input-icon-left .standardlabel-label {
+    left: 2.75rem;
+  }
+
+  /* Standard Label with Right Icon - Same as form.css */
+  .standardlabel.input-icon-right {
+    @apply relative;
+  }
+
+  .standardlabel.input-icon-right > .input-icon {
+    @apply absolute right-0 top-1/2 -translate-y-1/2 text-(--color-text-muted)
+           transition-all duration-200 ease-out z-10;
+  }
+
+  .standardlabel.input-icon-right .standardlabel-input {
+    @apply pr-10;
+  }
+
+  /* ===== RESPONSIVE DESIGN ===== */
+  
+  @media (max-width: 768px) {
+    .input-icon-left > input,
+    .input-icon-left > select,
+    .input-icon-left > textarea,
+    .input-icon-right > input,
+    .input-icon-right > select,
+    .input-icon-right > textarea {
+      @apply py-2 text-sm;
+    }
+
+    .input-icon {
+      @apply w-4 h-4;
+    }
+
+    .input-icon-left > .input-icon,
+    .input-icon-right > .input-icon {
+      @apply w-4 h-4;
+    }
+
+    .input-icon-left > input,
+    .input-icon-left > select,
+    .input-icon-left > textarea {
+      @apply pl-8;
+    }
+
+    .input-icon-right > input,
+    .input-icon-right > select,
+    .input-icon-right > textarea {
+      @apply pr-8;
+    }
+  }
+}
