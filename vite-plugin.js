@@ -88,6 +88,8 @@ export default function dolphincssPlugin() {
     console.log(`✅ DolphinCSS VSCode IntelliSense ready!`);
     console.log(`   📦 ${classCount} CSS classes | 🏷️  ${tagCount} dolphin-* markers`);
     console.log(`   ➡️  VSCode window reload गर्नुस् (Ctrl+Shift+P → Reload Window)`);
+    console.log(`   💡 JSX/TSX मा पनि suggestions को लागि Extension install गर्नुस्:`);
+    console.log(`      👉 ext install Phuyalshankar.dolphincss-intellisense`);
   }
 
   // Auto-Push Config Settings

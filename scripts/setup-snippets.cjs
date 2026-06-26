@@ -79,6 +79,10 @@ function fetchText(url) {
     console.log(`[DolphinCSS]    📦 ${classCount} CSS classes | 🏷️  ${tagCount} dolphin-* markers`);
     console.log(`[DolphinCSS]    ➡️  Reload VSCode window to activate (Ctrl+Shift+P → Reload Window)`);
     console.log(`[DolphinCSS]    🧹 To remove: npx dolphin-cleanup`);
+    console.log(`[DolphinCSS]`);
+    console.log(`[DolphinCSS]    💡 Better IntelliSense (JSX/TSX support):`);
+    console.log(`[DolphinCSS]       Install VSCode Extension: Phuyalshankar.dolphincss-intellisense`);
+    console.log(`[DolphinCSS]       👉 https://marketplace.visualstudio.com/items?itemName=Phuyalshankar.dolphincss-intellisense`);
 
   } catch (err) {
     // Network नभए पनि graceful fail — user लाई block गर्दैन
