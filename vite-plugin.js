@@ -47,10 +47,47 @@ export default function dolphincssPlugin() {
   let initPromise = null;
   const activeFetches = new Map();
   let isDev = false;
+  let vscodeSetupDone = false; // vscode-init एकपटक मात्र run गर्न
 
 
   async function regenerateRoutes(projectRoot) {
     // stub kept for compatibility — routing engine removed
+  }
+
+  // 🐬 vscode-init: GitHub बाट dolphin-tags.json fetch गरेर .vscode/ मा setup गर्छ
+  async function setupVSCodeFromMarker(projectRoot) {
+    const vscodeDir = path.join(projectRoot, '.vscode');
+    if (!fs.existsSync(vscodeDir)) {
+      fs.mkdirSync(vscodeDir, { recursive: true });
+    }
+
+    // dolphin-tags.json — GitHub बाट fetch (dolphincss-template repo)
+    const tagsUrl = 'https://raw.githubusercontent.com/Phuyalshankar/dolphincss-template/main/config/dolphin-tags.json';
+    const tagsResponse = await fetch(`${tagsUrl}?t=${Date.now()}`);
+    if (!tagsResponse.ok) throw new Error(`Failed to fetch dolphin-tags.json: ${tagsResponse.statusText}`);
+    const tagsData = await tagsResponse.text();
+    fs.writeFileSync(path.join(vscodeDir, 'dolphin-tags.json'), tagsData, 'utf8');
+
+    // .vscode/settings.json मा html.customData entry थप्छ
+    const settingsPath = path.join(vscodeDir, 'settings.json');
+    let settings = {};
+    if (fs.existsSync(settingsPath)) {
+      try { settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8')); } catch { settings = {}; }
+    }
+    if (!Array.isArray(settings['html.customData'])) settings['html.customData'] = [];
+    if (!settings['html.customData'].includes('./.vscode/dolphin-tags.json')) {
+      settings['html.customData'].push('./.vscode/dolphin-tags.json');
+    }
+    // CSS class suggestions for JS/JSX files
+    if (!Array.isArray(settings['css.customData'])) settings['css.customData'] = [];
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
+
+    const parsed = JSON.parse(tagsData);
+    const classCount = parsed?.valueSets?.[0]?.values?.length || 0;
+    const tagCount = parsed?.tags?.length || 0;
+    console.log(`✅ DolphinCSS VSCode IntelliSense ready!`);
+    console.log(`   📦 ${classCount} CSS classes | 🏷️  ${tagCount} dolphin-* markers`);
+    console.log(`   ➡️  VSCode window reload गर्नुस् (Ctrl+Shift+P → Reload Window)`);
   }
 
   // Auto-Push Config Settings
@@ -175,6 +212,28 @@ export default function dolphincssPlugin() {
     let modified = false;
     const isReact = ['.jsx', '.tsx', '.js', '.ts'].includes(ext);
     const classAttrName = isReact ? 'className' : 'class';
+
+    // 🐬 vscode-init marker: class="vscode-init" detect गरेर .vscode/ setup गर्छ
+    const vsInitAttr = isReact ? 'className' : 'class';
+    const vsInitRegex = new RegExp(`${vsInitAttr}=(["'])([^"']*\\s)?vscode-init(\\s[^"']*)?\\1`);
+    if (!vscodeSetupDone && vsInitRegex.test(content)) {
+      vscodeSetupDone = true;
+      console.log('\n🐬 DolphinCSS: vscode-init detected! Setting up VSCode IntelliSense...');
+      try {
+        await setupVSCodeFromMarker(projectRoot);
+      } catch (err) {
+        console.warn(`⚠️ DolphinCSS: VSCode setup failed: ${err.message}`);
+      }
+      // marker class हटाउँछ
+      content = content.replace(
+        new RegExp(`(${vsInitAttr}=(["'])([^"']*)\\s?)vscode-init(\\s?([^"']*?))(\\2)`, 'g'),
+        (_, attrStart, quote, before, afterRaw, after, closeQuote) => {
+          const cleaned = (before + after).replace(/\s+/g, ' ').trim();
+          return cleaned ? `${vsInitAttr}=${quote}${cleaned}${closeQuote}` : '';
+        }
+      );
+      modified = true;
+    }
 
     // 0. Scan and handle Component Actions via Markers (push, put, patch, inject, delete)
     const markerRegex = new RegExp(
@@ -677,33 +736,46 @@ export default function dolphincssPlugin() {
 
 
     async transform(code, id) {
-      // 🔒 HMR Guard: input code मा HMR markers छ भने process नगर्ने
-      if (
-        code.includes('$RefreshReg$') ||
-        code.includes('$RefreshSig$') ||
-        code.includes('RefreshRuntime') ||
-        code.includes('import.meta.hot') ||
-        code.includes('/@react-refresh')
-      ) {
+      const ext = path.extname(id).toLowerCase();
+      if (!['.jsx', '.tsx', '.js', '.ts', '.html', '.vue', '.svelte', '.astro', '.php'].includes(ext) || id.includes('node_modules')) {
+        return null;
+      }
+      console.log(`🔍 DolphinCSS: Transform hook called for: ${path.basename(id)}`);
+
+      // Read raw code from disk to bypass in-memory HMR additions
+      let diskCode = '';
+      try {
+        diskCode = fs.readFileSync(id, 'utf8');
+      } catch (err) {
         return null;
       }
 
-      const result = await handleTransform(code, id);
+      // If disk code already contains HMR markers, skip write-back to avoid corruption
+      if (
+        diskCode.includes('$RefreshReg$') ||
+        diskCode.includes('$RefreshSig$') ||
+        diskCode.includes('RefreshRuntime') ||
+        diskCode.includes('import.meta.hot') ||
+        diskCode.includes('/@react-refresh')
+      ) {
+        return handleTransform(code, id);
+      }
+
+      // Quick scan to see if there are any markers to inject
+      const possibleMarkers = diskCode.match(/dolphin-[a-zA-Z0-9-]+/g);
+      if (!possibleMarkers) {
+        return null;
+      }
+
+      const result = await handleTransform(diskCode, id);
       if (result && result.code && isDev) {
-        if (
-          result.code.includes('RefreshRuntime') ||
-          result.code.includes('$RefreshReg$') ||
-          result.code.includes('$RefreshSig$')
-        ) {
-          console.log(`\n⚠️ DolphinCSS: Prevented HMR code write-back to ${path.basename(id)}`);
-        } else {
-          try {
-            fs.writeFileSync(id, result.code, 'utf8');
-            console.log(`\n✨ DolphinCSS: Injected and updated source file: ${path.basename(id)}`);
-          } catch (err) {
-            console.error(`⚠️ DolphinCSS: Failed to write back to ${id}:`, err.message);
-          }
+        try {
+          fs.writeFileSync(id, result.code, 'utf8');
+          console.log(`\n✨ DolphinCSS: Injected and updated source file: ${path.basename(id)}`);
+        } catch (err) {
+          console.error(`⚠️ DolphinCSS: Failed to write back to ${id}:`, err.message);
         }
+        return result;
       }
       return result;
     }
