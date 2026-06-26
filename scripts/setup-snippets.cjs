@@ -65,6 +65,18 @@ function fetchText(url) {
     }
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
 
+    // .vscode/extensions.json मा extension recommendation थप्छ
+    const extensionsPath = path.join(vscodeDir, 'extensions.json');
+    let extensions = {};
+    if (fs.existsSync(extensionsPath)) {
+      try { extensions = JSON.parse(fs.readFileSync(extensionsPath, 'utf8')); } catch { extensions = {}; }
+    }
+    if (!Array.isArray(extensions.recommendations)) extensions.recommendations = [];
+    if (!extensions.recommendations.includes('Phuyalshankar.dolphincss-intellisense')) {
+      extensions.recommendations.push('Phuyalshankar.dolphincss-intellisense');
+    }
+    fs.writeFileSync(extensionsPath, JSON.stringify(extensions, null, 2), 'utf8');
+
     // snippets copy (local बाटै — offline पनि काम गर्छ)
     const snippetsSrc = path.join(__dirname, '../snippets/dolphincss.json');
     if (fs.existsSync(snippetsSrc)) {

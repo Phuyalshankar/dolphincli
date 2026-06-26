@@ -82,6 +82,18 @@ export default function dolphincssPlugin() {
     if (!Array.isArray(settings['css.customData'])) settings['css.customData'] = [];
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
 
+    // .vscode/extensions.json मा extension recommendation थप्छ
+    const extensionsPath = path.join(vscodeDir, 'extensions.json');
+    let extensions = {};
+    if (fs.existsSync(extensionsPath)) {
+      try { extensions = JSON.parse(fs.readFileSync(extensionsPath, 'utf8')); } catch { extensions = {}; }
+    }
+    if (!Array.isArray(extensions.recommendations)) extensions.recommendations = [];
+    if (!extensions.recommendations.includes('Phuyalshankar.dolphincss-intellisense')) {
+      extensions.recommendations.push('Phuyalshankar.dolphincss-intellisense');
+    }
+    fs.writeFileSync(extensionsPath, JSON.stringify(extensions, null, 2), 'utf8');
+
     const parsed = JSON.parse(tagsData);
     const classCount = parsed?.valueSets?.[0]?.values?.length || 0;
     const tagCount = parsed?.tags?.length || 0;
