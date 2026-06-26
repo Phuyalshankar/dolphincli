@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -94,14 +96,37 @@ export default function dolphincssPlugin() {
     }
     fs.writeFileSync(extensionsPath, JSON.stringify(extensions, null, 2), 'utf8');
 
+    // 🚀 GitHub Release बाट .vsix download गरेर VS Code मा auto-install गर्छ
+    const VSIX_URL = 'https://github.com/Phuyalshankar/dolphincss-vscode-/releases/download/v0.1.0/dolphincss-intellisense-0.1.0.vsix';
+    const tmpVsix = path.join(os.tmpdir(), 'dolphincss-intellisense.vsix');
+    try {
+      console.log(`\n📥 DolphinCSS: Downloading VS Code Extension from GitHub...`);
+      const vsixResponse = await fetch(VSIX_URL, { redirect: 'follow' });
+      if (vsixResponse.ok) {
+        const buffer = await vsixResponse.arrayBuffer();
+        fs.writeFileSync(tmpVsix, Buffer.from(buffer));
+        console.log(`✅ DolphinCSS: Extension downloaded! Installing...`);
+        try {
+          execSync(`code --install-extension "${tmpVsix}" --force`, { stdio: 'pipe' });
+          console.log(`🎉 DolphinCSS: VS Code Extension installed successfully!`);
+          console.log(`   ➡️  VS Code reload गर्नुस् (Ctrl+Shift+P → Reload Window)`);
+        } catch (installErr) {
+          console.warn(`⚠️  DolphinCSS: Auto-install failed. Manual install गर्नुस्:`);
+          console.warn(`   code --install-extension "${tmpVsix}"`);
+        }
+      } else {
+        console.warn(`⚠️  DolphinCSS: Extension download failed (${vsixResponse.status}). Manual install: ext install Phuyalshankar.dolphincss-intellisense`);
+      }
+    } catch (downloadErr) {
+      console.warn(`⚠️  DolphinCSS: Extension auto-install skipped: ${downloadErr.message}`);
+    }
+
     const parsed = JSON.parse(tagsData);
     const classCount = parsed?.valueSets?.[0]?.values?.length || 0;
     const tagCount = parsed?.tags?.length || 0;
-    console.log(`✅ DolphinCSS VSCode IntelliSense ready!`);
+    console.log(`\n✅ DolphinCSS VSCode IntelliSense ready!`);
     console.log(`   📦 ${classCount} CSS classes | 🏷️  ${tagCount} dolphin-* markers`);
     console.log(`   ➡️  VSCode window reload गर्नुस् (Ctrl+Shift+P → Reload Window)`);
-    console.log(`   💡 JSX/TSX मा पनि suggestions को लागि Extension install गर्नुस्:`);
-    console.log(`      👉 ext install Phuyalshankar.dolphincss-intellisense`);
   }
 
   // Auto-Push Config Settings

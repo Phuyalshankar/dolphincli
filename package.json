@@ -43,8 +43,8 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run watch:dolphin\"",
     "watch:dolphin": "node bin/dolphin.js",
-    "build:css": "npx -y @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --minify",
-    "watch:css": "npx -y @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --watch",
+    "build:css": "tailwindcss -i ./src/dolphin-css/App.css -o ./dolphin-css.css --minify",
+    "watch:css": "tailwindcss -i ./src/dolphin-css/App.css -o ./dolphin-css.css --watch",
     "build": "vite build && npm run build:css",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -70,6 +70,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@tailwindcss/cli": "^4.1.16",
     "@tailwindcss/vite": "^4.1.16",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
