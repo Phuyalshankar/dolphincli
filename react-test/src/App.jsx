@@ -3,6 +3,7 @@ import { Eye, EyeOff, Mail, Lock, Globe, X } from 'lucide-react'
 import TestPush from './TestPush'
 
 export default function App() {
+  // 🐬 vscode-init test — यो line ले .vscode/ setup trigger गर्छ
   const [formData, setFormData] = useState({
     email: '',
     password: '',

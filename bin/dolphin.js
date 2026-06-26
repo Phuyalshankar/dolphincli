@@ -9,7 +9,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const require = createRequire(import.meta.url);
-const { setupVSCodeSupport } = require('../scripts/vscode-custom-data.cjs');
 
 function indentHtmlOrJsx(htmlStr, initialIndent = 8) {
   const lines = htmlStr.split('\n');
@@ -114,20 +113,6 @@ async function fetchRemote(url) {
   }
 }
 
-function setupVSCodeIntelliSense() {
-  try {
-    const snippetsSource = path.join(__dirname, '../snippets/dolphincss.json');
-    const stats = setupVSCodeSupport({
-      projectRoot,
-      packageRoot: path.join(__dirname, '..'),
-      snippetsSource: fs.existsSync(snippetsSource) ? snippetsSource : null
-    });
-
-    console.log(`✨ VS Code IntelliSense configured! (${stats.classCount} suggestions, ${stats.markerCount} markers)`);
-  } catch (error) {
-    console.log(`⚠️ Could not setup VS Code IntelliSense: ${error.message}`);
-  }
-}
 
 async function init() {
   // Always load local markers first so core/offline templates are available
@@ -189,7 +174,7 @@ async function init() {
       console.log(`✅ Remote markers metadata loaded (${Object.keys(remoteMarkerMap).length} items).`);
       console.log(`🚀 On-demand fetching active. (Markers will be downloaded when used)`);
 
-      setupVSCodeIntelliSense();
+
       const startupAppPath = path.join(projectRoot, 'src/App.jsx');
       if (fs.existsSync(startupAppPath)) {
         processFile(startupAppPath);
@@ -201,7 +186,7 @@ async function init() {
       if (retryCount >= maxRetries) {
         console.log('⚠️ Falling back to local mode after maximum retries...');
         const localMarkers = loadLocalMarkers();
-        setupVSCodeIntelliSense();
+
         startWatcher();
         return;
       }
