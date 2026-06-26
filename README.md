@@ -96,6 +96,25 @@ export default defineConfig({
 import 'dolphincss/dolphin-css.css';
 ```
 
+### 🧠 VS Code IntelliSense (Auto-installed)
+
+`npm install` automatically sets up VS Code IntelliSense in your project:
+- **DolphinCSS classes** are suggested inside `class=""` and `className=""` attributes
+- **`dolphin-*` component tags/markers** are suggested separately when you type `dolphin-`
+- **Code snippets** for all components are registered
+
+No manual setup needed — just reload the VS Code window after install.
+
+When you no longer need the VS Code helpers, remove them cleanly:
+```bash
+npx dolphin-cleanup
+```
+Cleanup behavior:
+- Removes only DolphinCSS files from `.vscode/`
+- Removes the DolphinCSS `html.customData` entry from `.vscode/settings.json`
+- Keeps your own VS Code settings and other `.vscode` files untouched
+- Deletes the `.vscode` folder only if it becomes completely empty after cleanup
+
 ---
 
 ## 🛜 Offline & CDN Usage
@@ -213,7 +232,40 @@ This is perfect for IoT dashboards, sensor data representations, dynamic configu
 
 ### ⚙️ How to Import
 ```javascript
-import { ub, gradient, map, oklch } from 'dolphincss/ub';
+import {
+  // Core
+  ub, debugUB, clearUBCache, oklch,
+
+  // Spacing
+  p, pt, pb, pl, pr,
+  m, mt, mb, ml, mr,
+  w, h, scale,
+
+  // Border / Shadow / Rounded / Opacity
+  border, borderT, borderR, borderB, borderL, borderX, borderY,
+  rounded, shadow, opacity,
+
+  // Color helpers
+  bg, text,
+
+  // Gradient helpers
+  gradient, gradientAngle, gradientVertical, gradientHorizontal,
+  gradientRadial, gradientTriple,
+
+  // Layout helpers
+  grid, autoGrid, autoLayout, span, row,
+
+  // Animation helpers
+  animate, widthAnim, heightAnim, paddingAnim, marginAnim,
+  bgAnim, opacityAnim, roundedAnim, scaleAnim,
+  infiniteAnim, clickAnim, bgFill,
+
+  // Shorthand objects
+  btn, input, card,
+
+  // IoT data mapping
+  map,
+} from 'dolphincss/ub';
 ```
 
 ### 🪄 Core Features
@@ -257,6 +309,172 @@ Define dynamically timed transitions in JSX:
 ```jsx
 // Fills background color from left to red-128 in 500ms
 className={ub("card bg-fill-left-red-128-500ms")}
+```
+
+---
+
+## 📖 Complete `ub` Class Syntax Reference
+
+### 🎨 Colors
+```
+bg-{color}-{shade}          → background color      (e.g. bg-blue-128)
+bg-{color}-{shade}/{opacity} → with opacity          (e.g. bg-blue-128/50)
+text-{color}-{shade}        → text color            (e.g. text-red-200)
+border-{color}-{shade}      → border color          (e.g. border-green-100)
+```
+Colors: `red` `blue` `green` `purple` `orange` `pink` `teal` `amber` `gray`  
+Shade: `0–255` (0 = lightest, 255 = darkest)
+
+### 📐 Spacing
+```
+p-{n}   pt-{n}  pb-{n}  pl-{n}  pr-{n}   → padding   (n × 4px)
+m-{n}   mt-{n}  mb-{n}  ml-{n}  mr-{n}   → margin    (n × 4px)
+w-{n}   h-{n}                             → size      (n × 4px)
+scale-{n}                                 → CSS scale transform
+opacity-{n}                               → opacity 0–100
+```
+
+### 🔲 Border, Shadow, Rounded
+```
+border                   → 1px solid border
+border-{n}               → n px border
+border-t-{n}  border-b-{n}  border-l-{n}  border-r-{n}  → single side
+border-x-{n}  border-y-{n}  → horizontal / vertical
+rounded-{n}              → border-radius (e.g. rounded-2)
+rounded-full             → border-radius: 9999px
+shadow-{1–10}            → box-shadow scale
+```
+
+### 📦 Flexbox / Grid
+```
+flex-center   flex-between  flex-left   flex-right
+flex-around   flex-evenly   flex-start  flex-end  flex-stretch
+flexcol-center  flexcol-between  flexcol-left  flexcol-right
+
+grid-{cols}x{rows}-{gap}           → explicit grid
+auto-grid-{minWidth}-{gap}         → auto-fit grid
+auto-layout-{row|col|wrap}-{align}-{gap}
+
+span-{n}     → grid-column: span n
+row-{n}      → grid-row: span n
+full         → grid-column: 1 / -1
+```
+
+### 🌈 Gradients
+```
+gradient-{c1}-{s1}-{c2}-{s2}                  → 135deg gradient
+gradient-{angle}deg-{c1}-{s1}-{c2}-{s2}       → custom angle
+gradient-vert-{c1}-{s1}-{c2}-{s2}             → top to bottom
+gradient-horiz-{c1}-{s1}-{c2}-{s2}            → left to right
+gradient-radial-{c1}-{s1}-{c2}-{s2}           → radial
+gradient-{c1}-{s1}-{c2}-{s2}-{c3}-{s3}        → 3-color gradient
+```
+
+### 🃏 Component Shorthands
+```jsx
+// Buttons
+className={ub(btn.primary)}   // → "btn btn-primary"
+className={ub(btn.danger)}    // → "btn btn-danger"
+className={ub(btn.ghost)}     // → "btn btn-ghost"
+className={ub(btn.glow)}      // → "btn btn-glow"
+// Also: btn.sm  btn.md  btn.lg  btn.secondary  btn.success  btn.warning  btn.outline
+
+// Inputs
+className={ub(input.base)}    // → "input"
+className={ub(input.error)}   // → "input input-error"
+// Also: input.sm  input.md  input.lg  input.success
+
+// Cards
+className={ub(card.glass)}    // → "card card-glass"
+className={ub(card.hover)}    // → "card card-hover"
+className={ub(card.click)}    // → "card card-click card-hover"
+```
+
+### 🎬 Animations
+```
+// Property animation (from → to in Nms)
+{prop}-{from}-{to}-{N}ms               → one-shot
+{prop}-{from}-{to}-{N}ms-infinite      → loops forever
+hover:{prop}-{from}-{to}-{N}ms         → triggers on hover
+click:{prop}-{from}-{to}-{N}ms         → triggers on click
+
+// Examples:
+w-10-50-300ms                          → width 40px → 200px in 300ms
+scale-50-110-200ms                     → scale 0.5 → 1.1 in 200ms
+opacity-0-100-400ms                    → fade in
+p-2-8-250ms                            → padding grow
+rounded-2-full-300ms                   → pill animation
+
+// Background fill sweep
+bg-fill-left-red-128-500ms             → fills red from left in 500ms
+bg-fill-right-blue-200-800ms           → fills blue from right in 800ms
+bg-fill-top-green-100-600ms
+bg-fill-bottom-purple-150-400ms
+
+// Color animation (bg or text)
+bg-blue-50-200-500ms                   → bg transitions shade 50→200 in 500ms
+bg-red-100-255-1000ms-infinite         → loops forever
+text-green-128-255-300ms               → text color animates
+```
+
+### 🎯 Variants (Prefix Modifiers)
+```
+hover:{class}      → applies on hover     (e.g. hover:scale-110)
+active:{class}     → applies on active
+focus:{class}      → applies on focus
+
+// Responsive breakpoints
+sm:{class}   → min-width: 640px
+md:{class}   → min-width: 768px
+lg:{class}   → min-width: 1024px
+xl:{class}   → min-width: 1280px
+2xl:{class}  → min-width: 1536px
+
+// Combine prefix + class
+lg:flex-center
+hover:bg-blue-200
+sm:p-2 lg:p-8
+```
+
+### 🔧 Helper Functions (JS API)
+```jsx
+import { bg, text, gradient, gradientVertical, gradientHorizontal,
+         gradientRadial, gradientAngle, gradientTriple,
+         widthAnim, heightAnim, bgAnim, scaleAnim,
+         opacityAnim, roundedAnim, infiniteAnim } from 'dolphincss/ub';
+
+// Color helpers
+bg('blue', 128)           // → "bg-blue-128"
+bg('red', 200, 50)        // → "bg-red-200/50"  (with opacity)
+text('green', 100)        // → "text-green-100"
+
+// Gradient helpers
+gradient('blue', 100, 'purple', 200)            // → "gradient-blue-100-purple-200"
+gradientVertical('red', 128, 'orange', 200)     // → "gradient-vert-red-128-orange-200"
+gradientHorizontal('teal', 100, 'blue', 200)    // → "gradient-horiz-teal-100-blue-200"
+gradientRadial('pink', 100, 'purple', 200)      // → "gradient-radial-pink-100-purple-200"
+gradientAngle(45, 'blue', 100, 'green', 200)    // → "gradient-45deg-blue-100-green-200"
+gradientTriple('red',100,'blue',150,'purple',200) // → 3-stop gradient
+
+// Animation helpers
+widthAnim(10, 50, 300)             // → "w-10-50-300ms"
+heightAnim(20, 80, 500)            // → "h-20-80-500ms"
+scaleAnim(50, 110, 200)            // → "scale-50-110-200ms"
+opacityAnim(0, 100, 400)           // → "opacity-0-100-400ms"
+roundedAnim(2, 16, 300)            // → "rounded-2-16-300ms"
+bgAnim('blue', 50, 'blue', 200, 500)  // → "bg-blue-50-blue-200-500ms"
+infiniteAnim('scale', 90, 110, 1000)  // → loops forever
+```
+
+### 🛠️ Debug & Cache
+```jsx
+import { debugUB, clearUBCache } from 'dolphincss/ub';
+
+console.log(debugUB());
+// → { classCache: 42, styleCount: 38, totalRequests: 150,
+//     cacheHits: 108, totalSegmentRequests: 210, version: 'v19.0.3' }
+
+clearUBCache();  // Flush all cached styles (useful after theme change)
 ```
 
 ---
@@ -475,4 +693,3 @@ Log in to the Web Portal Dashboard using your username and credentials to manage
 ---
 
 **Built with ❤️ in Nepal.** Ready for the future of UI development.
-

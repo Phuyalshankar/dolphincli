@@ -3,10 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import chokidar from 'chokidar';
 import axios from 'axios';
+import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
+const { setupVSCodeSupport } = require('../scripts/vscode-custom-data.cjs');
 
 function indentHtmlOrJsx(htmlStr, initialIndent = 8) {
   const lines = htmlStr.split('\n');
@@ -111,65 +114,16 @@ async function fetchRemote(url) {
   }
 }
 
-function setupVSCodeIntelliSense(markers) {
+function setupVSCodeIntelliSense() {
   try {
-    const vscodeDir = path.join(projectRoot, '.vscode');
-    if (!fs.existsSync(vscodeDir)) {
-      fs.mkdirSync(vscodeDir);
-    }
+    const snippetsSource = path.join(__dirname, '../snippets/dolphincss.json');
+    const stats = setupVSCodeSupport({
+      projectRoot,
+      packageRoot: path.join(__dirname, '..'),
+      snippetsSource: fs.existsSync(snippetsSource) ? snippetsSource : null
+    });
 
-    // 1. Clean up old Snippets if they exist (user no longer wants code snippets)
-    const snippetsPath = path.join(vscodeDir, 'dolphin.code-snippets');
-    if (fs.existsSync(snippetsPath)) {
-      fs.unlinkSync(snippetsPath);
-    }
-
-    // 2. Generate Custom HTML Data (This provides the CSS class name suggestions)
-    const customData = {
-      version: 1.1,
-      tags: Object.keys(markers).map(marker => ({
-        name: marker,
-        description: `Dolphin CLI Component`
-      })),
-      globalAttributes: [
-        { name: "class", valueSet: "dolphin-classes" },
-        { name: "className", valueSet: "dolphin-classes" }
-      ],
-      valueSets: [
-        {
-          name: "dolphin-classes",
-          values: Object.keys(markers).map(marker => {
-            const data = markers[marker];
-            const templateFile = typeof data === 'string' ? data : data.templateFile;
-            return {
-              name: marker,
-              description: `Dolphin CLI Component (${templateFile})`
-            };
-          })
-        }
-      ]
-    };
-    fs.writeFileSync(path.join(vscodeDir, 'dolphin-tags.json'), JSON.stringify(customData, null, 2));
-
-    // 3. Update settings.json
-    const settingsPath = path.join(vscodeDir, 'settings.json');
-    let settings = {};
-    if (fs.existsSync(settingsPath)) {
-      try {
-        settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-      } catch (e) {}
-    }
-    
-    if (!settings['html.customData']) {
-      settings['html.customData'] = [];
-    }
-    
-    if (!settings['html.customData'].includes("./.vscode/dolphin-tags.json")) {
-      settings['html.customData'].push("./.vscode/dolphin-tags.json");
-      fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
-    }
-    
-    console.log('✨ VS Code IntelliSense (Auto-Suggest) configured!');
+    console.log(`✨ VS Code IntelliSense configured! (${stats.classCount} suggestions, ${stats.markerCount} markers)`);
   } catch (error) {
     console.log(`⚠️ Could not setup VS Code IntelliSense: ${error.message}`);
   }
@@ -235,7 +189,7 @@ async function init() {
       console.log(`✅ Remote markers metadata loaded (${Object.keys(remoteMarkerMap).length} items).`);
       console.log(`🚀 On-demand fetching active. (Markers will be downloaded when used)`);
 
-      setupVSCodeIntelliSense(remoteMarkerMap);
+      setupVSCodeIntelliSense();
       const startupAppPath = path.join(projectRoot, 'src/App.jsx');
       if (fs.existsSync(startupAppPath)) {
         processFile(startupAppPath);
@@ -247,7 +201,7 @@ async function init() {
       if (retryCount >= maxRetries) {
         console.log('⚠️ Falling back to local mode after maximum retries...');
         const localMarkers = loadLocalMarkers();
-        setupVSCodeIntelliSense(localMarkers);
+        setupVSCodeIntelliSense();
         startWatcher();
         return;
       }

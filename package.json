@@ -5,7 +5,8 @@
   "description": "DolphinCSS - World-class TailwindCSS + React component library",
   "main": "dolphin-css.css",
   "bin": {
-    "dolphin-template": "bin/dolphin.js"
+    "dolphin-template": "bin/dolphin.js",
+    "dolphin-cleanup": "scripts/cleanup-vscode.cjs"
   },
   "exports": {
     ".": "./dolphin-css.css",
@@ -27,6 +28,7 @@
     "LICENSE",
     "snippets/",
     "bin/",
+    "scripts/",
     "core-templates/",
     "config/",
     "templates/",
@@ -46,7 +48,8 @@
     "build": "vite build && npm run build:css",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "node scripts/setup-snippets.cjs"
+    "postinstall": "node scripts/setup-snippets.cjs",
+    "dolphin:cleanup": "node scripts/cleanup-vscode.cjs"
   },
   "keywords": [
     "css",
