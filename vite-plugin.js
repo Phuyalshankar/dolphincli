@@ -785,7 +785,7 @@ export default function dolphincssPlugin() {
       // 🐬 dolphin-routing: generate routes on every build start
       await regenerateRoutes(projectRoot);
 
-      if (!isDev) return;
+      // Always initialize markers (both dev + production build)
       await ensureInitialized(projectRoot);
 
       const srcDir = path.join(projectRoot, 'src');

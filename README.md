@@ -113,6 +113,23 @@ Include these links directly in your HTML for zero-install setup:
   <script src="https://cdn.jsdelivr.net/npm/dolphincss@latest/src/ub-vanilla.js"></script>
   ```
 
+### 📥 Direct File Downloads (One-Click)
+Click the buttons below to download the latest files directly:
+
+<div align="center" style="margin: 20px 0; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+  <a href="https://cdn.jsdelivr.net/npm/dolphincss@latest/dolphin-css.css" download="dolphin-css.css" style="background-color: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+    📥 Download dolphin-css.css
+  </a>
+  <a href="https://cdn.jsdelivr.net/npm/dolphincss@latest/src/ub-vanilla.js" download="ub-vanilla.js" style="background-color: #a855f7; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+    📥 Download ub-vanilla.js
+  </a>
+</div>
+
+*(For Markdown/GitHub compatibility, you can also use these badges:)*
+
+[![Download Dolphin CSS](https://img.shields.io/badge/Download-Dolphin_CSS-0ea5e9?style=for-the-badge&logo=css3)](https://cdn.jsdelivr.net/npm/dolphincss@latest/dolphin-css.css)
+[![Download Utility Builder JS](https://img.shields.io/badge/Download-Utility_Builder_JS-a855f7?style=for-the-badge&logo=javascript)](https://cdn.jsdelivr.net/npm/dolphincss@latest/src/ub-vanilla.js)
+
 ### 2. Download Commands (For Offline Usage)
 Run these commands in your project folder to download the files locally:
 
@@ -133,6 +150,52 @@ wget -O dolphin-css.min.css https://cdn.jsdelivr.net/npm/dolphincss@latest/dolph
 # Download Vanilla Utility Builder JS
 wget -O ub-vanilla.min.js https://cdn.jsdelivr.net/npm/dolphincss@latest/src/ub-vanilla.js
 ```
+
+### 3. How to Setup & Use Locally (Offline)
+
+#### A. Static HTML Setup
+Once you have downloaded `dolphin-css.min.css` and `ub-vanilla.min.js`, link them locally in your `index.html` file:
+```html
+<!DOCTYPE html>
+<html lang="en" data-theme-mode="dark" data-theme="dolphin">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./dolphin-css.min.css">
+</head>
+<body>
+  <!-- Use magic markers to be injected later -->
+  <div class="dolphin-card"></div>
+
+  <script type="module">
+    import { ub, map } from './ub-vanilla.min.js';
+    // Use ub engine for dynamic runtime styling
+  </script>
+</body>
+</html>
+```
+
+#### B. Offline Component Injection
+When working offline (without an internet connection), component injection still works seamlessly:
+* **Using Vite Plugin (React/Vue/etc.):** The `vite-plugin-dolphincss` automatically loads templates locally from the `node_modules/dolphincss/core-templates/` directory. No internet connection is needed to parse and expand markers like `<div className="dolphin-card"></div>`.
+* **Using CLI Watcher (Plain HTML/Other projects):** Start the watcher offline:
+  ```bash
+  npx dolphincss-template
+  # OR
+  node node_modules/dolphincss/bin/dolphin.js
+  ```
+  The watcher will attempt to sync with the remote repository. After failing to connect, it will automatically fallback to **Local Mode**. It will watch your files and expand markers (e.g. `dolphin-card` to full HTML/JSX) using the offline templates stored locally in your package.
+
+#### C. Zero-Install / CDN Component Injection (Online)
+If you are using DolphinCSS via CDN links and do not want to install `dolphincss` locally in your project, you can still use the magic component generator:
+1. Include the jsDelivr CDN links in your static HTML file.
+2. Put any magic marker class (e.g., `<div class="dolphin-card"></div>`) in your HTML code.
+3. Start the watcher directly from npm without installing the package:
+   ```bash
+   npx dolphin-template
+   # OR (if package is not installed)
+   npx --package=dolphincss dolphin-template
+   ```
+4. Save your HTML file. The watcher will dynamically fetch the component templates from GitHub and inject them directly into your local file!
 
 ---
 
@@ -227,6 +290,83 @@ Type any of these magic markers in your `.jsx` or `.tsx` file, hit save, and wat
 - `<div className="dolphin-pagination"></div>` (Page Navigation Controls)
 - `<div className="dolphin-drawer"></div>` (Off-canvas Glass Sidebar)
 - `<div className="dolphin-breadcrumbs"></div>` (Navigation Trail)
+
+### ⚡ Framework Features (Auto-injected via Magic Class)
+
+These are full framework-level utilities — type the magic class, hit save, and the entire module is injected into your file from GitHub automatically. No CLI, no copy-paste.
+
+#### 🗺️ `dolphin-routing` — File-based Auto Router
+```jsx
+// 1. Create src/pages/ folder with your pages:
+//    src/pages/index.jsx      → /
+//    src/pages/about.jsx      → /about
+//    src/pages/blog/[slug].jsx → /blog/:slug
+
+// 2. Plugin auto-generates src/generated-router.jsx on save!
+
+// 3. Use it in App.jsx:
+import AppRouter from './generated-router';
+function App() { return <AppRouter />; }
+```
+
+#### 📦 `dolphin-store` — Global State Manager
+```jsx
+// Type this in any file and save:
+<div className="dolphin-store"></div>
+
+// After injection → use anywhere in your app:
+import { useStore, setStore } from './dolphin-store';
+const user = useStore(s => s.user);
+setStore({ user: { name: 'Shankar' } });
+```
+
+#### 🔐 `dolphin-middleware` — Route Auth Guard
+```jsx
+// Type this and save:
+<div className="dolphin-middleware"></div>
+
+// After injection → wrap protected routes:
+import { DolphinMiddleware } from './dolphin-middleware';
+<Route element={<DolphinMiddleware />}>
+  <Route path="/dashboard" element={<Dashboard />} />
+</Route>
+```
+
+#### 🌐 `dolphin-i18n` — Multi-language Routing
+```jsx
+// Type this and save:
+<div className="dolphin-i18n"></div>
+
+// After injection → use in app:
+import { useI18n, t } from './dolphin-i18n';
+const { lang, setLang } = useI18n();
+// URL: /en/about → /np/about auto-rewrite!
+<p>{t('welcome')}</p>  // → "स्वागत छ" in Nepali
+```
+
+#### 📡 `dolphin-api` — Smart API Client
+```jsx
+// Type this and save:
+<div className="dolphin-api"></div>
+
+// After injection → use anywhere:
+import { useApi, api } from './dolphin-api';
+const { data, loading, error } = useApi('/users');
+await api.post('/users', { name: 'Shankar' });
+await api.delete('/users/1');
+```
+
+#### 🎨 `dolphin-theme` — Runtime Theme Switcher
+```jsx
+// Type this and save:
+<div className="dolphin-theme"></div>
+
+// After injection → use in app:
+import { DolphinThemeProvider, DolphinThemeSwitcher, useTheme } from './dolphin-theme';
+const { theme, toggleDark, isDark } = useTheme();
+<DolphinThemeSwitcher />  // Renders a ready-made theme switcher UI!
+```
+
 
 ## 🎭 The Power of Variants (fx-*)
 
