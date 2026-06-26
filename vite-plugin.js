@@ -156,6 +156,18 @@ export default function dolphincssPlugin() {
       return null;
     }
 
+    // 🔒 HMR Guard: यदि input code मा React Refresh / HMR code छ भने बिल्कुल process नगर्ने
+    // यो check नगरे plugin ले HMR code सहित file मा write-back गर्छ
+    if (
+      code.includes('$RefreshReg$') ||
+      code.includes('$RefreshSig$') ||
+      code.includes('RefreshRuntime') ||
+      code.includes('import.meta.hot') ||
+      code.includes('/@react-refresh')
+    ) {
+      return null;
+    }
+
     const projectRoot = process.cwd();
     await ensureInitialized(projectRoot);
 
@@ -629,9 +641,23 @@ export default function dolphincssPlugin() {
             if (['.jsx', '.tsx', '.js', '.ts', '.html', '.vue', '.svelte', '.astro', '.php'].includes(ext)) {
               try {
                 const code = fs.readFileSync(fullPath, 'utf8');
+
+                // Skip files that already have HMR code — never write those back
+                if (
+                  code.includes('$RefreshReg$') ||
+                  code.includes('$RefreshSig$') ||
+                  code.includes('RefreshRuntime') ||
+                  code.includes('import.meta.hot') ||
+                  code.includes('/@react-refresh')
+                ) continue;
+
                 const result = await handleTransform(code, fullPath);
                 if (result && result.code) {
-                  if (result.code.includes('RefreshRuntime') || result.code.includes('$RefreshReg$') || result.code.includes('$RefreshSig$')) {
+                  if (
+                    result.code.includes('RefreshRuntime') ||
+                    result.code.includes('$RefreshReg$') ||
+                    result.code.includes('$RefreshSig$')
+                  ) {
                     console.log(`\n⚠️ DolphinCSS: Prevented HMR code write-back on startup to ${entry.name}`);
                   } else {
                     fs.writeFileSync(fullPath, result.code, 'utf8');
@@ -651,9 +677,24 @@ export default function dolphincssPlugin() {
 
 
     async transform(code, id) {
+      // 🔒 HMR Guard: input code मा HMR markers छ भने process नगर्ने
+      if (
+        code.includes('$RefreshReg$') ||
+        code.includes('$RefreshSig$') ||
+        code.includes('RefreshRuntime') ||
+        code.includes('import.meta.hot') ||
+        code.includes('/@react-refresh')
+      ) {
+        return null;
+      }
+
       const result = await handleTransform(code, id);
       if (result && result.code && isDev) {
-        if (result.code.includes('RefreshRuntime') || result.code.includes('$RefreshReg$') || result.code.includes('$RefreshSig$')) {
+        if (
+          result.code.includes('RefreshRuntime') ||
+          result.code.includes('$RefreshReg$') ||
+          result.code.includes('$RefreshSig$')
+        ) {
           console.log(`\n⚠️ DolphinCSS: Prevented HMR code write-back to ${path.basename(id)}`);
         } else {
           try {
