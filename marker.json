@@ -62,10 +62,5 @@
   "dolphin-crud-form": {
     "templateFile": "dolphin-crud-form.html",
     "addClasses": ""
-  },
-  "dolphin-routing": {
-    "templateFile": "dolphin-routing.html",
-    "description": "Auto-generates file-based routing system from src/pages/",
-    "addClasses": ""
   }
 }

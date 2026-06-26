@@ -168,10 +168,6 @@
     {
       "name": "dolphin-crud-form",
       "description": "Dolphin CLI Component"
-    },
-    {
-      "name": "dolphin-routing",
-      "description": "🗺️ Auto file-based routing from src/pages/"
     }
   ],
   "globalAttributes": [
@@ -355,10 +351,6 @@
         {
           "name": "dolphin-crud-form",
           "description": "Dolphin CLI Component (dolphin-crud-form.html)"
-        },
-        {
-          "name": "dolphin-routing",
-          "description": "🗺️ Auto file-based routing from src/pages/ → generates src/generated-router.jsx"
         }
       ]
     }

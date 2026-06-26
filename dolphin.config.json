@@ -1,12 +1,5 @@
 {
   "remoteUrl": "https://github.com/Phuyalshankar/dolphincss-template/blob/main/config/markers.json",
-  "theme": "dolphin",
-  "routing": {
-    "enabled": true,
-    "pagesDir": "src/pages",
-    "outputFile": "src/generated-router.jsx",
-    "lazyLoad": true,
-    "basePath": "/",
-    "notFoundComponent": ""
-  }
+  "theme": "dolphin"
 }
+
