@@ -37,7 +37,7 @@
 
   /* ===== Circle Buttons (EXACTLY Same as Original) ===== */
   .circle {
-    @apply rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center select-none transition-shadow duration-200 cursor-pointer;
+    @apply rounded-full shadow-md hover:shadow-lg inline-flex items-center justify-center select-none transition duration-200 cursor-pointer;
     background-color: var(--current-bg, transparent);
     color: var(--current-text, var(--color-text));
   }
@@ -45,61 +45,48 @@
   .circle.md { @apply w-12 h-12 text-base; }
   .circle.lg { @apply w-16 h-16 text-lg; }
 
-  .circle
-  .circle
-  .circle
-  .circle
-  .circle
-  .circle
-
-  .circle
-  .circle
-  .circle
-  .circle
-  .circle
-  .circle
-
   .circle:disabled { @apply opacity-50 cursor-not-allowed pointer-events-none; }
 
   /* ===== COLOR PROPAGATION SYSTEM ===== */
   .primary { 
     --current-color: var(--color-primary);
     --current-bg: var(--color-primary);
-    --current-text: var(--color-text);
+    --current-text: var(--color-text-light); /* Light text on colored bg */
     --current-glow: var(--glow-primary);
   }
 
   .secondary { 
     --current-color: var(--color-secondary);
     --current-bg: var(--color-secondary);
-    --current-text: var(--color-text);
+    --current-text: var(--color-text-light); /* Light text on colored bg */
     --current-glow: var(--glow-secondary);
   }
 
   .success { 
     --current-color: var(--color-success);
     --current-bg: var(--color-success);
-    --current-text: var(--color-text);
+    --current-text: var(--color-text-light); /* Light text on colored bg */
     --current-glow: var(--glow-success);
   }
 
   .warning { 
     --current-color: var(--color-warning);
     --current-bg: var(--color-warning);
-    --current-text: var(--color-text);
+    --current-text: var(--color-text); /* Dark text on yellow/orange bg for accessibility */
     --current-glow: var(--glow-warning);
   }
 
   .danger { 
     --current-color: var(--color-danger);
     --current-bg: var(--color-danger);
-    --current-text: var(--color-text);
+    --current-text: var(--color-text-light); /* Light text on colored bg */
     --current-glow: var(--glow-danger);
   }
 
   .info { 
     --current-color: var(--color-info);
     --current-bg: var(--color-info);
+    --current-text: var(--color-text-light); /* Light text on colored bg */
   }
   /* ===== GLOBAL VARIANTS (Using YOUR Color Variables) ===== */
 
@@ -194,7 +181,7 @@
       inset 0 2px 4px color-mix(in oklch, white, transparent 60%),
       inset 0 -2px 4px color-mix(in oklch, black, transparent 20%),
       0 4px 20px color-mix(in oklch, var(--color-secondary), transparent 30%);
-    @apply rounded-xl transition-all duration-400;
+    @apply rounded-xl transition-all duration-[400ms];
   }
 
   .fx-rainbow, .psychedelic-dream {

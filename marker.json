@@ -67,30 +67,5 @@
     "templateFile": "dolphin-routing.html",
     "description": "Auto-generates file-based routing system from src/pages/",
     "addClasses": ""
-  },
-  "dolphin-store": {
-    "templateFile": "dolphin-store.jsx",
-    "description": "Zero-dependency global state manager (Context + useReducer)",
-    "addClasses": ""
-  },
-  "dolphin-middleware": {
-    "templateFile": "dolphin-middleware.jsx",
-    "description": "Route-level auth guard middleware for react-router-dom",
-    "addClasses": ""
-  },
-  "dolphin-i18n": {
-    "templateFile": "dolphin-i18n.jsx",
-    "description": "Multi-language routing provider: /en/about, /np/about",
-    "addClasses": ""
-  },
-  "dolphin-api": {
-    "templateFile": "dolphin-api.jsx",
-    "description": "Auto API client with caching, useApi hook, loading and error states",
-    "addClasses": ""
-  },
-  "dolphin-theme": {
-    "templateFile": "dolphin-theme.jsx",
-    "description": "Runtime theme switcher with DolphinThemeProvider and useTheme hook",
-    "addClasses": ""
   }
 }

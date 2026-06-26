@@ -1,3 +1,9 @@
+// Test file: inject dolphin-store, dolphin-api, dolphin-theme
+// Plugin ले यो file scan गर्छ र magic classes inject गर्छ
+
+export function TestInject() {
+  return (
+    <div>
 import { createContext, useContext, useReducer, useCallback } from 'react';
 
 // 🐬 DolphinCSS — dolphin-store
@@ -58,3 +64,7 @@ export function DolphinStoreProvider({ children }) {
 }
 
 export default DolphinStoreProvider;
+
+</div>
+  );
+}

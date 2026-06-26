@@ -1,5 +1,4 @@
-/* ===== GLASS SYSTEM - COMPLETE FIXED VERSION ===== */
-@layer components {
+
   /* ===== GLASS COMPONENT (Global) ===== */
   .glass {
     background-color: var(--glass-bg) !important;
@@ -7,8 +6,25 @@
     backdrop-filter: var(--glass-blur) !important;
     -webkit-backdrop-filter: var(--glass-blur) !important;
     box-shadow: var(--glass-shadow) !important;
-    color: var(--color-text, #1f2937) !important; /* Text color added */
+    color: var(--glass-text) !important; /* Auto-contrast: dark in light mode, light in dark mode */
     @apply rounded-xl border transition-all duration-300 ease-out;
+  }
+
+  /* ===== AUTO TEXT-CONTRAST: Override hardcoded text-white inside .glass ===== */
+  /* Light mode: text-white classes become readable dark text */
+  :root:not([data-theme-mode="dark"]) .glass [class*="text-white"] {
+    color: var(--glass-text) !important;
+  }
+  /* Light mode: white/light backgrounds on children also need dark text */
+  :root:not([data-theme-mode="dark"]) .glass h1,
+  :root:not([data-theme-mode="dark"]) .glass h2,
+  :root:not([data-theme-mode="dark"]) .glass h3,
+  :root:not([data-theme-mode="dark"]) .glass h4,
+  :root:not([data-theme-mode="dark"]) .glass p,
+  :root:not([data-theme-mode="dark"]) .glass span,
+  :root:not([data-theme-mode="dark"]) .glass a,
+  :root:not([data-theme-mode="dark"]) .glass label {
+    color: inherit;
   }
 
   .glass:hover {
@@ -320,17 +336,17 @@
 
   /* ===== DARK MODE ADJUSTMENTS ===== */
   [data-theme-mode="dark"] .glass {
-    color: var(--color-text-light, #f9fafb) !important;
+    color: var(--glass-text) !important; /* Uses --glass-text token (light in dark mode) */
   }
 
   [data-theme-mode="dark"] .glass.warning {
-    color: var(--color-text-light, #f9fafb) !important;
+    color: var(--glass-text) !important;
   }
 
   [data-theme-mode="dark"] .glass.outlined {
     background-color: transparent !important;
   }
-}
+
 
 /* ===== ANIMATIONS ===== */
 @keyframes dolphin-spin {

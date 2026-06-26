@@ -696,8 +696,12 @@ async function processFile(filePath) {
     }
 
     if (modified) {
-      fs.writeFileSync(filePath, content);
-      console.log(`✅ Updated ${path.basename(filePath)}`);
+      if (content.includes('RefreshRuntime') || content.includes('$RefreshReg$') || content.includes('$RefreshSig$')) {
+        console.log(`⚠️ DolphinCSS CLI: Prevented writing HMR code to ${path.basename(filePath)}`);
+      } else {
+        fs.writeFileSync(filePath, content);
+        console.log(`✅ Updated ${path.basename(filePath)}`);
+      }
     }
   } catch (error) {
     console.log(`⚠️ Error processing ${filePath}: ${error.message}`);

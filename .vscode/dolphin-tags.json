@@ -172,26 +172,6 @@
     {
       "name": "dolphin-routing",
       "description": "🗺️ Auto file-based routing from src/pages/"
-    },
-    {
-      "name": "dolphin-store",
-      "description": "📦 Global state manager (Context + useReducer)"
-    },
-    {
-      "name": "dolphin-middleware",
-      "description": "🔐 Route-level auth guard middleware"
-    },
-    {
-      "name": "dolphin-i18n",
-      "description": "🌐 Multi-language routing /en/ /np/ /hi/"
-    },
-    {
-      "name": "dolphin-api",
-      "description": "📡 API client with useApi hook + caching"
-    },
-    {
-      "name": "dolphin-theme",
-      "description": "🎨 Runtime theme switcher + useTheme hook"
     }
   ],
   "globalAttributes": [
@@ -379,26 +359,6 @@
         {
           "name": "dolphin-routing",
           "description": "🗺️ Auto file-based routing from src/pages/ → generates src/generated-router.jsx"
-        },
-        {
-          "name": "dolphin-store",
-          "description": "📦 Global state manager — inject DolphinStoreProvider + useStore + setStore"
-        },
-        {
-          "name": "dolphin-middleware",
-          "description": "🔐 Auth guard — inject DolphinMiddleware for protected routes"
-        },
-        {
-          "name": "dolphin-i18n",
-          "description": "🌐 Multi-language routing provider — /en/about, /np/about, /hi/about"
-        },
-        {
-          "name": "dolphin-api",
-          "description": "📡 API client — inject api object + useApi(endpoint) hook with caching"
-        },
-        {
-          "name": "dolphin-theme",
-          "description": "🎨 Runtime theme — inject DolphinThemeProvider + useTheme + DolphinThemeSwitcher"
         }
       ]
     }

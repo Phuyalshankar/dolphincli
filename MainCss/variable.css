@@ -392,31 +392,48 @@
 
 /* ===== GLASSMORPHISM SYSTEM ===== */
 :root {
-  /* Base Glass Properties */
-  --glass-bg: rgba(255, 255, 255, 0.28);
-  --glass-bg-alt: rgba(255, 255, 255, 0.38);
-  --glass-border: rgba(255, 255, 255, 0.38);
-  --glass-border-alt: rgba(255, 255, 255, 0.48);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.18);
+  /* Base Glass Properties — Light Mode (opaque enough to show on white bg) */
+  --glass-bg: rgba(255, 255, 255, 0.68);
+  --glass-bg-alt: rgba(255, 255, 255, 0.80);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border-alt: rgba(0, 0, 0, 0.14);
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255,255,255,0.6);
+  --glass-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255,255,255,0.7);
   --glass-blur: blur(20px);
   --glass-blur-sm: blur(12px);
-  --glass-blur-lg: blur(24px);
-  
-  /* Colored Glass */
-  --glass-primary-bg: color-mix(in oklch, var(--color-primary) 18%, transparent);
-  --glass-primary-border: color-mix(in oklch, var(--color-primary) 35%, transparent);
-  --glass-success-bg: color-mix(in oklch, var(--color-success) 18%, transparent);
-  --glass-warning-bg: color-mix(in oklch, var(--color-warning) 18%, transparent);
-  --glass-danger-bg: color-mix(in oklch, var(--color-danger) 18%, transparent);
-  --glass-info-bg: color-mix(in oklch, var(--color-info) 18%, transparent);
+  --glass-blur-lg: blur(28px);
+
+  /* Glass Text Tokens — auto-contrast (dark text on light glass) */
+  --glass-text: var(--color-text);
+  --glass-text-muted: var(--color-text-muted);
+
+  /* Colored Glass — with all missing border vars added */
+  --glass-primary-bg: color-mix(in oklch, var(--color-primary) 14%, transparent);
+  --glass-primary-border: color-mix(in oklch, var(--color-primary) 30%, transparent);
+  --glass-secondary-bg: color-mix(in oklch, var(--color-secondary) 14%, transparent);
+  --glass-secondary-border: color-mix(in oklch, var(--color-secondary) 30%, transparent);
+  --glass-success-bg: color-mix(in oklch, var(--color-success) 14%, transparent);
+  --glass-success-border: color-mix(in oklch, var(--color-success) 30%, transparent);
+  --glass-warning-bg: color-mix(in oklch, var(--color-warning) 14%, transparent);
+  --glass-warning-border: color-mix(in oklch, var(--color-warning) 30%, transparent);
+  --glass-danger-bg: color-mix(in oklch, var(--color-danger) 14%, transparent);
+  --glass-danger-border: color-mix(in oklch, var(--color-danger) 30%, transparent);
+  --glass-info-bg: color-mix(in oklch, var(--color-info) 14%, transparent);
+  --glass-info-border: color-mix(in oklch, var(--color-info) 30%, transparent);
 }
 
 [data-theme-mode="dark"] {
-  --glass-bg: rgba(15, 23, 42, 0.52);
-  --glass-bg-alt: rgba(15, 23, 42, 0.62);
-  --glass-border: rgba(255, 255, 255, 0.24);
-  --glass-border-alt: rgba(255, 255, 255, 0.34);
+  /* Base Glass Properties — Dark Mode */
+  --glass-bg: rgba(15, 23, 42, 0.58);
+  --glass-bg-alt: rgba(15, 23, 42, 0.70);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-alt: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.44);
+
+  /* Glass Text Tokens — dark mode (light text on dark glass) */
+  --glass-text: var(--color-text-light);
+  --glass-text-muted: oklch(72% 0.012 220 / 0.75);
 }
 
 /* ===== GLOW EFFECTS ===== */

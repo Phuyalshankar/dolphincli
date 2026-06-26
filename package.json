@@ -1,6 +1,6 @@
 {
   "name": "dolphincss",
-  "version": "1.3.9",
+  "version": "1.4.0",
   "type": "module",
   "description": "DolphinCSS - World-class TailwindCSS + React component library",
   "main": "dolphin-css.css",
@@ -41,8 +41,8 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run watch:dolphin\"",
     "watch:dolphin": "node bin/dolphin.js",
-    "build:css": "npx @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --minify",
-    "watch:css": "npx @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --watch",
+    "build:css": "npx -y @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --minify",
+    "watch:css": "npx -y @tailwindcss/cli -i ./src/dolphin-css/App.css -o ./dolphin-css.css --watch",
     "build": "vite build && npm run build:css",
     "lint": "eslint .",
     "preview": "vite preview",
