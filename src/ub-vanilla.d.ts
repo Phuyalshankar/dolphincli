@@ -105,6 +105,25 @@ export function gradientHorizontal(fromColor: string, fromShade: number | string
 export function gradientRadial(fromColor: string, fromShade: number | string, toColor: string, toShade: number | string): string;
 export function gradientTriple(c1: string, s1: number | string, c2: string, s2: number | string, c3: string, s3: number | string): string;
 
+/** Color name type for glass helpers */
+export type GlassColor = 'red' | 'blue' | 'green' | 'purple' | 'orange' | 'pink' | 'teal' | 'amber' | 'gray' | string;
+/** Shade value 0-255 */
+export type GlassShade = number;
+/** Opacity value 0-255 */
+export type GlassOpacity = number;
+
+// ============================================================
+// GLASS HELPERS — World-Class Dynamic Glass Gradient System
+// ============================================================
+/** Single or multi-color glass gradient (opacity 0-255). Use with ub(). */
+export function glass(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, c3?: GlassColor | GlassOpacity, s3?: GlassShade, o?: GlassOpacity): string;
+/** Vertical (top→bottom) gradient glassmorphism. */
+export function glassVert(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, c3?: GlassColor | GlassOpacity, s3?: GlassShade, o?: GlassOpacity): string;
+/** Horizontal (left→right) gradient glassmorphism. */
+export function glassHoriz(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, c3?: GlassColor | GlassOpacity, s3?: GlassShade, o?: GlassOpacity): string;
+/** Radial (center glow) gradient glassmorphism. */
+export function glassRadial(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, o?: GlassOpacity): string;
+
 // Animation Helpers
 export function animate(prop: string, from: number | string, to: number | string, duration: number | string, infinite?: boolean): string;
 export function widthAnim(from: number | string, to: number | string, duration: number | string, infinite?: boolean): string;

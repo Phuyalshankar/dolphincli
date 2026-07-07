@@ -96,24 +96,70 @@ export default defineConfig({
 import 'dolphincss/dolphin-css.css';
 ```
 
-### 🧠 VS Code IntelliSense (Auto-installed)
+### 🧠 VS Code IntelliSense — Auto Extension Install via Marker
 
-`npm install` automatically sets up VS Code IntelliSense in your project:
-- **DolphinCSS classes** are suggested inside `class=""` and `className=""` attributes
-- **`dolphin-*` component tags/markers** are suggested separately when you type `dolphin-`
-- **Code snippets** for all components are registered
+DolphinCSS IntelliSense can be **automatically installed** into VS Code using a single magic marker — no marketplace search, no manual download needed.
 
-No manual setup needed — just reload the VS Code window after install.
+#### ✨ How it works
+
+Just add the `vscode-init` marker anywhere in your JSX/TSX component and **save the file**:
+
+```jsx
+// In any component file (e.g., App.jsx)
+export default function App() {
+  return (
+    <div>
+      {/* 🐬 Add this ONE line — remove it after first run */}
+      <div className="vscode-init" style={{display:'none'}}></div>
+
+      {/* rest of your app */}
+    </div>
+  )
+}
+```
+
+When the Vite dev server (`npm run dev`) detects this marker, it automatically:
+
+1. 📥 **Downloads** the DolphinCSS IntelliSense extension (`.vsix`) directly from GitHub
+2. ⚡ **Installs** it into VS Code via `code --install-extension`
+3. 🗂️ **Creates** `.vscode/dolphin-tags.json` with **1,269 CSS class suggestions**
+4. ⚙️ **Updates** `.vscode/settings.json` with `html.customData` for HTML autocomplete
+5. 📌 **Adds** extension recommendation to `.vscode/extensions.json`
+6. 🗑️ **Removes** the `vscode-init` class from your file automatically
+
+Then simply **reload your VS Code window**:
+```
+Ctrl + Shift + P → "Reload Window"
+```
+
+After reload, you'll get:
+- ✅ **1,269 DolphinCSS class suggestions** in `className=""` / `class=""`
+- ✅ **51 `dolphin-*` marker suggestions** when you type `dolphin-`
+- ✅ Works in **JSX, TSX, HTML, Vue, Svelte, Astro** files
+
+#### 🔧 Manual Install (Alternative)
+
+If auto-install didn't work (e.g., `code` CLI not in PATH), install manually:
+
+**Option A — VS Code Marketplace:**
+Search `DolphinCSS IntelliSense` in the Extensions panel (`Ctrl+Shift+X`).
+
+**Option B — Direct VSIX download:**
+```bash
+# Download and install the extension from GitHub Releases
+curl -L -o dolphincss-intellisense.vsix https://github.com/Phuyalshankar/dolphincss-vscode-/releases/download/v0.1.0/dolphincss-intellisense-0.1.0.vsix
+code --install-extension dolphincss-intellisense.vsix
+```
+
+#### 🧹 Cleanup
 
 When you no longer need the VS Code helpers, remove them cleanly:
 ```bash
 npx dolphin-cleanup
 ```
-Cleanup behavior:
 - Removes only DolphinCSS files from `.vscode/`
-- Removes the DolphinCSS `html.customData` entry from `.vscode/settings.json`
+- Removes the `html.customData` entry from `.vscode/settings.json`
 - Keeps your own VS Code settings and other `.vscode` files untouched
-- Deletes the `.vscode` folder only if it becomes completely empty after cleanup
 
 ---
 
@@ -310,6 +356,21 @@ Define dynamically timed transitions in JSX:
 // Fills background color from left to red-128 in 500ms
 className={ub("card bg-fill-left-red-128-500ms")}
 ```
+
+#### 6. Dynamic Sizing with Custom CSS Units
+You are no longer limited to pixel-based sizes like `w-4` (16px). You can now supply arbitrary values with custom CSS units (like `%`, `px`, `rem`, `em`, `vh`, `vw`) directly in your utility classes:
+- `w-58%` ➔ generates `width: 58% !important;`
+- `w-12.5rem` ➔ generates `width: 12.5rem !important;`
+- `h-50vh` ➔ generates `height: 50vh !important;`
+This eliminates the need for inline style mapping like `style={{ width: `${val}%` }}`!
+
+#### 7. Smart Fallback Background Shading
+For IoT and quick data mappings, you can omit the `bg-` prefix when utilizing color shades. The engine automatically fallbacks to background shading if a raw color shade is provided:
+- `ub(map.heat(load, 0, 100))` ➔ outputs `ub-xxxx` which applies `background: oklch(...) !important;`
+- `ub("red-128")` ➔ defaults to background styling for `"bg-red-128"`.
+
+#### 8. Self-Healing Connection (Vite HMR Safety)
+Modern dev servers with Hot Module Replacement (HMR) can dynamically refresh components and clear `document.adoptedStyleSheets`. The `ub` engine has built-in connection checking that automatically detects stylesheet disconnection and re-attaches itself instantly to keep real-time UI values active and styled correctly.
 
 ---
 
@@ -508,82 +569,6 @@ Type any of these magic markers in your `.jsx` or `.tsx` file, hit save, and wat
 - `<div className="dolphin-pagination"></div>` (Page Navigation Controls)
 - `<div className="dolphin-drawer"></div>` (Off-canvas Glass Sidebar)
 - `<div className="dolphin-breadcrumbs"></div>` (Navigation Trail)
-
-### ⚡ Framework Features (Auto-injected via Magic Class)
-
-These are full framework-level utilities — type the magic class, hit save, and the entire module is injected into your file from GitHub automatically. No CLI, no copy-paste.
-
-#### 🗺️ `dolphin-routing` — File-based Auto Router
-```jsx
-// 1. Create src/pages/ folder with your pages:
-//    src/pages/index.jsx      → /
-//    src/pages/about.jsx      → /about
-//    src/pages/blog/[slug].jsx → /blog/:slug
-
-// 2. Plugin auto-generates src/generated-router.jsx on save!
-
-// 3. Use it in App.jsx:
-import AppRouter from './generated-router';
-function App() { return <AppRouter />; }
-```
-
-#### 📦 `dolphin-store` — Global State Manager
-```jsx
-// Type this in any file and save:
-<div className="dolphin-store"></div>
-
-// After injection → use anywhere in your app:
-import { useStore, setStore } from './dolphin-store';
-const user = useStore(s => s.user);
-setStore({ user: { name: 'Shankar' } });
-```
-
-#### 🔐 `dolphin-middleware` — Route Auth Guard
-```jsx
-// Type this and save:
-<div className="dolphin-middleware"></div>
-
-// After injection → wrap protected routes:
-import { DolphinMiddleware } from './dolphin-middleware';
-<Route element={<DolphinMiddleware />}>
-  <Route path="/dashboard" element={<Dashboard />} />
-</Route>
-```
-
-#### 🌐 `dolphin-i18n` — Multi-language Routing
-```jsx
-// Type this and save:
-<div className="dolphin-i18n"></div>
-
-// After injection → use in app:
-import { useI18n, t } from './dolphin-i18n';
-const { lang, setLang } = useI18n();
-// URL: /en/about → /np/about auto-rewrite!
-<p>{t('welcome')}</p>  // → "स्वागत छ" in Nepali
-```
-
-#### 📡 `dolphin-api` — Smart API Client
-```jsx
-// Type this and save:
-<div className="dolphin-api"></div>
-
-// After injection → use anywhere:
-import { useApi, api } from './dolphin-api';
-const { data, loading, error } = useApi('/users');
-await api.post('/users', { name: 'Shankar' });
-await api.delete('/users/1');
-```
-
-#### 🎨 `dolphin-theme` — Runtime Theme Switcher
-```jsx
-// Type this and save:
-<div className="dolphin-theme"></div>
-
-// After injection → use in app:
-import { DolphinThemeProvider, DolphinThemeSwitcher, useTheme } from './dolphin-theme';
-const { theme, toggleDark, isDark } = useTheme();
-<DolphinThemeSwitcher />  // Renders a ready-made theme switcher UI!
-```
 
 
 ## 🎭 The Power of Variants (fx-*)

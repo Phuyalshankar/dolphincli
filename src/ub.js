@@ -401,6 +401,7 @@ const SHADOW_SCALES = {
 
 class VirtualCSSMap {
   styleSheet = null;
+  styleEl = null;
   insertedRules = new Set();
   pendingRules = [];
   pendingFlush = false;
@@ -408,14 +409,23 @@ class VirtualCSSMap {
 
   constructor() {
     if (!isWeb) return;
+    this.initStyleSheet();
+  }
+
+  initStyleSheet() {
     try {
       this.styleSheet = new CSSStyleSheet();
-      document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.styleSheet];
+      if (document.adoptedStyleSheets && !document.adoptedStyleSheets.includes(this.styleSheet)) {
+        document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.styleSheet];
+      }
     } catch (e) {
-      const styleEl = document.createElement('style');
-      styleEl.setAttribute('data-ub', 'v19.0.3');
-      document.head.appendChild(styleEl);
-      this.styleSheet = styleEl.sheet;
+      if (this.styleEl && this.styleEl.parentNode) {
+        try { this.styleEl.parentNode.removeChild(this.styleEl); } catch (err) {}
+      }
+      this.styleEl = document.createElement('style');
+      this.styleEl.setAttribute('data-ub', 'v19.0.3');
+      document.head.appendChild(this.styleEl);
+      this.styleSheet = this.styleEl.sheet;
     }
   }
 
@@ -437,7 +447,21 @@ class VirtualCSSMap {
   }
 
   scheduleFlush() {
-    if (this.pendingFlush || !isWeb || !this.styleSheet) return;
+    if (!isWeb) return;
+    try {
+      if (typeof CSSStyleSheet !== 'undefined' && this.styleSheet instanceof CSSStyleSheet) {
+        if (document.adoptedStyleSheets && !document.adoptedStyleSheets.includes(this.styleSheet)) {
+          document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.styleSheet];
+        }
+      } else if (this.styleEl && !document.head.contains(this.styleEl)) {
+        document.head.appendChild(this.styleEl);
+        this.styleSheet = this.styleEl.sheet;
+      }
+    } catch (e) {
+      this.initStyleSheet();
+    }
+
+    if (this.pendingFlush || !this.styleSheet) return;
     this.pendingFlush = true;
     queueMicrotask(() => { this.flush(); this.pendingFlush = false; });
   }
@@ -445,7 +469,11 @@ class VirtualCSSMap {
   flush() {
     if (!this.styleSheet || this.pendingRules.length === 0) return;
     for (const rule of this.pendingRules) {
-      try { this.styleSheet.insertRule(rule, this.styleSheet.cssRules.length); } catch (e) {}
+      try { 
+        this.styleSheet.insertRule(rule, this.styleSheet.cssRules.length); 
+      } catch (e) {
+        console.error("DolphinCSS Style Insert Error:", e, "Rule:", rule);
+      }
     }
     this.pendingRules = [];
   }
@@ -559,7 +587,7 @@ class WebStyleEngine {
         const rowMatch = name.match(/^row-(\d+)$/);
         const roundedMatch = name.match(/^rounded(?:-(\d+(?:\.\d+)?|full))?$/);
         const shadowMatch = name.match(/^shadow(?:-(\d+))?$/);
-        const sizeMatch = name.match(/^(w|h)-(\d+(?:\.\d+)?)$/);
+        const sizeMatch = name.match(/^(w|h)-(\d+(?:\.\d+)?)(px|%|rem|em|vh|vw)?$/);
         const spacingMatch = name.match(/^(p|m|pl|pr|ml|mr|pt|pb|mt|mb)-(\d+(?:\.\d+)?)$/);
         const scaleMatch = name.match(/^scale-(\d+(?:\.\d+)?)$/);
         const bgFillMatch = name.match(/^bg-fill-(left|right|top|bottom)-([a-z]+)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)(ms|s)$/);
@@ -569,9 +597,12 @@ class WebStyleEngine {
         const gradientHorizontalMatch = name.match(/^gradient-horiz-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)$/);
         const gradientRadialMatch = name.match(/^gradient-radial-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)$/);
         const gradientTripleMatch = name.match(/^gradient-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)$/);
+        const glassMatch = name.match(/^glass(?:-(vert|horiz|radial))?-((?:[a-z]+-\d+-)+)(\d+)(?:-blur-(\d+))?$/);
         const colorAnimMatch = name.match(/^(bg|text)-([a-z]+)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)(ms|s)(?:-(infinite))?$/);
         const propAnimMatch = name.match(/^([a-z]+(?:-[a-z]+)?)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)(ms|s)(?:-(infinite))?$/);
-        const isColor = name.startsWith('bg-') || name.startsWith('text-') || name.startsWith('border-');
+        const rawColorMatch = name.match(/^([a-z]+)-(\d+(?:\.\d+)?)(?:\/(\d+))?$/);
+        const isRawColor = rawColorMatch && BASE_COLORS[rawColorMatch[1]];
+        const isColor = name.startsWith('bg-') || name.startsWith('text-') || name.startsWith('border-') || isRawColor;
 
         if (FLEX_MAP[name]) {
           rules = [...FLEX_MAP[name]];
@@ -703,8 +734,9 @@ class WebStyleEngine {
           if (SHADOW_SCALES[scale]) rules = [`box-shadow: ${SHADOW_SCALES[scale]};`];
         }
         else if (sizeMatch) {
-          const [, prop, scaleStr] = sizeMatch;
-          rules = [`${prop === 'w' ? 'width' : 'height'}: ${sizePx(parseNumber(scaleStr))};`];
+          const [, prop, scaleStr, unit] = sizeMatch;
+          const val = unit ? `${scaleStr}${unit}` : sizePx(parseNumber(scaleStr));
+          rules = [`${prop === 'w' ? 'width' : 'height'}: ${val} !important;`];
         }
         else if (colorAnimMatch) {
           const [, type, colorName, fromShade, toShade, duration, unit, infiniteFlag] = colorAnimMatch;
@@ -847,12 +879,113 @@ class WebStyleEngine {
           const textColor = getTextColorForGradient([color1, color2, color3]);
           rules = [`background: linear-gradient(135deg, ${color1}, ${color2}, ${color3}) !important;`, `color: ${textColor} !important;`, `caret-color: ${textColor} !important;`];
         }
+        else if (glassMatch) {
+          // ============================================================
+          // WORLD-CLASS DYNAMIC GLASS GRADIENT SYSTEM
+          // Format: glass-[direction?]-[color1]-[shade1]-[color2]-[shade2]-...-[opacity]
+          // Opacity: 0-255 (maps to CSS alpha)
+          // Example: glass-red-180-purple-100-20
+          // ============================================================
+          const [, glassDirection, colorStopsStr, glassOpacityStr, customBlurStr] = glassMatch;
+          const colorStops = [];
+          const stopPattern = /([a-z]+)-(\d+)/g;
+          let stopM;
+          while ((stopM = stopPattern.exec(colorStopsStr)) !== null) {
+            const colorName = stopM[1];
+            const shadeVal = parseInt(stopM[2]);
+            if (BASE_COLORS[colorName]) {
+              colorStops.push({ color: colorName, shade: shadeVal });
+            }
+          }
+
+          if (colorStops.length > 0) {
+            const opacityValue = parseInt(glassOpacityStr);
+            const alpha = safeClamp(opacityValue / 255, 0.0, 1.0);
+            
+            const blurAmount = customBlurStr ? safeClamp(parseInt(customBlurStr), 4, 60) : 24;
+            const saturation = 160 + Math.min(colorStops.length * 15, 40);
+            const hoverBlur = blurAmount + 10;
+            const hoverSat = saturation + 25;
+
+            // Build OKLCH color stops with opacity mapped from 0-255
+            const gradientStops = colorStops.map(({ color, shade }) => {
+              const baseColor = getOKLCH(color, shade, this.darkMode);
+              const colorMatch = baseColor.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+              if (colorMatch) {
+                return `oklch(${colorMatch[1]} ${colorMatch[2]} ${colorMatch[3]} / ${alpha.toFixed(3)})`;
+              }
+              return `rgba(255,255,255,${alpha.toFixed(3)})`;
+            });
+
+            // Build gradient based on direction
+            let bgValue;
+            if (glassDirection === 'radial') {
+              bgValue = `radial-gradient(ellipse at 30% 30%, ${gradientStops.join(', ')}, transparent 80%)`;
+            } else {
+              const gradDir = glassDirection === 'vert' ? 'to bottom'
+                : glassDirection === 'horiz' ? 'to right'
+                : '135deg';
+              bgValue = `linear-gradient(${gradDir}, ${gradientStops.join(', ')})`;
+            }
+
+            // Tinted glass border — first color stop at dynamic alpha
+            const firstStop = colorStops[0];
+            const firstBase = getOKLCH(firstStop.color, firstStop.shade, this.darkMode);
+            const borderMatch = firstBase.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+            const borderAlpha = safeClamp(alpha * 1.5, 0.05, 0.4);
+            const borderColor = borderMatch
+              ? `oklch(${borderMatch[1]} ${borderMatch[2]} ${borderMatch[3]} / ${borderAlpha.toFixed(3)})`
+              : `rgba(255,255,255,${borderAlpha.toFixed(3)})`;
+
+            // Android Material You — multi-layer shadow
+            const darkShadowAlpha = this.darkMode ? 0.3 : 0.12;
+            const shadowStr = [
+              `0 8px 32px rgba(0,0,0,${darkShadowAlpha})`,
+              `0 2px 8px rgba(0,0,0,${darkShadowAlpha * 0.65})`,
+              `inset 0 1px 0 rgba(255,255,255,${this.darkMode ? 0.12 : 0.22})`,
+              `inset 0 -1px 0 rgba(0,0,0,0.04)`
+            ].join(', ');
+
+            const hoverShadowStr = [
+              `0 16px 48px rgba(0,0,0,${darkShadowAlpha * 1.4})`,
+              `0 4px 16px rgba(0,0,0,${darkShadowAlpha})`,
+              `inset 0 1px 0 rgba(255,255,255,${this.darkMode ? 0.16 : 0.3})`,
+              `inset 0 -1px 0 rgba(0,0,0,0.05)`
+            ].join(', ');
+
+            rules = [
+              `background: ${bgValue} !important;`,
+              `backdrop-filter: blur(${blurAmount}px) saturate(${saturation}%) brightness(1.05) !important;`,
+              `-webkit-backdrop-filter: blur(${blurAmount}px) saturate(${saturation}%) brightness(1.05) !important;`,
+              `border: 1px solid ${borderColor} !important;`,
+              `box-shadow: ${shadowStr} !important;`,
+              `transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;`,
+              `border-radius: 20px;`,
+              `overflow: hidden;`,
+              `position: relative;`,
+              `will-change: transform, box-shadow;`,
+              `&:hover { backdrop-filter: blur(${hoverBlur}px) saturate(${hoverSat}%) brightness(1.08) !important; -webkit-backdrop-filter: blur(${hoverBlur}px) saturate(${hoverSat}%) brightness(1.08) !important; transform: translateY(-2px) scale(1.005) !important; box-shadow: ${hoverShadowStr} !important; border-color: rgba(255,255,255,0.3) !important; }`,
+              `&::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%); pointer-events: none; z-index: 0; }`,
+            ];
+          }
+        }
         else if (isColor) {
-          const type = name.split('-')[0];
-          const colorPart = name.substring(type.length + 1);
-          const shadeMatch = colorPart.match(/^([a-z]+)-(\d+(?:\.\d+)?)(?:\/(\d+))?$/);
-          if (shadeMatch) {
-            const [, colorName, shadeStr, opacityStr] = shadeMatch;
+          let type, colorName, shadeStr, opacityStr;
+          if (isRawColor) {
+            type = 'bg';
+            colorName = rawColorMatch[1];
+            shadeStr = rawColorMatch[2];
+            opacityStr = rawColorMatch[3];
+          } else {
+            type = name.split('-')[0];
+            const colorPart = name.substring(type.length + 1);
+            const shadeMatch = colorPart.match(/^([a-z]+)-(\d+(?:\.\d+)?)(?:\/(\d+))?$/);
+            if (shadeMatch) {
+              [, colorName, shadeStr, opacityStr] = shadeMatch;
+            }
+          }
+
+          if (colorName && shadeStr) {
             const shade = parseFloatShade(shadeStr);
             const opacity = opacityStr ? safeParseInt(opacityStr, 100) / 100 : undefined;
             
@@ -1066,6 +1199,33 @@ export const gradientVertical = (fromColor, fromShade, toColor, toShade) => `gra
 export const gradientHorizontal = (fromColor, fromShade, toColor, toShade) => `gradient-horiz-${fromColor}-${fromShade}-${toColor}-${toShade}`;
 export const gradientRadial = (fromColor, fromShade, toColor, toShade) => `gradient-radial-${fromColor}-${fromShade}-${toColor}-${toShade}`;
 export const gradientTriple = (c1, s1, c2, s2, c3, s3) => `gradient-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}`;
+
+// ============================================================
+// GLASS HELPERS — World-Class Dynamic Glass Gradient System
+// ============================================================
+/** Single or multi-color glass gradient (opacity 0-255) */
+export const glass = (c1, s1, c2, s2, c3, s3, o) => {
+  if (o !== undefined) return `glass-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}-${o}`;
+  if (s2 !== undefined && c3 !== undefined) return `glass-${c1}-${s1}-${c2}-${s2}-${c3}`;
+  return `glass-${c1}-${s1}-${c2}`;
+};
+/** Vertical (top→bottom) gradient glass */
+export const glassVert = (c1, s1, c2, s2, c3, s3, o) => {
+  if (o !== undefined) return `glass-vert-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}-${o}`;
+  if (s2 !== undefined && c3 !== undefined) return `glass-vert-${c1}-${s1}-${c2}-${s2}-${c3}`;
+  return `glass-vert-${c1}-${s1}-${c2}`;
+};
+/** Horizontal (left→right) gradient glass */
+export const glassHoriz = (c1, s1, c2, s2, c3, s3, o) => {
+  if (o !== undefined) return `glass-horiz-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}-${o}`;
+  if (s2 !== undefined && c3 !== undefined) return `glass-horiz-${c1}-${s1}-${c2}-${s2}-${c3}`;
+  return `glass-horiz-${c1}-${s1}-${c2}`;
+};
+/** Radial (center glow) gradient glass */
+export const glassRadial = (c1, s1, c2, s2, o) => {
+  if (o !== undefined) return `glass-radial-${c1}-${s1}-${c2}-${s2}-${o}`;
+  return `glass-radial-${c1}-${s1}-${c2}`;
+};
 
 export const animate = (prop, from, to, duration, infinite) => 
   `${prop}-${from}-${to}-${duration}${typeof duration === 'number' && duration < 1000 ? 'ms' : 'ms'}${infinite ? '-infinite' : ''}`;

@@ -97,7 +97,7 @@ export default function dolphincssPlugin() {
     fs.writeFileSync(extensionsPath, JSON.stringify(extensions, null, 2), 'utf8');
 
     // 🚀 GitHub Release बाट .vsix download गरेर VS Code मा auto-install गर्छ
-    const VSIX_URL = 'https://github.com/Phuyalshankar/dolphincss-vscode-/releases/download/v0.1.0/dolphincss-intellisense-0.1.0.vsix';
+    const VSIX_URL = 'https://github.com/Phuyalshankar/dolphincss-vscode-/releases/download/v0.2.2/dolphincss-intellisense-0.2.2.vsix';
     const tmpVsix = path.join(os.tmpdir(), 'dolphincss-intellisense.vsix');
     try {
       console.log(`\n📥 DolphinCSS: Downloading VS Code Extension from GitHub...`);
@@ -257,12 +257,10 @@ export default function dolphincssPlugin() {
     const vsInitRegex = new RegExp(`${vsInitAttr}=(["'])([^"']*\\s)?vscode-init(\\s[^"']*)?\\1`);
     if (!vscodeSetupDone && vsInitRegex.test(content)) {
       vscodeSetupDone = true;
-      console.log('\n🐬 DolphinCSS: vscode-init detected! Setting up VSCode IntelliSense...');
-      try {
-        await setupVSCodeFromMarker(projectRoot);
-      } catch (err) {
+      console.log('\n🐬 DolphinCSS: vscode-init detected! Setting up VSCode IntelliSense in background...');
+      setupVSCodeFromMarker(projectRoot).catch(err => {
         console.warn(`⚠️ DolphinCSS: VSCode setup failed: ${err.message}`);
-      }
+      });
       // marker class हटाउँछ
       content = content.replace(
         new RegExp(`(${vsInitAttr}=(["'])([^"']*)\\s?)vscode-init(\\s?([^"']*?))(\\2)`, 'g'),
@@ -801,8 +799,8 @@ export default function dolphincssPlugin() {
       }
 
       // Quick scan to see if there are any markers to inject
-      const possibleMarkers = diskCode.match(/dolphin-[a-zA-Z0-9-]+/g);
-      if (!possibleMarkers) {
+      const hasMarkers = diskCode.includes('vscode-init') || /dolphin-[a-zA-Z0-9-]+/g.test(diskCode);
+      if (!hasMarkers) {
         return null;
       }
 

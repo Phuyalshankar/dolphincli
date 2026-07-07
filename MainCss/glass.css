@@ -354,3 +354,58 @@
     transform: rotate(360deg);
   }
 }
+
+/* ==========================================================================
+   DYNAMIC GLASS GRADIENT SYSTEM — World-Class Android Material You Style
+   ==========================================================================
+
+   Generated at runtime by DolphinCSS UB engine (ub.js / ub-vanilla.js).
+   No static CSS needed — all glass-* classes are created dynamically.
+
+   CLASS FORMAT:
+     glass-[direction?]-[color1]-[opacity1]-[color2?]-[opacity2?]-[color3?]-[opacity3?]
+
+   DIRECTIONS (optional):
+     (none)   → diagonal 135deg gradient (default)
+     vert     → top to bottom
+     horiz    → left to right
+     radial   → radial glow from center
+
+   COLORS (named):
+     red, blue, green, purple, orange, pink, teal, amber, gray
+
+   OPACITY (0-255):
+     0   → nearly transparent glass (blur only)
+     64  → very subtle tint
+     128 → medium tint
+     200 → strong tint
+     255 → max tint (still maintains glass transparency at 35%)
+
+   EXAMPLES:
+     glass-red-100
+     glass-blue-150-purple-80
+     glass-red-120-blue-80-green-40
+     glass-vert-pink-100-orange-60
+     glass-horiz-teal-150-blue-80
+     glass-radial-purple-180-blue-80
+     glass-red-100-blur-16          (custom blur: 4-60px)
+
+   REACT HELPER FUNCTIONS (from ub.js):
+     import { glass, glassVert, glassHoriz, glassRadial, ub } from './ub';
+
+     <div className={ub(glass('red', 100, 'blue', 80))}>
+     <div className={ub(glassVert('purple', 150, 'pink', 80))}>
+     <div className={ub(glassRadial('blue', 200, 'purple', 100))}>
+
+   GENERATED CSS FEATURES per class:
+     ✓ background: linear/radial-gradient with OKLCH colors + alpha
+     ✓ backdrop-filter: blur(24px) saturate(175%) brightness(1.05)
+     ✓ border: 1px solid [tinted color at 22% alpha]
+     ✓ box-shadow: multi-layer ambient + key + inner highlight
+     ✓ border-radius: 20px
+     ✓ ::before pseudo: top-left inner shimmer highlight
+     ✓ :hover: deeper blur, lift transform, stronger shadow
+     ✓ Dark mode: adjusted shadow opacity automatically
+     ✓ will-change: transform, box-shadow (GPU accelerated)
+
+   ========================================================================== */

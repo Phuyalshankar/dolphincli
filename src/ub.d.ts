@@ -131,6 +131,38 @@ export function gradientHorizontal(fromColor: string, fromShade: number | string
 export function gradientRadial(fromColor: string, fromShade: number | string, toColor: string, toShade: number | string): string;
 export function gradientTriple(c1: string, s1: number | string, c2: string, s2: number | string, c3: string, s3: number | string): string;
 
+/** Color name type for glass helpers */
+export type GlassColor = 'red' | 'blue' | 'green' | 'purple' | 'orange' | 'pink' | 'teal' | 'amber' | 'gray' | string;
+/** Shade value 0-255 */
+export type GlassShade = number;
+/** Opacity value 0-255 */
+export type GlassOpacity = number;
+
+// ============================================================
+// GLASS HELPERS — World-Class Dynamic Glass Gradient System
+// ============================================================
+/**
+ * Generate a dynamic glassmorphism class with 1-3 color stops.
+ * @param c1 First color name
+ * @param s1 First color shade (0-255)
+ * @param c2 Second color name or glass opacity
+ * @param s2 Second color shade (0-255) (optional)
+ * @param c3 Third color name or glass opacity (optional)
+ * @param s3 Third color shade (optional)
+ * @param o Glass opacity (optional)
+ * @example ub(glass('red', 180, 'purple', 100, 20))
+ */
+export function glass(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, c3?: GlassColor | GlassOpacity, s3?: GlassShade, o?: GlassOpacity): string;
+
+/** Vertical (top→bottom) gradient glassmorphism. */
+export function glassVert(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, c3?: GlassColor | GlassOpacity, s3?: GlassShade, o?: GlassOpacity): string;
+
+/** Horizontal (left→right) gradient glassmorphism. */
+export function glassHoriz(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, c3?: GlassColor | GlassOpacity, s3?: GlassShade, o?: GlassOpacity): string;
+
+/** Radial (center glow) gradient glassmorphism. */
+export function glassRadial(c1: GlassColor, s1: GlassShade, c2: GlassColor | GlassOpacity, s2?: GlassShade, o?: GlassOpacity): string;
+
 // Animation Helpers
 export function animate(prop: string, from: number | string, to: number | string, duration: number | string, infinite?: boolean): string;
 export function widthAnim(from: number | string, to: number | string, duration: number | string, infinite?: boolean): string;

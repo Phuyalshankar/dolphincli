@@ -568,6 +568,7 @@ class WebStyleEngine {
         const gradientHorizontalMatch = name.match(/^gradient-horiz-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)$/);
         const gradientRadialMatch = name.match(/^gradient-radial-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)$/);
         const gradientTripleMatch = name.match(/^gradient-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)-([a-z]+)-(\d+(?:\.\d+)?)$/);
+        const glassMatch = name.match(/^glass(?:-(vert|horiz|radial))?-((?:[a-z]+-\d+-)+)(\d+)(?:-blur-(\d+))?$/);
         const colorAnimMatch = name.match(/^(bg|text)-([a-z]+)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)(ms|s)(?:-(infinite))?$/);
         const propAnimMatch = name.match(/^([a-z]+(?:-[a-z]+)?)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)(ms|s)(?:-(infinite))?$/);
         const isColor = name.startsWith('bg-') || name.startsWith('text-') || name.startsWith('border-');
@@ -846,6 +847,96 @@ class WebStyleEngine {
           const textColor = getTextColorForGradient([color1, color2, color3]);
           rules = [`background: linear-gradient(135deg, ${color1}, ${color2}, ${color3}) !important;`, `color: ${textColor} !important;`, `caret-color: ${textColor} !important;`];
         }
+        else if (glassMatch) {
+          // ============================================================
+          // WORLD-CLASS DYNAMIC GLASS GRADIENT SYSTEM
+          // Format: glass-[direction?]-[color1]-[shade1]-[color2]-[shade2]-...-[opacity]
+          // Opacity: 0-255 (maps to CSS alpha)
+          // Example: glass-red-180-purple-100-20
+          // ============================================================
+          const [, glassDirection, colorStopsStr, glassOpacityStr, customBlurStr] = glassMatch;
+          const colorStops = [];
+          const stopPattern = /([a-z]+)-(\d+)/g;
+          let stopM;
+          while ((stopM = stopPattern.exec(colorStopsStr)) !== null) {
+            const colorName = stopM[1];
+            const shadeVal = parseInt(stopM[2]);
+            if (BASE_COLORS[colorName]) {
+              colorStops.push({ color: colorName, shade: shadeVal });
+            }
+          }
+
+          if (colorStops.length > 0) {
+            const opacityValue = parseInt(glassOpacityStr);
+            const alpha = safeClamp(opacityValue / 255, 0.0, 1.0);
+            
+            const blurAmount = customBlurStr ? safeClamp(parseInt(customBlurStr), 4, 60) : 24;
+            const saturation = 160 + Math.min(colorStops.length * 15, 40);
+            const hoverBlur = blurAmount + 10;
+            const hoverSat = saturation + 25;
+
+            // Build OKLCH color stops with opacity mapped from 0-255
+            const gradientStops = colorStops.map(({ color, shade }) => {
+              const baseColor = getOKLCH(color, shade, this.darkMode);
+              const colorMatch = baseColor.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+              if (colorMatch) {
+                return `oklch(${colorMatch[1]} ${colorMatch[2]} ${colorMatch[3]} / ${alpha.toFixed(3)})`;
+              }
+              return `rgba(255,255,255,${alpha.toFixed(3)})`;
+            });
+
+            // Build gradient based on direction
+            let bgValue;
+            if (glassDirection === 'radial') {
+              bgValue = `radial-gradient(ellipse at 30% 30%, ${gradientStops.join(', ')}, transparent 80%)`;
+            } else {
+              const gradDir = glassDirection === 'vert' ? 'to bottom'
+                : glassDirection === 'horiz' ? 'to right'
+                : '135deg';
+              bgValue = `linear-gradient(${gradDir}, ${gradientStops.join(', ')})`;
+            }
+
+            // Tinted glass border — first color stop at dynamic alpha
+            const firstStop = colorStops[0];
+            const firstBase = getOKLCH(firstStop.color, firstStop.shade, this.darkMode);
+            const borderMatch = firstBase.match(/oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)\)/);
+            const borderAlpha = safeClamp(alpha * 1.5, 0.05, 0.4);
+            const borderColor = borderMatch
+              ? `oklch(${borderMatch[1]} ${borderMatch[2]} ${borderMatch[3]} / ${borderAlpha.toFixed(3)})`
+              : `rgba(255,255,255,${borderAlpha.toFixed(3)})`;
+
+            // Android Material You — multi-layer shadow
+            const darkShadowAlpha = this.darkMode ? 0.3 : 0.12;
+            const shadowStr = [
+              `0 8px 32px rgba(0,0,0,${darkShadowAlpha})`,
+              `0 2px 8px rgba(0,0,0,${darkShadowAlpha * 0.65})`,
+              `inset 0 1px 0 rgba(255,255,255,${this.darkMode ? 0.12 : 0.22})`,
+              `inset 0 -1px 0 rgba(0,0,0,0.04)`
+            ].join(', ');
+
+            const hoverShadowStr = [
+              `0 16px 48px rgba(0,0,0,${darkShadowAlpha * 1.4})`,
+              `0 4px 16px rgba(0,0,0,${darkShadowAlpha})`,
+              `inset 0 1px 0 rgba(255,255,255,${this.darkMode ? 0.16 : 0.3})`,
+              `inset 0 -1px 0 rgba(0,0,0,0.05)`
+            ].join(', ');
+
+            rules = [
+              `background: ${bgValue} !important;`,
+              `backdrop-filter: blur(${blurAmount}px) saturate(${saturation}%) brightness(1.05) !important;`,
+              `-webkit-backdrop-filter: blur(${blurAmount}px) saturate(${saturation}%) brightness(1.05) !important;`,
+              `border: 1px solid ${borderColor} !important;`,
+              `box-shadow: ${shadowStr} !important;`,
+              `transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;`,
+              `border-radius: 20px;`,
+              `overflow: hidden;`,
+              `position: relative;`,
+              `will-change: transform, box-shadow;`,
+              `&:hover { backdrop-filter: blur(${hoverBlur}px) saturate(${hoverSat}%) brightness(1.08) !important; -webkit-backdrop-filter: blur(${hoverBlur}px) saturate(${hoverSat}%) brightness(1.08) !important; transform: translateY(-2px) scale(1.005) !important; box-shadow: ${hoverShadowStr} !important; border-color: rgba(255,255,255,0.3) !important; }`,
+              `&::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%); pointer-events: none; z-index: 0; }`,
+            ];
+          }
+        }
         else if (isColor) {
           const type = name.split('-')[0];
           const colorPart = name.substring(type.length + 1);
@@ -1025,6 +1116,33 @@ export const gradientHorizontal = (fromColor, fromShade, toColor, toShade) => `g
 export const gradientRadial = (fromColor, fromShade, toColor, toShade) => `gradient-radial-${fromColor}-${fromShade}-${toColor}-${toShade}`;
 export const gradientTriple = (c1, s1, c2, s2, c3, s3) => `gradient-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}`;
 
+// ============================================================
+// GLASS HELPERS — World-Class Dynamic Glass Gradient System
+// ============================================================
+/** Single or multi-color glass gradient (opacity 0-255) */
+export const glass = (c1, s1, c2, s2, c3, s3, o) => {
+  if (o !== undefined) return `glass-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}-${o}`;
+  if (s2 !== undefined && c3 !== undefined) return `glass-${c1}-${s1}-${c2}-${s2}-${c3}`;
+  return `glass-${c1}-${s1}-${c2}`;
+};
+/** Vertical (top→bottom) gradient glass */
+export const glassVert = (c1, s1, c2, s2, c3, s3, o) => {
+  if (o !== undefined) return `glass-vert-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}-${o}`;
+  if (s2 !== undefined && c3 !== undefined) return `glass-vert-${c1}-${s1}-${c2}-${s2}-${c3}`;
+  return `glass-vert-${c1}-${s1}-${c2}`;
+};
+/** Horizontal (left→right) gradient glass */
+export const glassHoriz = (c1, s1, c2, s2, c3, s3, o) => {
+  if (o !== undefined) return `glass-horiz-${c1}-${s1}-${c2}-${s2}-${c3}-${s3}-${o}`;
+  if (s2 !== undefined && c3 !== undefined) return `glass-horiz-${c1}-${s1}-${c2}-${s2}-${c3}`;
+  return `glass-horiz-${c1}-${s1}-${c2}`;
+};
+/** Radial (center glow) gradient glass */
+export const glassRadial = (c1, s1, c2, s2, o) => {
+  if (o !== undefined) return `glass-radial-${c1}-${s1}-${c2}-${s2}-${o}`;
+  return `glass-radial-${c1}-${s1}-${c2}`;
+};
+
 export const animate = (prop, from, to, duration, infinite) => 
   `${prop}-${from}-${to}-${duration}${typeof duration === 'number' && duration < 1000 ? 'ms' : 'ms'}${infinite ? '-infinite' : ''}`;
 export const widthAnim = (from, to, duration, infinite) => animate('w', from, to, duration, infinite);
@@ -1075,3 +1193,42 @@ export const map = {
     return `red-${_shade(128, 255, (t - 0.8) / 0.2)}`;
   }
 };
+
+// Auto-compile elements with {ub('...')} class or data-ub="..." attribute in browser environments
+if (typeof document !== 'undefined') {
+  const compileDOM = () => {
+    // 1. Process class="{ub('...')}"
+    document.querySelectorAll('*').forEach(el => {
+      const cls = el.getAttribute('class');
+      if (cls) {
+        const regex = /\{ub\(['"]([^'"]+)['"]\)\}/g;
+        let match;
+        let newCls = cls;
+        while ((match = regex.exec(cls)) !== null) {
+          const ubExpr = match[0];
+          const ubArg = match[1];
+          const compiled = ub(ubArg);
+          newCls = newCls.replace(ubExpr, compiled);
+        }
+        if (newCls !== cls) {
+          el.className = newCls;
+        }
+      }
+    });
+
+    // 2. Process data-ub="..."
+    document.querySelectorAll('[data-ub]').forEach(el => {
+      const ubAttr = el.getAttribute('data-ub');
+      const compiled = ub(ubAttr);
+      el.classList.add(...compiled.split(' ').filter(Boolean));
+    });
+  };
+
+  // Run immediately if DOM is already loaded, otherwise listen to DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', compileDOM);
+  } else {
+    compileDOM();
+  }
+}
+
