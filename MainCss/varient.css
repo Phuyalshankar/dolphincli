@@ -95,6 +95,12 @@
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
+    --fx-button-overlay: linear-gradient(135deg,
+      color-mix(in oklch, white, transparent 88%),
+      color-mix(in oklch, var(--color-surface), transparent 94%));
+    --fx-button-border: var(--glass-border);
+    --fx-button-shadow: var(--glass-shadow);
+    --fx-button-backdrop: var(--glass-blur);
     @apply rounded-xl transition-all duration-300;
   }
 
@@ -102,6 +108,11 @@
     background: color-mix(in oklch, var(--color-surface), black 10%);
     border: 1px solid color-mix(in oklch, var(--color-primary), transparent 50%);
     box-shadow: var(--glow-primary);
+    --fx-button-overlay: linear-gradient(135deg,
+      color-mix(in oklch, var(--color-primary), transparent 82%),
+      color-mix(in oklch, var(--color-info), transparent 88%));
+    --fx-button-border: color-mix(in oklch, var(--color-primary), transparent 45%);
+    --fx-button-shadow: var(--glow-primary);
     @apply rounded-xl transition-all duration-300;
   }
 
@@ -110,12 +121,21 @@
       radial-gradient(circle at 0% 0%, color-mix(in oklch, var(--color-primary), transparent 90%) 0%, transparent 50%),
       radial-gradient(circle at 100% 100%, color-mix(in oklch, var(--color-info), transparent 90%) 0%, transparent 50%),
       var(--color-surface);
+    --fx-button-overlay:
+      radial-gradient(circle at 0% 0%, color-mix(in oklch, var(--color-primary), transparent 88%) 0%, transparent 50%),
+      radial-gradient(circle at 100% 100%, color-mix(in oklch, var(--color-info), transparent 88%) 0%, transparent 50%);
+    --fx-button-border: color-mix(in oklch, var(--color-primary), transparent 65%);
     @apply rounded-xl;
   }
 
   .fx-float, .quantum-float {
     box-shadow: var(--glass-shadow);
     border: 1px solid color-mix(in oklch, var(--color-border), transparent 50%);
+    --fx-button-overlay: linear-gradient(180deg,
+      color-mix(in oklch, white, transparent 92%),
+      color-mix(in oklch, black, transparent 96%));
+    --fx-button-border: color-mix(in oklch, var(--color-border), transparent 50%);
+    --fx-button-shadow: var(--glass-shadow);
     @apply rounded-xl transition-all duration-300;
   }
 
@@ -130,6 +150,11 @@
       color-mix(in oklch, var(--color-info), transparent 95%),
       color-mix(in oklch, var(--color-surface), transparent 10%));
     border: 1px solid color-mix(in oklch, var(--color-info), transparent 60%);
+    --fx-button-overlay: linear-gradient(160deg,
+      color-mix(in oklch, var(--color-info), transparent 92%),
+      color-mix(in oklch, var(--color-primary), transparent 96%),
+      color-mix(in oklch, var(--color-info), transparent 92%));
+    --fx-button-border: color-mix(in oklch, var(--color-info), transparent 55%);
     @apply rounded-xl;
   }
 
@@ -140,6 +165,11 @@
       color-mix(in oklch, var(--color-warning), transparent 30%) 50%,
       color-mix(in oklch, var(--color-danger), transparent 10%) 100%);
     box-shadow: var(--glow-primary);
+    --fx-button-overlay: linear-gradient(135deg,
+      color-mix(in oklch, var(--color-primary), transparent 82%) 0%,
+      color-mix(in oklch, var(--color-warning), transparent 74%) 50%,
+      color-mix(in oklch, var(--color-danger), transparent 82%) 100%);
+    --fx-button-shadow: var(--glow-primary);
     @apply rounded-xl transition-all duration-500;
   }
 
@@ -152,6 +182,14 @@
     box-shadow: 
       inset 0 0 20px color-mix(in oklch, var(--color-primary), transparent 80%),
       var(--glow-primary);
+    --fx-button-overlay: linear-gradient(45deg,
+      color-mix(in oklch, var(--color-primary), transparent 76%) 0%,
+      color-mix(in oklch, var(--color-info), transparent 78%) 50%,
+      color-mix(in oklch, var(--color-primary), transparent 76%) 100%);
+    --fx-button-border: color-mix(in oklch, var(--color-primary), transparent 40%);
+    --fx-button-shadow:
+      inset 0 0 20px color-mix(in oklch, var(--color-primary), transparent 80%),
+      var(--glow-primary);
     @apply rounded-xl backdrop-blur-sm transition-all duration-300;
   }
 
@@ -160,6 +198,12 @@
     backdrop-filter: var(--glass-blur);
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
+    --fx-button-overlay: linear-gradient(135deg,
+      color-mix(in oklch, white, transparent 84%),
+      color-mix(in oklch, var(--color-info), transparent 95%));
+    --fx-button-border: var(--glass-border);
+    --fx-button-shadow: var(--glass-shadow);
+    --fx-button-backdrop: var(--glass-blur);
     @apply rounded-xl transition-all duration-500;
   }
 
@@ -168,6 +212,9 @@
       radial-gradient(circle at 20% 80%, color-mix(in oklch, var(--color-primary), transparent 30%) 0%, transparent 50%),
       radial-gradient(circle at 80% 20%, color-mix(in oklch, var(--color-info), transparent 30%) 0%, transparent 50%),
       var(--color-surface);
+    --fx-button-overlay:
+      radial-gradient(circle at 20% 80%, color-mix(in oklch, var(--color-primary), transparent 72%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, color-mix(in oklch, var(--color-info), transparent 74%) 0%, transparent 50%);
     @apply rounded-xl transition-all duration-700;
   }
 
@@ -178,6 +225,14 @@
       color-mix(in oklch, var(--color-secondary), transparent 40%) 70%,
       color-mix(in oklch, var(--color-surface), transparent 5%) 100%);
     box-shadow: 
+      inset 0 2px 4px color-mix(in oklch, white, transparent 60%),
+      inset 0 -2px 4px color-mix(in oklch, black, transparent 20%),
+      0 4px 20px color-mix(in oklch, var(--color-secondary), transparent 30%);
+    --fx-button-overlay: linear-gradient(125deg,
+      color-mix(in oklch, white, transparent 88%) 0%,
+      color-mix(in oklch, var(--color-secondary), transparent 82%) 35%,
+      color-mix(in oklch, black, transparent 95%) 100%);
+    --fx-button-shadow:
       inset 0 2px 4px color-mix(in oklch, white, transparent 60%),
       inset 0 -2px 4px color-mix(in oklch, black, transparent 20%),
       0 4px 20px color-mix(in oklch, var(--color-secondary), transparent 30%);
@@ -193,6 +248,12 @@
       color-mix(in oklch, var(--color-info), transparent 20%) 100%);
     background-size: 400% 400%;
     animation: gradientShift 8s ease infinite;
+    --fx-button-overlay: linear-gradient(45deg,
+      color-mix(in oklch, var(--color-primary), transparent 78%) 0%,
+      color-mix(in oklch, var(--color-success), transparent 78%) 25%,
+      color-mix(in oklch, var(--color-warning), transparent 78%) 50%,
+      color-mix(in oklch, var(--color-danger), transparent 78%) 75%,
+      color-mix(in oklch, var(--color-info), transparent 78%) 100%);
     @apply rounded-xl transition-all duration-300;
   }
 
@@ -204,12 +265,60 @@
     backdrop-filter: var(--glass-blur);
     border: 1px solid color-mix(in oklch, var(--color-border), transparent 60%);
     box-shadow: var(--glass-shadow);
+    --fx-button-overlay:
+      linear-gradient(135deg, color-mix(in oklch, white, transparent 90%) 0%,
+      color-mix(in oklch, var(--color-surface), transparent 96%) 100%),
+      radial-gradient(circle at 0% 0%, color-mix(in oklch, var(--color-primary), transparent 72%) 0%, transparent 55%);
+    --fx-button-border: color-mix(in oklch, var(--color-border), transparent 60%);
+    --fx-button-shadow: var(--glass-shadow);
+    --fx-button-backdrop: var(--glass-blur);
     @apply rounded-xl transition-all duration-500;
   }
 
   @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
+  }
+
+  /* ===== COMPOSABLE BUTTON + FX LAYER ===== */
+  .filled:where([class*="fx-"]),
+  .outlined:where([class*="fx-"]),
+  .plain:where([class*="fx-"]) {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+    box-shadow: var(--fx-button-shadow, none);
+    backdrop-filter: var(--fx-button-backdrop, none);
+    -webkit-backdrop-filter: var(--fx-button-backdrop, none);
+  }
+
+  .filled:where([class*="fx-"]) {
+    background:
+      var(--fx-button-overlay, linear-gradient(135deg, transparent, transparent)),
+      var(--current-bg, var(--color-surface)) !important;
+    color: var(--current-text, var(--color-text)) !important;
+    border: 1px solid var(--fx-button-border, transparent);
+  }
+
+  .outlined:where([class*="fx-"]) {
+    background:
+      var(--fx-button-overlay, linear-gradient(135deg, transparent, transparent)),
+      linear-gradient(
+        color-mix(in oklch, var(--color-surface), transparent 10%),
+        color-mix(in oklch, var(--color-surface), transparent 10%)
+      ) !important;
+    color: var(--current-color, var(--color-text)) !important;
+    border: 1px solid var(--fx-button-border, var(--current-color, var(--color-border)));
+  }
+
+  .plain:where([class*="fx-"]) {
+    background:
+      var(--fx-button-overlay, linear-gradient(135deg, transparent, transparent)),
+      transparent !important;
+    color: var(--current-color, var(--color-text)) !important;
+    border: 1px solid var(--fx-button-border, color-mix(in oklch, var(--current-color, var(--color-border)), transparent 72%));
   }
 }
 
